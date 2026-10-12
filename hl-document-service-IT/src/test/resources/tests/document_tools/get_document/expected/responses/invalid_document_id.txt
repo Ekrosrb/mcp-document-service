@@ -1,0 +1,2 @@
+Error invoking method: getDocument
+getDocument.id: Invalid UUID: [not-a-uuid]

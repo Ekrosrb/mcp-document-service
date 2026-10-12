@@ -1,0 +1,8 @@
+{
+  "request": {
+    "scope": "GLOBAL",
+    "name": "coding-rules",
+    "summary": "Coding rules",
+    "content": "Keep methods short."
+  }
+}

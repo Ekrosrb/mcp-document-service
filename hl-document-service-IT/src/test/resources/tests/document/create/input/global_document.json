@@ -1,0 +1,10 @@
+{
+  "kind": "DOCUMENT",
+  "scope": "GLOBAL",
+  "author": "HUMAN",
+  "name": "coding-rules",
+  "authorName": "{{authorName}}",
+  "projectKey": null,
+  "summary": "Coding rules",
+  "content": "Keep methods short."
+}

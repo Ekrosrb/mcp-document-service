@@ -1,0 +1,15 @@
+server:
+  port: 43555
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:43556/document-db
+    username: admin
+    password: admin
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true

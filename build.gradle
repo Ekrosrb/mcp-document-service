@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.1.+'
+}
+
+group = 'com.ekros.hl.doc'
+version = '0.0.1'
+
+dependencies {
+    def sdkPlatform = platform('com.ekros.hl:hl-dependency-platform:0.0.+')
+
+    implementation sdkPlatform
+    runtimeOnly sdkPlatform
+    compileOnly sdkPlatform
+    annotationProcessor sdkPlatform
+    testAnnotationProcessor sdkPlatform
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-liquibase'
+    implementation 'org.springframework.ai:spring-ai-starter-mcp-server-webmvc'
+    implementation 'dev.toonformat:jtoon:2.0.7'
+
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.1'
+
+    implementation 'io.hypersistence:hypersistence-utils-hibernate-71:3.11.0'
+    implementation 'org.liquibase:liquibase-core'
+    implementation 'ch.qos.logback:logback-core'
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'org.slf4j:slf4j-api'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'org.mapstruct:mapstruct'
+    annotationProcessor 'org.mapstruct:mapstruct-processor'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding'
+
+    runtimeOnly 'org.postgresql:postgresql'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'ch.qos.logback:logback-core'
+    testImplementation 'ch.qos.logback:logback-classic'
+    testImplementation 'org.slf4j:slf4j-api'
+}
+
+test {
+    useJUnitPlatform()
+}

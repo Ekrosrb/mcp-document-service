@@ -1,0 +1,41 @@
+[
+  {
+    "id": "{{documentId}}",
+    "kind": "DOCUMENT",
+    "scope": "PROJECT",
+    "author": "HUMAN",
+    "name": "deployment-guide",
+    "authorName": "{{authorName}}",
+    "projectKey": "{{projectKey}}",
+    "summary": "Deployment guide",
+    "content": "How to deploy the service.",
+    "createdAt": "2026-01-15T10:00:00.000Z",
+    "updatedAt": "2026-01-16T11:30:00.000Z"
+  },
+  {
+    "id": "{{memoryId}}",
+    "kind": "MEMORY",
+    "scope": "PROJECT",
+    "author": "AGENT",
+    "name": "release-notes",
+    "authorName": "{{authorName}}",
+    "projectKey": "{{otherProjectKey}}",
+    "summary": "Release notes",
+    "content": "Version 1.0 is out.",
+    "createdAt": "2026-01-15T10:00:00.000Z",
+    "updatedAt": "2026-01-16T11:30:00.000Z"
+  },
+  {
+    "id": "{{globalId}}",
+    "kind": "DOCUMENT",
+    "scope": "GLOBAL",
+    "author": "HUMAN",
+    "name": "coding-rules",
+    "authorName": "{{authorName}}",
+    "projectKey": null,
+    "summary": "Coding rules",
+    "content": "Keep methods short.",
+    "createdAt": "2026-01-15T10:00:00.000Z",
+    "updatedAt": "2026-01-16T11:30:00.000Z"
+  }
+]

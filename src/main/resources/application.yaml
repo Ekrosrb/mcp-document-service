@@ -1,0 +1,29 @@
+server:
+  port: 55535
+
+spring:
+  application:
+    name: mcp-document-service
+  datasource:
+    url: jdbc:postgresql://localhost:5445/document-db
+    username: admin
+    password: admin
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  ai:
+    mcp:
+      server:
+        name: mcp-document-service
+        version: 1.0.0
+        protocol: STREAMABLE
+        streamable-http:
+          mcp-endpoint: /mcp
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml

@@ -1,0 +1,2 @@
+Error invoking method: getDocument
+Document with id [{{unknownId}}] not found

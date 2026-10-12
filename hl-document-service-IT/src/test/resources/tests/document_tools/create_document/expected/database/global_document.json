@@ -1,0 +1,15 @@
+[
+  {
+    "id": "{{createdId}}",
+    "kind": "DOCUMENT",
+    "scope": "GLOBAL",
+    "author": "AGENT",
+    "name": "coding-rules",
+    "author_name": "{{agentName}}",
+    "project_key": null,
+    "summary": "Coding rules",
+    "content": "Keep methods short.",
+    "created_at": "${json-unit.any-string}",
+    "updated_at": "${json-unit.any-string}"
+  }
+]

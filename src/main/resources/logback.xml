@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Define a property for log file path -->
+    <property name="LOG_PATH" value="logs"/>
+
+    <!-- Console appender -->
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%blue(%d{yyyy-MM-dd HH:mm:ss}) %cyan([%thread]) %highlight(%-5level) - %white(%msg%n)
+            </pattern>
+        </encoder>
+    </appender>
+    <!-- Set the logging level for the root logger -->
+    <root level="INFO">
+        <appender-ref ref="Console"/>
+    </root>
+</configuration>

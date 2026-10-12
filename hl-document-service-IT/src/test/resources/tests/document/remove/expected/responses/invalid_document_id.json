@@ -1,0 +1,6 @@
+{
+  "message": "Request validation failed",
+  "metadata": {
+    "id": "Invalid UUID: [not-a-uuid]"
+  }
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "id": "{{createdId}}",
+    "kind": "MEMORY",
+    "scope": "AGENT",
+    "author": "AGENT",
+    "name": "user-preferences",
+    "author_name": "{{agentName}}",
+    "project_key": null,
+    "summary": "User preferences",
+    "content": "The user prefers short answers.",
+    "created_at": "${json-unit.any-string}",
+    "updated_at": "${json-unit.any-string}"
+  }
+]

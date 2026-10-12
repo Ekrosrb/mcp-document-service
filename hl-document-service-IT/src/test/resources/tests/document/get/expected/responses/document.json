@@ -1,0 +1,13 @@
+{
+  "id": "{{documentId}}",
+  "kind": "MEMORY",
+  "scope": "PROJECT",
+  "author": "AGENT",
+  "name": "release-notes",
+  "authorName": "{{authorName}}",
+  "projectKey": "{{otherProjectKey}}",
+  "summary": "Release notes",
+  "content": "Version 1.0 is out.",
+  "createdAt": "2026-01-15T10:00:00.000Z",
+  "updatedAt": "2026-01-16T11:30:00.000Z"
+}

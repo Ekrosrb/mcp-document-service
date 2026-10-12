@@ -1,0 +1,15 @@
+[
+  {
+    "id": "{{createdId}}",
+    "kind": "DOCUMENT",
+    "scope": "PROJECT",
+    "author": "AGENT",
+    "name": null,
+    "author_name": "{{agentName}}",
+    "project_key": "{{projectKey}}",
+    "summary": "Deployment guide",
+    "content": "How to deploy the service.",
+    "created_at": "${json-unit.any-string}",
+    "updated_at": "${json-unit.any-string}"
+  }
+]

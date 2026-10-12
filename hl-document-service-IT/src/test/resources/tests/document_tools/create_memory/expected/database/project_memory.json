@@ -1,0 +1,15 @@
+[
+  {
+    "id": "{{createdId}}",
+    "kind": "MEMORY",
+    "scope": "PROJECT",
+    "author": "AGENT",
+    "name": null,
+    "author_name": "{{agentName}}",
+    "project_key": "{{projectKey}}",
+    "summary": "Release notes",
+    "content": "Version 1.0 is out.",
+    "created_at": "${json-unit.any-string}",
+    "updated_at": "${json-unit.any-string}"
+  }
+]

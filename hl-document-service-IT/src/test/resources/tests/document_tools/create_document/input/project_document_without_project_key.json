@@ -1,0 +1,7 @@
+{
+  "request": {
+    "scope": "PROJECT",
+    "summary": "Deployment guide",
+    "content": "How to deploy the service."
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "authorName": "{{authorName}}",
+  "author": "AGENT",
+  "name": "deployment-guide",
+  "includeContent": true
+}

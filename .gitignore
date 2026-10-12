@@ -17,8 +17,10 @@ build/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-deploy/document
-deploy/document/*
+/deploy/document
+gradle/*
+gradlew.bat
+gradlew
 
 ### Eclipse ###
 .apt_generated

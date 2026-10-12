@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.ekros.hl.doc'
+version = '0.0.1'
+
+dependencies {
+    def sdkPlatform = platform('com.ekros.hl:hl-dependency-platform:0.0.+')
+
+    testImplementation sdkPlatform
+    testRuntimeOnly sdkPlatform
+    testImplementation platform('io.cucumber:cucumber-bom:8.0.4')
+
+    testImplementation project(':')
+    testImplementation 'org.springframework.boot:spring-boot'
+    testImplementation 'tools.jackson.core:jackson-databind'
+    testImplementation 'org.springframework.ai:spring-ai-mcp'
+    testImplementation 'dev.toonformat:jtoon:2.0.7'
+
+    testImplementation 'io.cucumber:cucumber-java'
+    testImplementation 'io.cucumber:cucumber-picocontainer'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine'
+    testImplementation 'org.junit.platform:junit-platform-suite'
+    testImplementation 'net.javacrumbs.json-unit:json-unit-assertj:6.3.0'
+    testImplementation 'org.assertj:assertj-core'
+
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'org.postgresql:postgresql'
+}
+
+def compose = ['docker', 'compose', '-p', 'hl-document-service-it', '-f', file('docker/docker-compose.yaml').path]
+
+tasks.register('composeUp', Exec) {
+    group = 'verification'
+    description = 'Starts the IT infrastructure.'
+    commandLine compose + ['up', '-d', '--wait']
+}
+
+tasks.register('composeDown', Exec) {
+    group = 'verification'
+    description = 'Stops the IT infrastructure and drops its data.'
+    commandLine compose + ['down', '-v']
+}
+
+test {
+    useJUnitPlatform()
+    systemProperty 'user.timezone', 'UTC'
+    dependsOn composeUp
+    finalizedBy composeDown
+    outputs.upToDateWhen { false }
+    timeout = java.time.Duration.ofMinutes(5)
+    testLogging {
+        events 'passed', 'failed', 'skipped'
+        exceptionFormat = 'full'
+    }
+}
