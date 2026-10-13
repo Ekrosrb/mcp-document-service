@@ -80,4 +80,10 @@ public class DocumentData {
   @EqualsAndHashCode.Exclude
   @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<DocumentRelationData> relations = new HashSet<>();
+
+  @Column(name = "search_vector", insertable = false, updatable = false, columnDefinition = "tsvector")
+  @JdbcTypeCode(SqlTypes.OTHER)
+  @Basic(fetch = FetchType.LAZY)
+  private Object searchVector;
+
 }

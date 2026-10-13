@@ -79,4 +79,3 @@ CREATE INDEX idx_document_scope ON document (scope);
 --rollback DROP TYPE IF EXISTS author_type;
 --rollback DROP TYPE IF EXISTS document_type;
 --rollback DROP TYPE IF EXISTS document_relation_type;
-

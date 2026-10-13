@@ -1,0 +1,8 @@
+{
+  "request": {
+    "authorName": "${authorName}",
+    "query": "deploy",
+    "includeContent": true,
+    "includeSummary": true
+  }
+}

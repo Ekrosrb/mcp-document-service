@@ -12,6 +12,7 @@
     "summary": "Coding rules",
     "content_id": "${json-unit.any-number}",
     "created_at": "${json-unit.any-string}",
-    "updated_at": "${json-unit.any-string}"
+    "updated_at": "${json-unit.any-string}",
+    "search_vector": "${json-unit.any-string}"
   }
 ]

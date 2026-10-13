@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/changes/001-initialize-pgvector-database.sql
   - include:
       file: db/changelog/changes/002-create-document-schema.sql
+  - include:
+      file: db/changelog/changes/003-add-search-vectors-for-document-schema.sql

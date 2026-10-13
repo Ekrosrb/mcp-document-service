@@ -1,0 +1,2 @@
+Error invoking method: search
+search.request: At least one property or query in search request must be specified

@@ -42,6 +42,31 @@ Feature: Search documents
     Then the response status is 200
     And the response body matches "expected/responses/project_document_with_relations.json"
 
+  Scenario: Documents are found by a word of their content
+    When I send a POST request to "/api/v1/document/search" with body "input/by_query_in_content.json"
+    Then the response status is 200
+    And the response body matches "expected/responses/project_document.json"
+
+  Scenario: Documents are found by a word of their name
+    When I send a POST request to "/api/v1/document/search" with body "input/by_query_in_name.json"
+    Then the response status is 200
+    And the response body matches "expected/responses/memory_without_text.json"
+
+  Scenario: A query is combined with the other filters
+    When I send a POST request to "/api/v1/document/search" with body "input/by_query_and_kind.json"
+    Then the response status is 200
+    And the response body matches "expected/responses/memory_without_text.json"
+
+  Scenario: A query that matches no document returns an empty list
+    When I send a POST request to "/api/v1/document/search" with body "input/by_unmatched_query.json"
+    Then the response status is 200
+    And the response body matches "expected/responses/no_documents.json"
+
+  Scenario: A search without any filter or query is rejected
+    When I send a POST request to "/api/v1/document/search" with body "input/without_filters.json"
+    Then the response status is 400
+    And the response body matches "expected/responses/missing_filters.json"
+
   Scenario: A search that matches nothing returns an empty list
     When I send a POST request to "/api/v1/document/search" with body "input/by_unused_author_name.json"
     Then the response status is 200

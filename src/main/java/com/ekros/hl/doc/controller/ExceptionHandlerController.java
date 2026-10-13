@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.method.ParameterValidationResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -53,6 +54,9 @@ public class ExceptionHandlerController {
     var metadata = new LinkedHashMap<String, Object>();
     for (FieldError error : ex.getBindingResult().getFieldErrors()) {
       metadata.put(error.getField(), error.getDefaultMessage());
+    }
+    for (ObjectError error : ex.getBindingResult().getGlobalErrors()) {
+      metadata.put(error.getObjectName(), error.getDefaultMessage());
     }
     return GeneralErrorResponse.builder()
         .message(VALIDATION_ERROR_MESSAGE)

@@ -1,0 +1,5 @@
+{
+  "authorName": "${authorName}",
+  "query": "guide OR notes",
+  "kind": "MEMORY"
+}

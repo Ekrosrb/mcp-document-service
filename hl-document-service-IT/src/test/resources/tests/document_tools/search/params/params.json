@@ -1,0 +1,14 @@
+{
+  "${agentName}": "string",
+  "${authorName}": "string",
+  "${projectKey}": "string",
+  "${otherProjectKey}": "string",
+  "${projectId}": "long",
+  "${otherProjectId}": "long",
+  "${documentId}": "long",
+  "${memoryId}": "long",
+  "${globalId}": "long",
+  "${documentContentId}": "long",
+  "${memoryContentId}": "long",
+  "${globalContentId}": "long"
+}

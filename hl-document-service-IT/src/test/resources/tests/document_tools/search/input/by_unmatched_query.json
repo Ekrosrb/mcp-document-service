@@ -1,0 +1,6 @@
+{
+  "request": {
+    "authorName": "${authorName}",
+    "query": "kubernetes"
+  }
+}
