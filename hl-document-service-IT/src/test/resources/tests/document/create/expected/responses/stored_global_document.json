@@ -10,5 +10,7 @@
   "content": "Keep methods short.",
   "customExtension": ".adoc",
   "createdAt": "${json-unit.any-string}",
-  "updatedAt": "${json-unit.any-string}"
+  "updatedAt": "${json-unit.any-string}",
+  "relations": [],
+  "referencedBy": []
 }

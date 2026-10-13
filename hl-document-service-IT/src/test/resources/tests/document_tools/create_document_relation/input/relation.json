@@ -1,0 +1,7 @@
+{
+  "request": {
+    "documentId": "${documentId}",
+    "relatedDocumentId": "${memoryId}",
+    "type": "DEPENDS_ON"
+  }
+}

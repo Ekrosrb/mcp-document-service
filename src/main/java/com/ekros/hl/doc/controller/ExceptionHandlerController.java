@@ -3,17 +3,18 @@ package com.ekros.hl.doc.controller;
 
 import com.ekros.hl.doc.controller.model.GeneralErrorResponse;
 import com.ekros.hl.doc.exception.DocumentNotFoundException;
+import com.ekros.hl.doc.exception.DocumentRelationExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.method.ParameterValidationResult;
-import org.springframework.web.method.annotation.HandlerMethodValidationException;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,6 +33,16 @@ public class ExceptionHandlerController {
     return GeneralErrorResponse.builder()
         .message(ex.getMessage())
         .metadata(Map.of("id", ex.getId()))
+        .build();
+  }
+
+  @ResponseStatus(HttpStatus.CONFLICT)
+  @ExceptionHandler(exception = DocumentRelationExistsException.class)
+  public GeneralErrorResponse handleDocumentRelationExistsException(DocumentRelationExistsException ex) {
+    log.warn("DocumentRelationExistsException occurred: {}", ex.getMessage());
+    return GeneralErrorResponse.builder()
+        .message(ex.getMessage())
+        .metadata(Map.of("documentId", ex.getDocumentId(), "relatedDocumentId", ex.getRelatedDocumentId()))
         .build();
   }
 

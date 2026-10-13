@@ -1,4 +1,4 @@
-package com.ekros.hl.doc.controller.model;
+package com.ekros.hl.doc.controller.model.document;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

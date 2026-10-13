@@ -1,0 +1,30 @@
+[
+  {
+    "id": "${documentId}",
+    "kind": "DOCUMENT",
+    "scope": "PROJECT",
+    "type": "MARKDOWN",
+    "author": "HUMAN",
+    "name": "deployment-guide",
+    "authorName": "${authorName}",
+    "projectKey": "${projectKey}",
+    "summary": "Deployment guide",
+    "content": "How to deploy the service.",
+    "createdAt": "2026-01-15T10:00:00.000Z",
+    "updatedAt": "2026-01-16T11:30:00.000Z",
+    "relations": [
+      {
+        "id": "${memoryId}",
+        "name": "release-notes",
+        "type": "DEPENDS_ON"
+      }
+    ],
+    "referencedBy": [
+      {
+        "id": "${globalId}",
+        "name": "coding-rules",
+        "type": "EXTENDS"
+      }
+    ]
+  }
+]

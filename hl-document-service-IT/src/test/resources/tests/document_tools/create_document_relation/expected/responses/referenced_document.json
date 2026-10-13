@@ -1,0 +1,21 @@
+{
+  "id": "${memoryId}",
+  "kind": "MEMORY",
+  "scope": "PROJECT",
+  "type": "TEXT",
+  "author": "AGENT",
+  "name": "release-notes",
+  "authorName": "${authorName}",
+  "projectKey": "${otherProjectKey}",
+  "relations": [],
+  "referencedBy": [
+    {
+      "id": "${documentId}",
+      "name": "deployment-guide",
+      "type": "DEPENDS_ON"
+    }
+  ],
+  "summary": "Release notes",
+  "createdAt": "2026-01-15T10:00:00.000Z",
+  "updatedAt": "2026-01-16T11:30:00.000Z"
+}

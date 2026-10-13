@@ -1,0 +1,7 @@
+{
+  "authorName": "${authorName}",
+  "projectKey": "${projectKey}",
+  "includeContent": true,
+  "includeSummary": true,
+  "includeRelations": true
+}

@@ -1,16 +1,15 @@
 package com.ekros.hl.doc.controller;
 
 import com.ekros.hl.doc.controller.api.DocumentApi;
-import com.ekros.hl.doc.controller.model.DocumentCreateRequest;
-import com.ekros.hl.doc.controller.model.DocumentCreateResponse;
-import com.ekros.hl.doc.controller.model.DocumentResponse;
-import com.ekros.hl.doc.controller.model.DocumentSearchRequest;
+import com.ekros.hl.doc.controller.model.document.*;
 import com.ekros.hl.doc.service.DocumentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.CREATED;
 
 @Slf4j
 @RestController
@@ -42,5 +41,12 @@ public class DocumentController implements DocumentApi {
   @PostMapping("/search")
   public List<DocumentResponse> search(@RequestBody DocumentSearchRequest request) {
     return documentService.search(request);
+  }
+
+  @Override
+  @ResponseStatus(CREATED)
+  @PostMapping("/relation")
+  public void createDocumentRelation(@RequestBody DocumentRelationCreateRequest request) {
+    documentService.createDocumentRelation(request);
   }
 }

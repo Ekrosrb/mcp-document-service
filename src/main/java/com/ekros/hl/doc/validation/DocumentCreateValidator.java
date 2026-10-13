@@ -1,6 +1,6 @@
 package com.ekros.hl.doc.validation;
 
-import com.ekros.hl.doc.controller.model.DocumentCreateRequest;
+import com.ekros.hl.doc.controller.model.document.DocumentCreateRequest;
 import com.ekros.hl.doc.repository.model.DocumentScope;
 import com.ekros.hl.doc.repository.model.DocumentType;
 import io.micrometer.common.util.StringUtils;

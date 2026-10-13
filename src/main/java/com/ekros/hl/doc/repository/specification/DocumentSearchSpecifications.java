@@ -1,6 +1,6 @@
 package com.ekros.hl.doc.repository.specification;
 
-import com.ekros.hl.doc.controller.model.DocumentSearchRequest;
+import com.ekros.hl.doc.controller.model.document.DocumentSearchRequest;
 import com.ekros.hl.doc.repository.model.DocumentData;
 import jakarta.persistence.criteria.Predicate;
 import org.apache.commons.lang3.StringUtils;

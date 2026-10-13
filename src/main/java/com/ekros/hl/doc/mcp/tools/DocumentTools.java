@@ -1,5 +1,6 @@
 package com.ekros.hl.doc.mcp.tools;
 
+import com.ekros.hl.doc.controller.model.document.DocumentRelationCreateRequest;
 import com.ekros.hl.doc.mapper.DocumentMapper;
 import com.ekros.hl.doc.mcp.ToonConverter;
 import com.ekros.hl.doc.mcp.model.DocumentCreateMcpRequest;
@@ -45,6 +46,12 @@ public class DocumentTools {
   public String getDocument(@Positive Long id, boolean includeContent, McpSyncRequestContext context) {
     log.info("Received mcp request to get document by id from: {}", getAgentName(context));
     return toonConverter.toToon(documentService.getDocument(id, includeContent));
+  }
+
+  @McpTool(name = "createDocumentRelation", description = "Add relation between two documents")
+  public void createDocumentRelation(@Valid DocumentRelationCreateRequest request, McpSyncRequestContext context) {
+    log.info("Received mcp request to create document relation by id from: {}", getAgentName(context));
+    documentService.createDocumentRelation(request);
   }
 
 }

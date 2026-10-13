@@ -6,6 +6,8 @@ author: HUMAN
 name: deployment-guide
 authorName: ${authorName}
 projectKey: ${projectKey}
+relations: []
+referencedBy: []
 summary: Deployment guide
 content: How to deploy the service.
 customExtension: null

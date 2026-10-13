@@ -1,0 +1,21 @@
+{
+  "id": "${documentId}",
+  "kind": "DOCUMENT",
+  "scope": "PROJECT",
+  "type": "MARKDOWN",
+  "author": "HUMAN",
+  "name": "deployment-guide",
+  "authorName": "${authorName}",
+  "projectKey": "${projectKey}",
+  "relations": [
+    {
+      "id": "${memoryId}",
+      "name": "release-notes",
+      "type": "DEPENDS_ON"
+    }
+  ],
+  "referencedBy": [],
+  "summary": "Deployment guide",
+  "createdAt": "2026-01-15T10:00:00.000Z",
+  "updatedAt": "2026-01-16T11:30:00.000Z"
+}

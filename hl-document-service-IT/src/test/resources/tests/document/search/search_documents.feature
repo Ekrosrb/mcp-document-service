@@ -30,6 +30,18 @@ Feature: Search documents
     Then the response status is 200
     And the response body matches "expected/responses/project_document.json"
 
+  Scenario: Relations are left out unless requested
+    Given the table "document_relations" contains the rows from "params/relations.json"
+    When I send a POST request to "/api/v1/document/search" with body "input/by_project_key.json"
+    Then the response status is 200
+    And the response body matches "expected/responses/project_document.json"
+
+  Scenario: Relations in both directions are returned on request
+    Given the table "document_relations" contains the rows from "params/relations.json"
+    When I send a POST request to "/api/v1/document/search" with body "input/by_project_key_with_relations.json"
+    Then the response status is 200
+    And the response body matches "expected/responses/project_document_with_relations.json"
+
   Scenario: A search that matches nothing returns an empty list
     When I send a POST request to "/api/v1/document/search" with body "input/by_unused_author_name.json"
     Then the response status is 200

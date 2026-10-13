@@ -1,0 +1,2 @@
+Error invoking method: createDocumentRelation
+createDocumentRelation.request.relatedDocumentId: Document cannot be related to itself

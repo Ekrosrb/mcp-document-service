@@ -1,21 +1,20 @@
 package com.ekros.hl.doc.service.impl;
 
-import com.ekros.hl.doc.controller.model.DocumentCreateRequest;
-import com.ekros.hl.doc.controller.model.DocumentCreateResponse;
-import com.ekros.hl.doc.controller.model.DocumentResponse;
-import com.ekros.hl.doc.controller.model.DocumentSearchRequest;
+import com.ekros.hl.doc.controller.model.document.*;
 import com.ekros.hl.doc.exception.DocumentNotFoundException;
+import com.ekros.hl.doc.exception.DocumentRelationExistsException;
 import com.ekros.hl.doc.mapper.DocumentMapper;
+import com.ekros.hl.doc.repository.DocumentRelationRepository;
 import com.ekros.hl.doc.repository.DocumentRepository;
 import com.ekros.hl.doc.repository.ProjectRepository;
 import com.ekros.hl.doc.repository.model.ProjectData;
 import com.ekros.hl.doc.repository.specification.DocumentSearchSpecifications;
 import com.ekros.hl.doc.service.DocumentService;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,6 +24,7 @@ import java.util.List;
 public class DocumentServiceImpl implements DocumentService {
 
   private final DocumentRepository documentRepository;
+  private final DocumentRelationRepository documentRelationRepository;
   private final ProjectRepository projectRepository;
   private final DocumentMapper documentMapper;
 
@@ -48,6 +48,10 @@ public class DocumentServiceImpl implements DocumentService {
   public DocumentResponse getDocument(Long id, boolean includeContent) {
     return documentRepository.findById(id)
         .map(doc -> documentMapper.mapToDocumentResponse(doc, includeContent))
+        .map(doc -> {
+          populateWithReferencedBy(doc);
+          return doc;
+        })
         .orElseThrow(() -> new DocumentNotFoundException(id));
   }
 
@@ -63,8 +67,41 @@ public class DocumentServiceImpl implements DocumentService {
     var spec = DocumentSearchSpecifications.withFilters(request);
     return documentRepository.findAll(spec)
         .stream()
-        .map(documentData -> documentMapper.mapToDocumentResponseLight(documentData, request.isIncludeContent(), request.isIncludeSummary()))
+        .map(doc -> documentMapper.mapToDocumentResponseLight(
+            doc, request.isIncludeContent(), request.isIncludeSummary(), request.isIncludeRelations()))
+        .peek(doc -> {
+          if (request.isIncludeRelations()) {
+            populateWithReferencedBy(doc);
+          }
+        })
         .toList();
+  }
+
+  @Override
+  @Transactional
+  public void createDocumentRelation(DocumentRelationCreateRequest request) {
+    log.info("Creating new document relation for [{}] and [{}] with type [{}]",
+        request.getDocumentId(), request.getRelatedDocumentId(), request.getType());
+    long documentId = request.getDocumentId();
+    long relatedDocumentId = request.getRelatedDocumentId();
+
+    if (!documentRepository.existsById(documentId)) {
+      throw new DocumentNotFoundException(documentId);
+    }
+
+    if (!documentRepository.existsById(relatedDocumentId)) {
+      throw new DocumentNotFoundException(relatedDocumentId);
+    }
+
+    var data = documentMapper.mapToDocumentRelationData(request);
+    data.setDocument(documentRepository.getReferenceById(documentId));
+    data.setRelatedDocument(documentRepository.getReferenceById(relatedDocumentId));
+
+    if (documentRelationRepository.existsById(data.getId())) {
+      throw new DocumentRelationExistsException(documentId, relatedDocumentId);
+    }
+
+    documentRelationRepository.save(data);
   }
 
   private void updateProjectIfPresent(String projectKey) {
@@ -75,6 +112,12 @@ public class DocumentServiceImpl implements DocumentService {
     var project = ProjectData.builder().projectKey(projectKey).build();
     project = projectRepository.save(project);
     log.info("New project [{}] is created with id [{}]", project.getProjectKey(), project.getId());
+  }
+
+  private void populateWithReferencedBy(DocumentResponse documentResponse) {
+    var referencedBy = documentRelationRepository.findAllByIdRelatedDocumentId(documentResponse.getId())
+        .stream().map(documentMapper::mapToReferencingDocumentRelation).toList();
+    documentResponse.setReferencedBy(referencedBy);
   }
 
 }

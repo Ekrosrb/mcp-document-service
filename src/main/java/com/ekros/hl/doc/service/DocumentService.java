@@ -1,9 +1,6 @@
 package com.ekros.hl.doc.service;
 
-import com.ekros.hl.doc.controller.model.DocumentCreateRequest;
-import com.ekros.hl.doc.controller.model.DocumentCreateResponse;
-import com.ekros.hl.doc.controller.model.DocumentResponse;
-import com.ekros.hl.doc.controller.model.DocumentSearchRequest;
+import com.ekros.hl.doc.controller.model.document.*;
 
 import java.util.List;
 
@@ -16,5 +13,5 @@ public interface DocumentService {
 
   List<DocumentResponse> search(DocumentSearchRequest request);
 
-
+  void createDocumentRelation(DocumentRelationCreateRequest request);
 }

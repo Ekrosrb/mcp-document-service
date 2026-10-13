@@ -1,0 +1,7 @@
+[
+  {
+    "document_id": "${documentId}",
+    "related_document_id": "${memoryId}",
+    "type": "DEPENDS_ON"
+  }
+]

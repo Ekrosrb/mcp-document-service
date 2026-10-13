@@ -1,4 +1,4 @@
-package com.ekros.hl.doc.controller.model;
+package com.ekros.hl.doc.controller.model.document;
 
 import com.ekros.hl.doc.repository.model.AuthorType;
 import com.ekros.hl.doc.repository.model.DocumentKind;
@@ -20,4 +20,5 @@ public class DocumentSearchRequest {
   private String authorName;
   private boolean includeContent;
   private boolean includeSummary;
+  private boolean includeRelations;
 }

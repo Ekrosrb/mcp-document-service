@@ -1,9 +1,6 @@
 package com.ekros.hl.doc.controller.api;
 
-import com.ekros.hl.doc.controller.model.DocumentCreateRequest;
-import com.ekros.hl.doc.controller.model.DocumentCreateResponse;
-import com.ekros.hl.doc.controller.model.DocumentResponse;
-import com.ekros.hl.doc.controller.model.DocumentSearchRequest;
+import com.ekros.hl.doc.controller.model.document.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 
@@ -18,5 +15,7 @@ public interface DocumentApi {
   DocumentResponse getDocument(@Positive Long id, boolean includeContent);
 
   List<DocumentResponse> search(@Valid DocumentSearchRequest request);
+
+  void createDocumentRelation(@Valid DocumentRelationCreateRequest request);
 
 }

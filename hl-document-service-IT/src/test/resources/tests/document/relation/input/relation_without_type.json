@@ -1,0 +1,4 @@
+{
+  "documentId": "${documentId}",
+  "relatedDocumentId": "${memoryId}"
+}

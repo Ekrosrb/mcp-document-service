@@ -1,0 +1,2 @@
+Error invoking method: createDocumentRelation
+Document relation with document id [${documentId}] and related document id [${memoryId}] already exists
