@@ -43,11 +43,15 @@ tasks.register('composeDown', Exec) {
     commandLine compose + ['down', '-v']
 }
 
+def externalInfrastructure = providers.gradleProperty('externalInfrastructure').isPresent()
+
 test {
     useJUnitPlatform()
     systemProperty 'user.timezone', 'UTC'
-    dependsOn composeUp
-    finalizedBy composeDown
+    if (!externalInfrastructure) {
+        dependsOn composeUp
+        finalizedBy composeDown
+    }
     outputs.upToDateWhen { false }
     timeout = java.time.Duration.ofMinutes(5)
     testLogging {
