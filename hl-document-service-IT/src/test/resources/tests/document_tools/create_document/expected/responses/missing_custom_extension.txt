@@ -1,0 +1,2 @@
+Error invoking method: createDocument
+createDocument.request.customExtension: Document customExtension must be specified for type: [CUSTOM]

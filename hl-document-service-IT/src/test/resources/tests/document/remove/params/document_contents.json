@@ -1,0 +1,10 @@
+[
+  {
+    "id": "{{documentContentId}}",
+    "content": "How to deploy the service."
+  },
+  {
+    "id": "{{memoryContentId}}",
+    "content": "Version 1.0 is out."
+  }
+]

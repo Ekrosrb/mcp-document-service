@@ -3,6 +3,7 @@
     "id": "{{documentId}}",
     "kind": "DOCUMENT",
     "scope": "PROJECT",
+    "type": "MARKDOWN",
     "author": "HUMAN",
     "name": "deployment-guide",
     "authorName": "{{authorName}}",

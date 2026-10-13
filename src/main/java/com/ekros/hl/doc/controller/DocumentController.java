@@ -34,8 +34,8 @@ public class DocumentController implements DocumentApi {
 
   @Override
   @GetMapping("/{id}")
-  public DocumentResponse getDocument(@PathVariable String id) {
-    return documentService.getDocument(id);
+  public DocumentResponse getDocument(@PathVariable String id, @RequestParam(required = false, defaultValue = "false") boolean includeContent) {
+    return documentService.getDocument(id, includeContent);
   }
 
   @Override

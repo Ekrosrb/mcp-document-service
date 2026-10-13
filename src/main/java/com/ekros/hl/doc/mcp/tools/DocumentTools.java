@@ -5,20 +5,17 @@ import com.ekros.hl.doc.mcp.ToonConverter;
 import com.ekros.hl.doc.mcp.model.DocumentCreateMcpRequest;
 import com.ekros.hl.doc.service.DocumentService;
 import com.ekros.hl.doc.validation.ValidUUID;
-import io.modelcontextprotocol.spec.McpSchema;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.mcp.annotation.McpTool;
-import org.springframework.ai.mcp.annotation.context.McpRequestContextTypes;
 import org.springframework.ai.mcp.annotation.context.McpSyncRequestContext;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.Optional;
-
 import static com.ekros.hl.doc.repository.model.DocumentKind.DOCUMENT;
 import static com.ekros.hl.doc.repository.model.DocumentKind.MEMORY;
+import static com.ekros.hl.doc.util.McpUtil.getAgentName;
 
 @Slf4j
 @Component
@@ -45,14 +42,9 @@ public class DocumentTools {
   }
 
   @McpTool(name = "getDocument", description = "Returns full document/memory by id")
-  public String getDocument(@ValidUUID String id, McpSyncRequestContext context) {
+  public String getDocument(@ValidUUID String id, boolean includeContent, McpSyncRequestContext context) {
     log.info("Received mcp request to get document by id from: {}", getAgentName(context));
-    return toonConverter.toToon(documentService.getDocument(id));
+    return toonConverter.toToon(documentService.getDocument(id, includeContent));
   }
 
-  private String getAgentName(McpSyncRequestContext context) {
-    return Optional.ofNullable(context)
-        .map(McpRequestContextTypes::clientInfo)
-        .map(McpSchema.Implementation::name).orElse("NO_NAME_PRESENT");
-  }
 }

@@ -1,10 +1,11 @@
 {
   "kind": "DOCUMENT",
   "scope": "GLOBAL",
+  "type": "CUSTOM",
+  "customExtension": ".adoc",
   "author": "HUMAN",
   "name": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
   "authorName": "{{authorName}}",
-  "projectKey": null,
   "summary": "Coding rules",
   "content": "Keep methods short."
 }

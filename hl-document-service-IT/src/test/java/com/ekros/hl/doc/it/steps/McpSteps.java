@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.json;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class McpSteps {
@@ -58,6 +59,13 @@ public class McpSteps {
     assertThatJson(JToon.decodeToJson(resultText()))
         .when(Option.IGNORING_ARRAY_ORDER, Option.TREATING_NULL_AS_ABSENT)
         .isEqualTo(context.fixture(expectedFixture));
+  }
+
+  @Then("the MCP tool result decoded from TOON contains the element from {string}")
+  public void assertToolResultContainsElement(String expectedFixture) {
+    assertThatJson(JToon.decodeToJson(resultText()))
+        .isArray()
+        .contains(json(context.fixture(expectedFixture)));
   }
 
   @Then("the MCP tool result is the text from {string}")

@@ -18,6 +18,7 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse.BodyHandlers;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.json;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CommonSteps {
@@ -58,6 +59,14 @@ public class CommonSteps {
     assertThatJson(context.getResponse().body())
         .when(Option.IGNORING_ARRAY_ORDER, Option.TREATING_NULL_AS_ABSENT)
         .isEqualTo(context.fixture(expectedFixture));
+  }
+
+  @Then("the response body at {string} contains the element from {string}")
+  public void assertResponseBodyContainsElement(String path, String expectedFixture) {
+    assertThatJson(context.getResponse().body())
+        .inPath(path)
+        .isArray()
+        .contains(json(context.fixture(expectedFixture)));
   }
 
   @Then("the response body is empty")

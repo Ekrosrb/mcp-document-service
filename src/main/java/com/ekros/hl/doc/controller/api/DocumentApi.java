@@ -16,7 +16,7 @@ public interface DocumentApi {
 
   void removeDocument(@ValidUUID @NotBlank String id);
 
-  DocumentResponse getDocument(@ValidUUID @NotBlank String id);
+  DocumentResponse getDocument(@ValidUUID @NotBlank String id, boolean includeContent);
 
   List<DocumentResponse> search(@Valid DocumentSearchRequest request);
 

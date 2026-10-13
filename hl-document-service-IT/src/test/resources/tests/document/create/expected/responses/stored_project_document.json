@@ -1,0 +1,13 @@
+{
+  "id": "{{createdId}}",
+  "kind": "DOCUMENT",
+  "scope": "PROJECT",
+  "type": "TEXT",
+  "author": "HUMAN",
+  "authorName": "{{authorName}}",
+  "projectKey": "{{projectKey}}",
+  "summary": "Deployment guide",
+  "content": "How to deploy the service.",
+  "createdAt": "${json-unit.any-string}",
+  "updatedAt": "${json-unit.any-string}"
+}

@@ -4,13 +4,17 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -35,6 +39,11 @@ public class DocumentData {
   @JdbcTypeCode(SqlTypes.NAMED_ENUM)
   private DocumentScope scope;
 
+  @Column(name = "type")
+  @Enumerated(EnumType.STRING)
+  @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+  private DocumentType type;
+
   @Column(name = "author")
   @Enumerated(EnumType.STRING)
   @JdbcTypeCode(SqlTypes.NAMED_ENUM)
@@ -52,8 +61,12 @@ public class DocumentData {
   @Column(name = "summary")
   private String summary;
 
-  @Column(name = "content")
-  private String content;
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+  @JoinColumn(name = "content_id", referencedColumnName = "id", nullable = false)
+  private DocumentContentData content;
+
+  @Column(name = "custom_extension")
+  private String customExtension;
 
   @CreationTimestamp
   @Column(name = "created_at")
@@ -62,4 +75,10 @@ public class DocumentData {
   @UpdateTimestamp
   @Column(name = "updated_at")
   private Timestamp updatedAt;
+
+  @Builder.Default
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<DocumentRelationData> relations = new HashSet<>();
 }

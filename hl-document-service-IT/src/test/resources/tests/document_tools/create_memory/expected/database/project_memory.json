@@ -3,12 +3,14 @@
     "id": "{{createdId}}",
     "kind": "MEMORY",
     "scope": "PROJECT",
+    "type": "TEXT",
+    "custom_extension": null,
     "author": "AGENT",
-    "name": null,
     "author_name": "{{agentName}}",
     "project_key": "{{projectKey}}",
-    "summary": "Release notes",
-    "content": "Version 1.0 is out.",
+    "name": null,
+    "summary": "Deployment guide",
+    "content_id": "${json-unit.any-string}",
     "created_at": "${json-unit.any-string}",
     "updated_at": "${json-unit.any-string}"
   }

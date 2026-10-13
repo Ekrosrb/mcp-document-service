@@ -1,6 +1,8 @@
 {
   "request": {
     "scope": "GLOBAL",
+    "type": "CUSTOM",
+    "customExtension": ".adoc",
     "name": "coding-rules",
     "content": "Keep methods short."
   }

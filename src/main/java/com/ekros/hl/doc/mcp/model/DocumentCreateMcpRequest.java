@@ -1,8 +1,7 @@
 package com.ekros.hl.doc.mcp.model;
 
-import com.ekros.hl.doc.repository.model.AuthorType;
-import com.ekros.hl.doc.repository.model.DocumentKind;
 import com.ekros.hl.doc.repository.model.DocumentScope;
+import com.ekros.hl.doc.repository.model.DocumentType;
 import com.ekros.hl.doc.validation.DocumentCreateValid;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
@@ -23,6 +22,8 @@ import org.springframework.validation.annotation.Validated;
 public class DocumentCreateMcpRequest {
   @NotNull
   private DocumentScope scope;
+  @JsonProperty(required = false)
+  private DocumentType type;
   @Size(max = 250)
   @JsonProperty(required = false)
   private String name;
@@ -34,4 +35,6 @@ public class DocumentCreateMcpRequest {
   private String summary;
   @NotBlank
   private String content;
+  @JsonProperty(required = false)
+  private String customExtension;
 }

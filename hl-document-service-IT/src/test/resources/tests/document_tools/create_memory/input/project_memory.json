@@ -2,7 +2,7 @@
   "request": {
     "scope": "PROJECT",
     "projectKey": "{{projectKey}}",
-    "summary": "Release notes",
-    "content": "Version 1.0 is out."
+    "summary": "Deployment guide",
+    "content": "How to deploy the service."
   }
 }

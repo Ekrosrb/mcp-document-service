@@ -11,6 +11,7 @@ import net.javacrumbs.jsonunit.core.Option;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
@@ -55,12 +56,29 @@ public class DatabaseSteps {
       return;
     }
     try (var connection = connect()) {
+      removeScenarioDocuments(connection, values);
       for (var table : ItTestData.CLEANUP_TABLES) {
         try (var statement = connection.prepareStatement(ItTestData.buildDeleteScenarioRowsSql(table))) {
           statement.setArray(1, connection.createArrayOf("text", values));
           statement.executeUpdate();
         }
       }
+    }
+  }
+
+  private void removeScenarioDocuments(Connection connection, String[] values) throws SQLException {
+    var contentIds = new ArrayList<String>();
+    try (var statement = connection.prepareStatement(ItTestData.buildDeleteScenarioDocumentsSql())) {
+      statement.setArray(1, connection.createArrayOf("text", values));
+      try (var removed = statement.executeQuery()) {
+        while (removed.next()) {
+          contentIds.add(removed.getString(1));
+        }
+      }
+    }
+    try (var statement = connection.prepareStatement(ItTestData.buildDeleteDocumentContentsSql())) {
+      statement.setArray(1, connection.createArrayOf("text", contentIds.toArray(String[]::new)));
+      statement.executeUpdate();
     }
   }
 

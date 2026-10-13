@@ -3,12 +3,14 @@
     "id": "{{createdId}}",
     "kind": "DOCUMENT",
     "scope": "GLOBAL",
+    "type": "CUSTOM",
+    "custom_extension": ".adoc",
     "author": "AGENT",
-    "name": "coding-rules",
     "author_name": "{{agentName}}",
     "project_key": null,
+    "name": "coding-rules",
     "summary": "Coding rules",
-    "content": "Keep methods short.",
+    "content_id": "${json-unit.any-string}",
     "created_at": "${json-unit.any-string}",
     "updated_at": "${json-unit.any-string}"
   }

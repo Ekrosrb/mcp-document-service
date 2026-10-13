@@ -3,6 +3,7 @@
     "id": "{{memoryId}}",
     "kind": "MEMORY",
     "scope": "PROJECT",
+    "type": "TEXT",
     "author": "AGENT",
     "name": "release-notes",
     "authorName": "{{authorName}}",

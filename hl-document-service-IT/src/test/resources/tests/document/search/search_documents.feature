@@ -1,7 +1,9 @@
 Feature: Search documents
 
   Background:
-    Given the table "document" contains the rows from "params/documents.json"
+    Given the table "project" contains the rows from "params/projects.json"
+    And the table "document_content" contains the rows from "params/document_contents.json"
+    And the table "document" contains the rows from "params/documents.json"
 
   Scenario: Documents are found by author name with summary and content
     When I send a POST request to "/api/v1/document/search" with body "input/by_author_name.json"

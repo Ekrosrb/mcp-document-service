@@ -26,7 +26,7 @@ public final class ItTestData {
   public static final Pattern PLACEHOLDER = Pattern.compile("\\{\\{(\\w+)}}");
   public static final Pattern SQL_IDENTIFIER = Pattern.compile("[a-z_][a-z0-9_]*");
 
-  public static final List<String> CLEANUP_TABLES = List.of("document");
+  public static final List<String> CLEANUP_TABLES = List.of("document_content", "project");
 
   private static final String URL = "http://localhost:%s%s";
   private static final String INSERT_ROWS_SQL =
@@ -35,6 +35,9 @@ public final class ItTestData {
       "select coalesce(json_agg(to_jsonb(t)), '[]')::text from %s t where t.%s::text = ?";
   private static final String DELETE_SCENARIO_ROWS_SQL =
       "delete from %s t where exists (select 1 from jsonb_each_text(to_jsonb(t)) field where field.value = any(?))";
+  private static final String DELETE_SCENARIO_DOCUMENTS_SQL =
+      DELETE_SCENARIO_ROWS_SQL.formatted("document") + " returning content_id::text";
+  private static final String DELETE_DOCUMENT_CONTENTS_SQL = "delete from document_content where id::text = any(?)";
 
   private ItTestData() {
   }
@@ -61,6 +64,14 @@ public final class ItTestData {
 
   public static String buildDeleteScenarioRowsSql(String table) {
     return DELETE_SCENARIO_ROWS_SQL.formatted(buildIdentifier(table));
+  }
+
+  public static String buildDeleteScenarioDocumentsSql() {
+    return DELETE_SCENARIO_DOCUMENTS_SQL;
+  }
+
+  public static String buildDeleteDocumentContentsSql() {
+    return DELETE_DOCUMENT_CONTENTS_SQL;
   }
 
   private static String buildIdentifier(String name) {

@@ -1,8 +1,0 @@
-{
-  "request": {
-    "scope": "AGENT",
-    "name": "user-preferences",
-    "summary": "User preferences",
-    "content": "The user prefers short answers."
-  }
-}

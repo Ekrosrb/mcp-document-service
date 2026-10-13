@@ -10,7 +10,7 @@ import java.util.List;
 public interface DocumentService {
   DocumentCreateResponse createDocument(DocumentCreateRequest request);
 
-  DocumentResponse getDocument(String id);
+  DocumentResponse getDocument(String id, boolean includeContent);
 
   void removeDocument(String id);
 

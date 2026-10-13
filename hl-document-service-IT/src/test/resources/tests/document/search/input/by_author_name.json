@@ -1,4 +1,5 @@
 {
   "authorName": "{{authorName}}",
-  "includeContent": true, "includeSummary": true
+  "includeContent": true,
+  "includeSummary": true
 }

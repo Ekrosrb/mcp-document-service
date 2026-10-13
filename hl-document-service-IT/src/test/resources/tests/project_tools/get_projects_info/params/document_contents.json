@@ -1,0 +1,14 @@
+[
+  {
+    "id": "{{documentContentId}}",
+    "content": "How to deploy the service."
+  },
+  {
+    "id": "{{memoryContentId}}",
+    "content": "Version 1.0 is out."
+  },
+  {
+    "id": "{{globalContentId}}",
+    "content": "Keep methods short."
+  }
+]

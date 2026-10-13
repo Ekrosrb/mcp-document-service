@@ -2,7 +2,6 @@
   "kind": "DOCUMENT",
   "scope": "PROJECT",
   "author": "HUMAN",
-  "name": "deployment-guide",
   "authorName": "{{authorName}}",
   "summary": "Deployment guide",
   "content": "How to deploy the service."

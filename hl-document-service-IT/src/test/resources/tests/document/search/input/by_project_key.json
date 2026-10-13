@@ -1,5 +1,6 @@
 {
   "authorName": "{{authorName}}",
   "projectKey": "{{projectKey}}",
-  "includeContent": true, "includeSummary": true
+  "includeContent": true,
+  "includeSummary": true
 }

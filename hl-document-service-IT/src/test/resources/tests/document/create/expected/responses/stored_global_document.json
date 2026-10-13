@@ -1,0 +1,14 @@
+{
+  "id": "{{createdId}}",
+  "kind": "DOCUMENT",
+  "scope": "GLOBAL",
+  "type": "CUSTOM",
+  "author": "HUMAN",
+  "name": "coding-rules",
+  "authorName": "{{authorName}}",
+  "summary": "Coding rules",
+  "content": "Keep methods short.",
+  "customExtension": ".adoc",
+  "createdAt": "${json-unit.any-string}",
+  "updatedAt": "${json-unit.any-string}"
+}
