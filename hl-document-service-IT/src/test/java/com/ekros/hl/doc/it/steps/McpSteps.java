@@ -15,8 +15,11 @@ import io.modelcontextprotocol.spec.McpSchema.CallToolResult;
 import io.modelcontextprotocol.spec.McpSchema.TextContent;
 import net.javacrumbs.jsonunit.core.Option;
 import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -33,6 +36,7 @@ public class McpSteps {
   private final ScenarioContext context;
   private McpSyncClient client;
   private CallToolResult result;
+  private JsonNode tools;
 
   public McpSteps(ScenarioContext context) {
     this.context = context;
@@ -80,6 +84,28 @@ public class McpSteps {
     context.remember(name, value);
   }
 
+  @Then("the MCP server provides instructions")
+  public void assertServerInstructions() {
+    assertThat(client().getServerInstructions()).isNotBlank();
+  }
+
+  @When("I list the MCP tools")
+  public void listTools() {
+    tools = OBJECT_MAPPER.valueToTree(client().listTools().tools());
+  }
+
+  @Then("every MCP tool and every tool parameter has a description")
+  public void assertToolDescriptions() {
+    var undescribed = new ArrayList<String>();
+    for (var tool : tools) {
+      var name = tool.path(ItTestData.MCP_TOOL_NAME_FIELD).asString();
+      collectUndescribed(name, tool, undescribed);
+      collectUndescribedProperties(name, tool.path(ItTestData.MCP_TOOL_INPUT_SCHEMA_FIELD), undescribed);
+    }
+    assertThat(tools).isNotEmpty();
+    assertThat(undescribed).as("tools and parameters without a description").isEmpty();
+  }
+
   @After
   public void closeClient() {
     if (client != null) {
@@ -99,6 +125,20 @@ public class McpSteps {
       client.initialize();
     }
     return client;
+  }
+
+  private void collectUndescribedProperties(String path, JsonNode schema, List<String> undescribed) {
+    for (var property : schema.path(ItTestData.JSON_SCHEMA_PROPERTIES_FIELD).properties()) {
+      var propertyPath = ItTestData.buildSchemaPath(path, property.getKey());
+      collectUndescribed(propertyPath, property.getValue(), undescribed);
+      collectUndescribedProperties(propertyPath, property.getValue(), undescribed);
+    }
+  }
+
+  private void collectUndescribed(String path, JsonNode node, List<String> undescribed) {
+    if (node.path(ItTestData.DESCRIPTION_FIELD).asString("").isBlank()) {
+      undescribed.add(path);
+    }
   }
 
   private String resultText() {

@@ -1,5 +1,6 @@
 package com.ekros.hl.doc.mcp.tools;
 
+import com.ekros.hl.doc.mcp.McpDescriptions;
 import com.ekros.hl.doc.mcp.ToonConverter;
 import com.ekros.hl.doc.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,10 @@ public class ProjectTools {
   private final ProjectService projectService;
   private final ToonConverter toonConverter;
 
-  @McpTool(name = "getProjectsInfo", description = "Fetch a paginated list of projects and documents count for each")
+  @McpTool(name = "getProjectsInfo", description = McpDescriptions.GET_PROJECTS_INFO)
   public String getProjectsInfo(
-      @McpToolParam(description = "The page index to fetch (0-indexed)", required = false) Integer page,
-      @McpToolParam(description = "Number of items per page (default: 100)", required = false) Integer size) {
+      @McpToolParam(description = McpDescriptions.PAGE, required = false) Integer page,
+      @McpToolParam(description = McpDescriptions.PAGE_SIZE, required = false) Integer size) {
     int pageNum = (page != null) ? page : 0;
     int pageSize = (size != null) ? size : 100;
 

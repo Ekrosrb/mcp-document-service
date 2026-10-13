@@ -21,6 +21,10 @@ public final class ItTestData {
   public static final String MCP_ENDPOINT_PROPERTY = "spring.ai.mcp.server.streamable-http.mcp-endpoint";
   public static final String MCP_AGENT_NAME_VARIABLE = "agentName";
   public static final String MCP_CLIENT_VERSION = "0.0.1";
+  public static final String MCP_TOOL_NAME_FIELD = "name";
+  public static final String MCP_TOOL_INPUT_SCHEMA_FIELD = "inputSchema";
+  public static final String JSON_SCHEMA_PROPERTIES_FIELD = "properties";
+  public static final String DESCRIPTION_FIELD = "description";
 
   public static final String CONTENT_TYPE_HEADER = "Content-Type";
   public static final String JSON_CONTENT_TYPE = "application/json";
@@ -38,6 +42,7 @@ public final class ItTestData {
   private static final AtomicLong UNIQUE_ID = new AtomicLong(System.currentTimeMillis() * ID_RANGE_PER_MILLISECOND);
   private static final String VARIABLE_TOKEN_FORMAT = "${%s}";
   private static final String QUOTED_VARIABLE_TOKEN_FORMAT = "\"${%s}\"";
+  private static final String SCHEMA_PATH_FORMAT = "%s.%s";
   private static final String URL = "http://localhost:%s%s";
   private static final String INSERT_ROWS_SQL =
       "insert into %1$s overriding system value select * from json_populate_recordset(null::%1$s, ?::json)";
@@ -84,6 +89,10 @@ public final class ItTestData {
       throw new IllegalArgumentException("Not a variable token: [%s]".formatted(token));
     }
     return matcher.group(1);
+  }
+
+  public static String buildSchemaPath(String parent, String property) {
+    return SCHEMA_PATH_FORMAT.formatted(parent, property);
   }
 
   public static String buildUrl(String port, String path) {
