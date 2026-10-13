@@ -1,0 +1,17 @@
+{
+  "id": "${createdId}",
+  "kind": "MEMORY",
+  "scope": "GLOBAL",
+  "type": "CUSTOM",
+  "author": "AGENT",
+  "name": "coding-rules",
+  "authorName": "${agentName}",
+  "summary": "Coding rules",
+  "content": "Keep methods short.",
+  "customExtension": ".adoc",
+  "createdAt": "${json-unit.any-string}",
+  "updatedAt": "${json-unit.any-string}",
+  "relations": [],
+  "referencedBy": [],
+  "memoryType": "DECISION"
+}

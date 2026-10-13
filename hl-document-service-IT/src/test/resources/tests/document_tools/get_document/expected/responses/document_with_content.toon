@@ -3,6 +3,7 @@ kind: DOCUMENT
 scope: PROJECT
 type: MARKDOWN
 author: HUMAN
+memoryType: null
 name: deployment-guide
 authorName: ${authorName}
 projectKey: ${projectKey}

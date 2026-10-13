@@ -67,6 +67,21 @@ Feature: Search documents
     Then the response status is 400
     And the response body matches "expected/responses/missing_filters.json"
 
+  Scenario: Memories are filtered by memory type
+    When I send a POST request to "/api/v1/document/search" with body "input/by_memory_type.json"
+    Then the response status is 200
+    And the response body matches "expected/responses/memory_without_text.json"
+
+  Scenario: A memory type that no memory has returns an empty list
+    When I send a POST request to "/api/v1/document/search" with body "input/by_unused_memory_type.json"
+    Then the response status is 200
+    And the response body matches "expected/responses/no_documents.json"
+
+  Scenario: A memory type combined with the document kind is rejected
+    When I send a POST request to "/api/v1/document/search" with body "input/by_memory_type_and_document_kind.json"
+    Then the response status is 400
+    And the response body matches "expected/responses/memory_type_for_document_kind.json"
+
   Scenario: A search that matches nothing returns an empty list
     When I send a POST request to "/api/v1/document/search" with body "input/by_unused_author_name.json"
     Then the response status is 200

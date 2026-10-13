@@ -1,6 +1,7 @@
 {
   "request": {
     "authorName": "${authorName}",
-    "kind": "MEMORY"
+    "includeContent": true,
+    "includeSummary": true
   }
 }

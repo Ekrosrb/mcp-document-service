@@ -3,6 +3,8 @@ package com.ekros.hl.doc.mapper;
 import com.ekros.hl.doc.controller.model.document.*;
 import com.ekros.hl.doc.mcp.model.DocumentCreateMcpRequest;
 import com.ekros.hl.doc.mcp.model.DocumentSearchMcpRequest;
+import com.ekros.hl.doc.mcp.model.MemoryCreateMcpRequest;
+import com.ekros.hl.doc.mcp.model.MemorySearchMcpRequest;
 import com.ekros.hl.doc.repository.model.*;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
@@ -21,6 +23,8 @@ public interface DocumentMapper {
   @Mapping(target = "updatedAt", ignore = true)
   @Mapping(target = "type", source = "request.type", defaultValue = "TEXT")
   @Mapping(target = "relations", ignore = true)
+  @Mapping(target = "searchVector", ignore = true)
+  @Mapping(target = "memoryType", source = "request", qualifiedByName = "mapMemoryType")
   @Mapping(target = "content", source = "content")
   DocumentData mapToDocumentData(DocumentCreateRequest request, DocumentContentData content);
 
@@ -40,9 +44,20 @@ public interface DocumentMapper {
   DocumentResponse mapToDocumentResponseLight(DocumentData documentData, boolean includeContent, boolean includeSummary, boolean includeRelations);
 
   @Mapping(target = "author", constant = "AGENT")
-  DocumentCreateRequest mapToDocumentCreateRequest(DocumentCreateMcpRequest request, DocumentKind kind, String authorName);
+  @Mapping(target = "kind", constant = "DOCUMENT")
+  @Mapping(target = "memoryType", ignore = true)
+  DocumentCreateRequest mapToDocumentCreateRequest(DocumentCreateMcpRequest request, String authorName);
 
+  @Mapping(target = "author", constant = "AGENT")
+  @Mapping(target = "kind", constant = "MEMORY")
+  DocumentCreateRequest mapToMemoryCreateRequest(MemoryCreateMcpRequest request, String authorName);
+
+  @Mapping(target = "kind", constant = "DOCUMENT")
+  @Mapping(target = "memoryType", ignore = true)
   DocumentSearchRequest mapToDocumentSearchRequest(DocumentSearchMcpRequest request);
+
+  @Mapping(target = "kind", constant = "MEMORY")
+  DocumentSearchRequest mapToMemorySearchRequest(MemorySearchMcpRequest request);
 
   @Mapping(target = "id", source = "id.relatedDocumentId")
   @Mapping(target = "name", source = "documentRelationData.relatedDocument.name")
@@ -59,6 +74,14 @@ public interface DocumentMapper {
   @Mapping(target = "document", ignore = true)
   @Mapping(target = "relatedDocument", ignore = true)
   DocumentRelationData mapToDocumentRelationData(DocumentRelationCreateRequest request);
+
+  @Named("mapMemoryType")
+  default MemoryType mapMemoryType(DocumentCreateRequest request) {
+    if (request.getKind() != DocumentKind.MEMORY) {
+      return null;
+    }
+    return Optional.ofNullable(request.getMemoryType()).orElse(MemoryType.OBSERVATION);
+  }
 
   @Named("mapDocumentContent")
   default String mapDocumentContent(DocumentContentData content) {

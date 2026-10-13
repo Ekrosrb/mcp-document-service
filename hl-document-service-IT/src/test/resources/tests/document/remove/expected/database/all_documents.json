@@ -13,7 +13,8 @@
     "content_id": "${documentContentId}",
     "created_at": "2026-01-15T10:00:00",
     "updated_at": "2026-01-16T11:30:00",
-    "search_vector": "${json-unit.any-string}"
+    "search_vector": "${json-unit.any-string}",
+    "memory_type": null
   },
   {
     "id": "${memoryId}",
@@ -29,6 +30,7 @@
     "content_id": "${memoryContentId}",
     "created_at": "2026-01-15T10:00:00",
     "updated_at": "2026-01-16T11:30:00",
-    "search_vector": "${json-unit.any-string}"
+    "search_vector": "${json-unit.any-string}",
+    "memory_type": null
   }
 ]

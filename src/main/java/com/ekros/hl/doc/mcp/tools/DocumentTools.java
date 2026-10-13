@@ -1,11 +1,12 @@
 package com.ekros.hl.doc.mcp.tools;
 
 import com.ekros.hl.doc.controller.model.document.DocumentRelationCreateRequest;
-import com.ekros.hl.doc.controller.model.document.DocumentResponse;
 import com.ekros.hl.doc.mapper.DocumentMapper;
 import com.ekros.hl.doc.mcp.ToonConverter;
 import com.ekros.hl.doc.mcp.model.DocumentCreateMcpRequest;
 import com.ekros.hl.doc.mcp.model.DocumentSearchMcpRequest;
+import com.ekros.hl.doc.mcp.model.MemoryCreateMcpRequest;
+import com.ekros.hl.doc.mcp.model.MemorySearchMcpRequest;
 import com.ekros.hl.doc.service.DocumentService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
@@ -16,10 +17,6 @@ import org.springframework.ai.mcp.annotation.context.McpSyncRequestContext;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
-
-import static com.ekros.hl.doc.repository.model.DocumentKind.DOCUMENT;
-import static com.ekros.hl.doc.repository.model.DocumentKind.MEMORY;
 import static com.ekros.hl.doc.util.McpUtil.getAgentName;
 
 @Slf4j
@@ -36,14 +33,14 @@ public class DocumentTools {
   public String createDocument(@Valid DocumentCreateMcpRequest request, McpSyncRequestContext context) {
     var agentName = getAgentName(context);
     log.info("Received mcp request to create new document from: [{}]", agentName);
-    return toonConverter.toToon(documentService.createDocument(documentMapper.mapToDocumentCreateRequest(request, DOCUMENT, agentName)));
+    return toonConverter.toToon(documentService.createDocument(documentMapper.mapToDocumentCreateRequest(request, agentName)));
   }
 
   @McpTool(name = "createMemory", description = "Create new memory document")
-  public String createMemory(@Valid DocumentCreateMcpRequest request, McpSyncRequestContext context) {
+  public String createMemory(@Valid MemoryCreateMcpRequest request, McpSyncRequestContext context) {
     var agentName = getAgentName(context);
     log.info("Received mcp request to create new memory document from: [{}]", agentName);
-    return toonConverter.toToon(documentService.createDocument(documentMapper.mapToDocumentCreateRequest(request, MEMORY, agentName)));
+    return toonConverter.toToon(documentService.createDocument(documentMapper.mapToMemoryCreateRequest(request, agentName)));
   }
 
   @McpTool(name = "getDocument", description = "Returns full document/memory by id")
@@ -58,10 +55,16 @@ public class DocumentTools {
     documentService.createDocumentRelation(request);
   }
 
-  @McpTool(name = "search", description = "Search documents using property fields and/or query")
-  public String search(@Valid DocumentSearchMcpRequest request, McpSyncRequestContext context) {
+  @McpTool(name = "searchDocuments", description = "Search documents using property fields and/or query")
+  public String searchDocuments(@Valid DocumentSearchMcpRequest request, McpSyncRequestContext context) {
     log.info("Received mcp request to search documents from [{}]", getAgentName(context));
     return toonConverter.toToon(documentService.search(documentMapper.mapToDocumentSearchRequest(request)));
+  }
+
+  @McpTool(name = "searchMemories", description = "Search memories using property fields, memory type and/or query")
+  public String searchMemories(@Valid MemorySearchMcpRequest request, McpSyncRequestContext context) {
+    log.info("Received mcp request to search memories from [{}]", getAgentName(context));
+    return toonConverter.toToon(documentService.search(documentMapper.mapToMemorySearchRequest(request)));
   }
 
 }

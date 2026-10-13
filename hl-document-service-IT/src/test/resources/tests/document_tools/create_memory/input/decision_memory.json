@@ -1,0 +1,11 @@
+{
+  "request": {
+    "scope": "GLOBAL",
+    "type": "CUSTOM",
+    "customExtension": ".adoc",
+    "name": "coding-rules",
+    "summary": "Coding rules",
+    "content": "Keep methods short.",
+    "memoryType": "DECISION"
+  }
+}

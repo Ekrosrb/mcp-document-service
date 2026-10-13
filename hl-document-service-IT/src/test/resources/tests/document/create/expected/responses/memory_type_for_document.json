@@ -1,0 +1,6 @@
+{
+  "message": "Request validation failed",
+  "metadata": {
+    "memoryType": "Memory type must not be specified for kind: [DOCUMENT]"
+  }
+}

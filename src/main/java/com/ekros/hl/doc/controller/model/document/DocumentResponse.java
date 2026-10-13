@@ -4,6 +4,7 @@ import com.ekros.hl.doc.repository.model.AuthorType;
 import com.ekros.hl.doc.repository.model.DocumentKind;
 import com.ekros.hl.doc.repository.model.DocumentScope;
 import com.ekros.hl.doc.repository.model.DocumentType;
+import com.ekros.hl.doc.repository.model.MemoryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class DocumentResponse {
   private DocumentScope scope;
   private DocumentType type;
   private AuthorType author;
+  private MemoryType memoryType;
   private String name;
   private String authorName;
   private String projectKey;

@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/changes/002-create-document-schema.sql
   - include:
       file: db/changelog/changes/003-add-search-vectors-for-document-schema.sql
+  - include:
+      file: db/changelog/changes/004-add-memory-type-for-document-schema.sql

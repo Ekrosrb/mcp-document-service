@@ -1,0 +1,19 @@
+[
+  {
+    "id": "${createdId}",
+    "kind": "MEMORY",
+    "scope": "GLOBAL",
+    "type": "CUSTOM",
+    "custom_extension": ".adoc",
+    "author": "AGENT",
+    "author_name": "${agentName}",
+    "project_key": null,
+    "name": "coding-rules",
+    "summary": "Coding rules",
+    "content_id": "${json-unit.any-number}",
+    "created_at": "${json-unit.any-string}",
+    "updated_at": "${json-unit.any-string}",
+    "search_vector": "${json-unit.any-string}",
+    "memory_type": "DECISION"
+  }
+]

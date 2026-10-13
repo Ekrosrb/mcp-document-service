@@ -1,0 +1,6 @@
+{
+  "message": "Request validation failed",
+  "metadata": {
+    "memoryType": "Memory type can be used only with kind: [MEMORY]"
+  }
+}

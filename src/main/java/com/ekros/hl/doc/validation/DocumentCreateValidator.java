@@ -1,6 +1,7 @@
 package com.ekros.hl.doc.validation;
 
 import com.ekros.hl.doc.controller.model.document.DocumentCreateRequest;
+import com.ekros.hl.doc.repository.model.DocumentKind;
 import com.ekros.hl.doc.repository.model.DocumentScope;
 import com.ekros.hl.doc.repository.model.DocumentType;
 import io.micrometer.common.util.StringUtils;
@@ -30,6 +31,14 @@ public class DocumentCreateValidator implements ConstraintValidator<DocumentCrea
         context.disableDefaultConstraintViolation();
         context.buildConstraintViolationWithTemplate("Document customExtension must be specified for type: [CUSTOM]")
             .addPropertyNode("customExtension")
+            .addConstraintViolation();
+        return false;
+      }
+
+      if (value.getKind() == DocumentKind.DOCUMENT && value.getMemoryType() != null) {
+        context.disableDefaultConstraintViolation();
+        context.buildConstraintViolationWithTemplate("Memory type must not be specified for kind: [DOCUMENT]")
+            .addPropertyNode("memoryType")
             .addConstraintViolation();
         return false;
       }

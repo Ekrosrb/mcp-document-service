@@ -10,6 +10,15 @@ Feature: MCP tool createMemory
     Then the MCP tool call succeeds
     And the MCP tool result decoded from TOON matches "expected/responses/stored_global_memory.json"
 
+  Scenario: A memory is stored with the memory type given by the agent
+    When I call the MCP tool "createMemory" with arguments "input/decision_memory.json"
+    Then the MCP tool call succeeds
+    And I remember the MCP tool result field "id" as "createdId"
+    And the rows of table "document" where "author_name" is "${agentName}" match "expected/database/decision_memory.json"
+    When I call the MCP tool "getDocument" with arguments "input/created_memory.json"
+    Then the MCP tool call succeeds
+    And the MCP tool result decoded from TOON matches "expected/responses/stored_decision_memory.json"
+
   Scenario: A project memory gets the default type and its project is created
     When I call the MCP tool "createMemory" with arguments "input/project_memory.json"
     Then the MCP tool call succeeds

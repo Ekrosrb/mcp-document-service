@@ -4,6 +4,7 @@ import com.ekros.hl.doc.repository.model.AuthorType;
 import com.ekros.hl.doc.repository.model.DocumentKind;
 import com.ekros.hl.doc.repository.model.DocumentScope;
 import com.ekros.hl.doc.repository.model.DocumentType;
+import com.ekros.hl.doc.repository.model.MemoryType;
 import com.ekros.hl.doc.validation.DocumentCreateValid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -28,6 +29,7 @@ public class DocumentCreateRequest {
   private DocumentType type;
   @NotNull
   private AuthorType author;
+  private MemoryType memoryType;
   @Size(max = 250)
   private String name;
   @Size(max = 250)

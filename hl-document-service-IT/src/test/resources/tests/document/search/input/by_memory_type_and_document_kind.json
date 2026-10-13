@@ -1,0 +1,5 @@
+{
+  "authorName": "${authorName}",
+  "kind": "DOCUMENT",
+  "memoryType": "DECISION"
+}

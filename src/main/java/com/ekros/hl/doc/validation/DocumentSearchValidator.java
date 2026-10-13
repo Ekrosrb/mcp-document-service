@@ -1,6 +1,7 @@
 package com.ekros.hl.doc.validation;
 
 import com.ekros.hl.doc.controller.model.document.DocumentSearchRequest;
+import com.ekros.hl.doc.repository.model.DocumentKind;
 import io.micrometer.common.util.StringUtils;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -23,6 +24,14 @@ public class DocumentSearchValidator implements ConstraintValidator<DocumentSear
         return false;
       }
 
+      if (value.getMemoryType() != null && value.getKind() == DocumentKind.DOCUMENT) {
+        context.disableDefaultConstraintViolation();
+        context.buildConstraintViolationWithTemplate("Memory type can be used only with kind: [MEMORY]")
+            .addPropertyNode("memoryType")
+            .addConstraintViolation();
+        return false;
+      }
+
     } catch (Exception e) {
       log.error("Unexpected validation exception: {}", e.getMessage(), e);
       return false;
@@ -35,6 +44,7 @@ public class DocumentSearchValidator implements ConstraintValidator<DocumentSear
     return request.getKind() != null
         || request.getScope() != null
         || request.getAuthor() != null
+        || request.getMemoryType() != null
         || StringUtils.isNotBlank(request.getProjectKey())
         || StringUtils.isNotBlank(request.getAuthorName())
         || StringUtils.isNotBlank(request.getQuery());

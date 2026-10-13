@@ -29,6 +29,10 @@ public class DocumentSearchSpecifications {
         predicates.add(criteriaBuilder.equal(root.get("author"), searchRequest.getAuthor()));
       }
 
+      if (searchRequest.getMemoryType() != null) {
+        predicates.add(criteriaBuilder.equal(root.get("memoryType"), searchRequest.getMemoryType()));
+      }
+
       if (StringUtils.isNotBlank(searchRequest.getAuthorName())) {
         predicates.add(criteriaBuilder.equal(root.get("authorName"), searchRequest.getAuthorName()));
       }

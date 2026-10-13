@@ -48,6 +48,11 @@ public class DocumentData {
   @JdbcTypeCode(SqlTypes.NAMED_ENUM)
   private AuthorType author;
 
+  @Column(name = "memory_type")
+  @Enumerated(EnumType.STRING)
+  @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+  private MemoryType memoryType;
+
   @Column(name = "name")
   private String name;
 
