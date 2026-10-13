@@ -1,0 +1,13 @@
+{
+  "${newProjectKey}": "string",
+  "${unknownId}": "long",
+  "${authorName}": "string",
+  "${projectKey}": "string",
+  "${otherProjectKey}": "string",
+  "${projectId}": "long",
+  "${otherProjectId}": "long",
+  "${documentId}": "long",
+  "${memoryId}": "long",
+  "${documentContentId}": "long",
+  "${memoryContentId}": "long"
+}

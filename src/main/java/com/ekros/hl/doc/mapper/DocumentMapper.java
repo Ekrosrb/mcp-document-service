@@ -1,16 +1,11 @@
 package com.ekros.hl.doc.mapper;
 
 import com.ekros.hl.doc.controller.model.document.*;
-import com.ekros.hl.doc.mcp.model.DocumentCreateMcpRequest;
-import com.ekros.hl.doc.mcp.model.DocumentSearchMcpRequest;
-import com.ekros.hl.doc.mcp.model.MemoryCreateMcpRequest;
-import com.ekros.hl.doc.mcp.model.MemorySearchMcpRequest;
+import com.ekros.hl.doc.mcp.model.*;
 import com.ekros.hl.doc.repository.model.*;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
@@ -25,6 +20,7 @@ public interface DocumentMapper {
   @Mapping(target = "relations", ignore = true)
   @Mapping(target = "searchVector", ignore = true)
   @Mapping(target = "memoryType", source = "request", qualifiedByName = "mapMemoryType")
+  @Mapping(target = "allowMcpWrite", source = "request.allowMcpWrite", defaultValue = "false")
   @Mapping(target = "content", source = "content")
   DocumentData mapToDocumentData(DocumentCreateRequest request, DocumentContentData content);
 
@@ -46,11 +42,17 @@ public interface DocumentMapper {
   @Mapping(target = "author", constant = "AGENT")
   @Mapping(target = "kind", constant = "DOCUMENT")
   @Mapping(target = "memoryType", ignore = true)
+  @Mapping(target = "allowMcpWrite", constant = "true")
   DocumentCreateRequest mapToDocumentCreateRequest(DocumentCreateMcpRequest request, String authorName);
 
   @Mapping(target = "author", constant = "AGENT")
   @Mapping(target = "kind", constant = "MEMORY")
+  @Mapping(target = "allowMcpWrite", constant = "true")
   DocumentCreateRequest mapToMemoryCreateRequest(MemoryCreateMcpRequest request, String authorName);
+
+  @Mapping(target = "allowMcpWrite", ignore = true)
+  @Mapping(target = "authorName", ignore = true)
+  DocumentUpdateRequest mapToDocumentUpdateRequest(DocumentUpdateMcpRequest request);
 
   @Mapping(target = "kind", constant = "DOCUMENT")
   @Mapping(target = "memoryType", ignore = true)
@@ -74,6 +76,22 @@ public interface DocumentMapper {
   @Mapping(target = "document", ignore = true)
   @Mapping(target = "relatedDocument", ignore = true)
   DocumentRelationData mapToDocumentRelationData(DocumentRelationCreateRequest request);
+
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  @Mapping(target = "content", ignore = true)
+  void updateDocument(@MappingTarget DocumentData documentData, DocumentUpdateRequest request);
+
+  @AfterMapping
+  default void updateDocumentContent(@MappingTarget DocumentData documentData, DocumentUpdateRequest request) {
+    if (request.getContent() != null) {
+      documentData.getContent().setContent(request.getContent());
+    }
+  }
+
+  @Mapping(target = "allowWrite", source = "response.allowMcpWrite")
+  DocumentMcpResponse mapToDocumentMcpResponse(DocumentResponse response);
+
+  List<DocumentMcpResponse> mapToDocumentMcpResponses(List<DocumentResponse> responses);
 
   @Named("mapMemoryType")
   default MemoryType mapMemoryType(DocumentCreateRequest request) {

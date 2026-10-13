@@ -1,0 +1,2 @@
+Error invoking method: removeDocument
+You are not allowed to modify document: [${documentId}]

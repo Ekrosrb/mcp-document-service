@@ -43,4 +43,5 @@ public class DocumentCreateRequest {
   private String content;
   @Size(max = 50)
   private String customExtension;
+  private Boolean allowMcpWrite;
 }

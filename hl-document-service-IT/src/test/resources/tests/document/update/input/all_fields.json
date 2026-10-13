@@ -1,0 +1,8 @@
+{
+  "type": "CUSTOM",
+  "customExtension": ".adoc",
+  "name": "deployment-handbook",
+  "authorName": "${authorName}",
+  "summary": "Deployment handbook",
+  "content": "New deployment steps."
+}

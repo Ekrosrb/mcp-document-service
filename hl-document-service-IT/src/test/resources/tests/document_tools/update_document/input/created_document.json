@@ -1,0 +1,8 @@
+{
+  "id": "${createdId}",
+  "request": {
+    "name": "release-summary",
+    "summary": "Release summary",
+    "content": "Version 2.0 is out."
+  }
+}

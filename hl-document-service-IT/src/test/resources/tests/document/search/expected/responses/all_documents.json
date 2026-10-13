@@ -11,7 +11,8 @@
     "summary": "Deployment guide",
     "content": "How to deploy the service.",
     "createdAt": "2026-01-15T10:00:00.000Z",
-    "updatedAt": "2026-01-16T11:30:00.000Z"
+    "updatedAt": "2026-01-16T11:30:00.000Z",
+    "allowMcpWrite": false
   },
   {
     "id": "${memoryId}",
@@ -26,7 +27,8 @@
     "content": "Version 1.0 is out.",
     "createdAt": "2026-01-15T10:00:00.000Z",
     "updatedAt": "2026-01-16T11:30:00.000Z",
-    "memoryType": "DECISION"
+    "memoryType": "DECISION",
+    "allowMcpWrite": false
   },
   {
     "id": "${globalId}",
@@ -40,6 +42,7 @@
     "content": "Keep methods short.",
     "customExtension": ".adoc",
     "createdAt": "2026-01-15T10:00:00.000Z",
-    "updatedAt": "2026-01-16T11:30:00.000Z"
+    "updatedAt": "2026-01-16T11:30:00.000Z",
+    "allowMcpWrite": false
   }
 ]

@@ -4,11 +4,13 @@ package com.ekros.hl.doc.controller;
 import com.ekros.hl.doc.controller.model.GeneralErrorResponse;
 import com.ekros.hl.doc.exception.DocumentNotFoundException;
 import com.ekros.hl.doc.exception.DocumentRelationExistsException;
+import com.ekros.hl.doc.exception.DocumentWriteForbiddenException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.method.ParameterErrors;
 import org.springframework.validation.method.ParameterValidationResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -47,6 +49,16 @@ public class ExceptionHandlerController {
         .build();
   }
 
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  @ExceptionHandler(exception = DocumentWriteForbiddenException.class)
+  public GeneralErrorResponse handleDocumentWriteForbiddenException(DocumentWriteForbiddenException ex) {
+    log.warn("DocumentWriteForbiddenException occurred: {}", ex.getMessage());
+    return GeneralErrorResponse.builder()
+        .message(ex.getMessage())
+        .metadata(Map.of("id", ex.getId()))
+        .build();
+  }
+
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(exception = MethodArgumentNotValidException.class)
   public GeneralErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
@@ -70,6 +82,11 @@ public class ExceptionHandlerController {
     log.warn("HandlerMethodValidationException occurred: {}", ex.getMessage());
     var metadata = new LinkedHashMap<String, Object>();
     for (ParameterValidationResult result : ex.getParameterValidationResults()) {
+      if (result instanceof ParameterErrors errors) {
+        errors.getFieldErrors().forEach(error -> metadata.put(error.getField(), error.getDefaultMessage()));
+        errors.getGlobalErrors().forEach(error -> metadata.put(error.getObjectName(), error.getDefaultMessage()));
+        continue;
+      }
       for (MessageSourceResolvable error : result.getResolvableErrors()) {
         metadata.put(result.getMethodParameter().getParameterName(), error.getDefaultMessage());
       }

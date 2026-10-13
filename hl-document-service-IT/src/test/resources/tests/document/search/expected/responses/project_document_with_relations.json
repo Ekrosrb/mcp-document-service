@@ -25,6 +25,7 @@
         "name": "coding-rules",
         "type": "EXTENDS"
       }
-    ]
+    ],
+    "allowMcpWrite": false
   }
 ]

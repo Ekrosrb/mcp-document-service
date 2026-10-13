@@ -1,0 +1,2 @@
+Error invoking method: createDocumentRelation
+You are not allowed to modify document: [${documentId}]

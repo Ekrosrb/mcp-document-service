@@ -1,0 +1,6 @@
+{
+  "message": "Request validation failed",
+  "metadata": {
+    "customExtension": "Document customExtension must be specified for type: [CUSTOM]"
+  }
+}

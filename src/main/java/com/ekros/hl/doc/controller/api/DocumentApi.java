@@ -3,19 +3,24 @@ package com.ekros.hl.doc.controller.api;
 import com.ekros.hl.doc.controller.model.document.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 public interface DocumentApi {
 
-  DocumentCreateResponse createDocument(@Valid DocumentCreateRequest request);
+  DocumentCreateResponse createDocument(@Valid @RequestBody DocumentCreateRequest request);
 
-  void removeDocument(@Positive Long id);
+  void updateDocument(@Positive Long id, @Valid @RequestBody DocumentUpdateRequest request);
 
-  DocumentResponse getDocument(@Positive Long id, boolean includeContent);
+  void removeDocument(@Positive @PathVariable Long id);
 
-  List<DocumentResponse> search(@Valid DocumentSearchRequest request);
+  DocumentResponse getDocument(@Positive @PathVariable Long id, @RequestParam(required = false, defaultValue = "false") boolean includeContent);
 
-  void createDocumentRelation(@Valid DocumentRelationCreateRequest request);
+  List<DocumentResponse> search(@Valid @RequestBody DocumentSearchRequest request);
+
+  void createDocumentRelation(@Valid @RequestBody DocumentRelationCreateRequest request);
 
 }

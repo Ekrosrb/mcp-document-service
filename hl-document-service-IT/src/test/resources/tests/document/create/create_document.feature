@@ -72,3 +72,9 @@ Feature: Create document
     Then the response status is 400
     And the response body matches "expected/responses/memory_type_for_document.json"
     And the rows of table "document" where "author_name" is "${authorName}" match "expected/database/no_documents.json"
+
+  Scenario: A document can be created with write access from MCP
+    When I send a POST request to "/api/v1/document" with body "input/document_writable_from_mcp.json"
+    Then the response status is 200
+    And I remember the response field "id" as "createdId"
+    And the rows of table "document" where "author_name" is "${authorName}" match "expected/database/document_writable_from_mcp.json"

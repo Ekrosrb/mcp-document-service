@@ -13,5 +13,6 @@
   "updatedAt": "${json-unit.any-string}",
   "relations": [],
   "referencedBy": [],
-  "memoryType": "DECISION"
+  "memoryType": "DECISION",
+  "allowWrite": true
 }

@@ -32,6 +32,7 @@ public class DocumentResponse {
   private String summary;
   private String content;
   private String customExtension;
+  private Boolean allowMcpWrite;
   private Timestamp createdAt;
   private Timestamp updatedAt;
 }

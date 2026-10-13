@@ -91,4 +91,8 @@ public class DocumentData {
   @Basic(fetch = FetchType.LAZY)
   private Object searchVector;
 
+  @Builder.Default
+  @Column(name = "allow_mcp_write", nullable = false)
+  private Boolean allowMcpWrite = Boolean.FALSE;
+
 }

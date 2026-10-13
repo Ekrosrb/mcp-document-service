@@ -33,3 +33,18 @@ Feature: MCP tool createDocumentRelation
     When I call the MCP tool "createDocumentRelation" with arguments "input/relation_to_itself.json"
     Then the MCP tool call fails
     And the MCP tool result is the text from "expected/responses/relation_to_itself.txt"
+
+  Scenario: A relation from a document that does not allow MCP writes is rejected
+    When I send a PUT request to "/api/v1/document/${documentId}" with body "input/deny_mcp_write.json"
+    Then the response status is 200
+    When I call the MCP tool "createDocumentRelation" with arguments "input/relation.json"
+    Then the MCP tool call fails
+    And the MCP tool result is the text from "expected/responses/write_forbidden.txt"
+    And the rows of table "document_relations" where "document_id" is "${documentId}" match "expected/database/no_relations.json"
+
+  Scenario: A relation to a document that does not allow MCP writes is created
+    When I send a PUT request to "/api/v1/document/${memoryId}" with body "input/deny_mcp_write.json"
+    Then the response status is 200
+    When I call the MCP tool "createDocumentRelation" with arguments "input/relation.json"
+    Then the MCP tool call succeeds
+    And the rows of table "document_relations" where "document_id" is "${documentId}" match "expected/database/relation.json"
