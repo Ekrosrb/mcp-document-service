@@ -1,6 +1,9 @@
 package com.ekros.hl.doc.it.support;
 
 import com.ekros.hl.doc.it.testutil.ItTestData;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,16 +14,20 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * State of one scenario: its unique values, the feature it belongs to and the last response.
+ * State of one scenario: its runtime variables, the feature it belongs to and the last response.
  */
 public class ScenarioContext {
 
-  private final Map<String, String> values = new ConcurrentHashMap<>();
+  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+  private static final TypeReference<LinkedHashMap<String, String>> DECLARED_VARIABLES_TYPE = new TypeReference<>() {
+  };
+
+  private final Map<String, Variable> variables = new ConcurrentHashMap<>();
   private URI featureUri;
   private HttpResponse<String> response;
 
@@ -37,29 +44,72 @@ public class ScenarioContext {
   }
 
   /**
-   * Returns the value behind a placeholder name, generating a unique one on first use.
+   * Generates a unique value for every variable declared in a params file stored beside the feature.
+   */
+  public void generateVariables(String paramsFile) {
+    try {
+      var declared = OBJECT_MAPPER.readValue(readFixture(paramsFile), DECLARED_VARIABLES_TYPE);
+      declared.forEach((token, typeName) -> {
+        var type = VariableType.valueOf(typeName.toUpperCase());
+        variables.put(ItTestData.buildVariableName(token), new Variable(ItTestData.buildUniqueValue(type), type, true));
+      });
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
+
+  /**
+   * Returns the value of a declared or remembered variable.
    */
   public String value(String name) {
-    return values.computeIfAbsent(name, key -> ItTestData.buildUniqueValue());
-  }
-
-  public void remember(String name, String value) {
-    values.put(name, value);
-  }
-
-  public Collection<String> values() {
-    return List.copyOf(values.values());
+    var variable = variables.get(name);
+    if (variable == null) {
+      throw new IllegalStateException("Unknown variable: [%s]".formatted(name));
+    }
+    return variable.value();
   }
 
   /**
-   * Replaces every {{name}} placeholder with this scenario's value for that name.
+   * Stores a value produced by the service as a variable, typed after its JSON type.
+   */
+  public void remember(String name, JsonNode value) {
+    var type = value.isNumber() ? VariableType.LONG : VariableType.STRING;
+    variables.put(name, new Variable(value.asString(), type, false));
+  }
+
+  /**
+   * Returns the values generated for this scenario. Values produced by the service are left out,
+   * because a database-assigned id is not unique across tables.
+   */
+  public Collection<String> generatedValues() {
+    return variables.values().stream()
+        .filter(Variable::generated)
+        .map(Variable::value)
+        .toList();
+  }
+
+  /**
+   * Replaces every variable token with this scenario's value. A quoted token of a long variable
+   * becomes a bare number, so fixtures stay valid JSON before and after the replacement.
    */
   public String resolve(String text) {
-    return ItTestData.PLACEHOLDER.matcher(text).replaceAll(match -> value(match.group(1)));
+    var resolved = text;
+    for (var variable : variables.entrySet()) {
+      var value = variable.getValue().value();
+      if (variable.getValue().type() == VariableType.LONG) {
+        resolved = resolved.replace(ItTestData.buildQuotedVariableToken(variable.getKey()), value);
+      }
+      resolved = resolved.replace(ItTestData.buildVariableToken(variable.getKey()), value);
+    }
+    var unknown = ItTestData.VARIABLE_TOKEN.matcher(resolved);
+    if (unknown.find()) {
+      throw new IllegalStateException("Unknown variable: [%s]".formatted(unknown.group(1)));
+    }
+    return resolved;
   }
 
   /**
-   * Reads a fixture stored beside the feature file and resolves its placeholders.
+   * Reads a fixture stored beside the feature file and resolves its variables.
    */
   public String fixture(String relativePath) {
     try {
@@ -75,11 +125,18 @@ public class ScenarioContext {
     }
     var resource = Path.of(featureUri.getSchemeSpecificPart()).resolveSibling(relativePath)
         .toString().replace('\\', '/');
-    try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resource)) {
+    return readResource(resource);
+  }
+
+  private static byte[] readResource(String resource) throws IOException {
+    try (InputStream stream = ScenarioContext.class.getClassLoader().getResourceAsStream(resource)) {
       if (stream == null) {
         throw new IOException("Fixture not found: [%s]".formatted(resource));
       }
       return stream.readAllBytes();
     }
+  }
+
+  private record Variable(String value, VariableType type, boolean generated) {
   }
 }

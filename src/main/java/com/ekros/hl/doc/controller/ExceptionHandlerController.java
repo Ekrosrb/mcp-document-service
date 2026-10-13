@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.method.ParameterValidationResult;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,6 +23,7 @@ import java.util.Map;
 public class ExceptionHandlerController {
 
   private static final String VALIDATION_ERROR_MESSAGE = "Request validation failed";
+  private static final String INVALID_VALUE_MESSAGE = "Invalid value: [%s]";
 
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ExceptionHandler(exception = DocumentNotFoundException.class)
@@ -60,6 +62,16 @@ public class ExceptionHandlerController {
     return GeneralErrorResponse.builder()
         .message(VALIDATION_ERROR_MESSAGE)
         .metadata(metadata)
+        .build();
+  }
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(exception = MethodArgumentTypeMismatchException.class)
+  public GeneralErrorResponse handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+    log.warn("MethodArgumentTypeMismatchException occurred: {}", ex.getMessage());
+    return GeneralErrorResponse.builder()
+        .message(VALIDATION_ERROR_MESSAGE)
+        .metadata(Map.of(ex.getName(), String.format(INVALID_VALUE_MESSAGE, ex.getValue())))
         .build();
   }
 

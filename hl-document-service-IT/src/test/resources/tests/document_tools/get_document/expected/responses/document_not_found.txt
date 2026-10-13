@@ -1,2 +1,2 @@
 Error invoking method: getDocument
-Document with id [{{unknownId}}] not found
+Document with id [${unknownId}] not found

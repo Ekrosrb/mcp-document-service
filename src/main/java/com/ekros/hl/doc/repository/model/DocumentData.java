@@ -15,7 +15,6 @@ import org.hibernate.type.SqlTypes;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -26,8 +25,8 @@ import java.util.UUID;
 public class DocumentData {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @Column(name = "kind")
   @Enumerated(EnumType.STRING)

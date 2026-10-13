@@ -1,0 +1,8 @@
+{
+  "${authorName}": "string",
+  "${projectKey}": "string",
+  "${projectId}": "long",
+  "${documentId}": "long",
+  "${unknownId}": "long",
+  "${documentContentId}": "long"
+}

@@ -33,8 +33,9 @@ public class CommonSteps {
   }
 
   @Before
-  public void rememberFeature(Scenario scenario) {
+  public void prepareScenario(Scenario scenario) {
     context.setFeatureUri(scenario.getUri());
+    context.generateVariables(ItTestData.buildParamsFile(scenario.getSourceTagNames()));
   }
 
   @When("I send a {word} request to {string}")
@@ -77,8 +78,8 @@ public class CommonSteps {
   @Then("I remember the response field {string} as {string}")
   public void rememberResponseField(String field, String name) {
     var value = OBJECT_MAPPER.readTree(context.getResponse().body()).path(field);
-    assertThat(value.isString()).as("response field [%s]", field).isTrue();
-    context.remember(name, value.asString());
+    assertThat(value.isString() || value.isNumber()).as("response field [%s]", field).isTrue();
+    context.remember(name, value);
   }
 
   private void send(String method, String path, BodyPublisher body) throws Exception {

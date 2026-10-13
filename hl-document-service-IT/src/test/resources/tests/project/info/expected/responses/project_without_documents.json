@@ -1,4 +1,4 @@
 {
-  "projectKey": "{{emptyProjectKey}}",
+  "projectKey": "${emptyProjectKey}",
   "documents": 0
 }

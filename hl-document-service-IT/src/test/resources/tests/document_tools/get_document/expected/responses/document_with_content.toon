@@ -1,11 +1,11 @@
-id: {{documentId}}
+id: ${documentId}
 kind: DOCUMENT
 scope: PROJECT
 type: MARKDOWN
 author: HUMAN
 name: deployment-guide
-authorName: {{authorName}}
-projectKey: {{projectKey}}
+authorName: ${authorName}
+projectKey: ${projectKey}
 summary: Deployment guide
 content: How to deploy the service.
 customExtension: null

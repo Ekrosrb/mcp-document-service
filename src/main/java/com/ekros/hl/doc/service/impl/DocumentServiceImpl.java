@@ -18,7 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -46,16 +45,16 @@ public class DocumentServiceImpl implements DocumentService {
 
   @Override
   @Transactional(readOnly = true)
-  public DocumentResponse getDocument(String id, boolean includeContent) {
-    return documentRepository.findById(UUID.fromString(id))
+  public DocumentResponse getDocument(Long id, boolean includeContent) {
+    return documentRepository.findById(id)
         .map(doc -> documentMapper.mapToDocumentResponse(doc, includeContent))
         .orElseThrow(() -> new DocumentNotFoundException(id));
   }
 
   @Override
-  public void removeDocument(String id) {
+  public void removeDocument(Long id) {
     log.info("Removing document with id [{}]", id);
-    documentRepository.deleteById(UUID.fromString(id));
+    documentRepository.deleteById(id);
   }
 
   @Override

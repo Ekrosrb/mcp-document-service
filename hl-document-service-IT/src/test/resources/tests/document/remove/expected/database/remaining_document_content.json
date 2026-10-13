@@ -1,6 +1,6 @@
 [
   {
-    "id": "{{memoryContentId}}",
+    "id": "${memoryContentId}",
     "content": "Version 1.0 is out."
   }
 ]

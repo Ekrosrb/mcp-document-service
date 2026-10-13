@@ -47,11 +47,11 @@ public class DatabaseSteps {
   }
 
   /**
-   * Deletes the rows that carry one of this scenario's unique values, and no other row.
+   * Deletes the rows that carry one of this scenario's generated values, and no other row.
    */
   @After
   public void removeScenarioRows() throws SQLException {
-    var values = context.values().toArray(String[]::new);
+    var values = context.generatedValues().toArray(String[]::new);
     if (values.length == 0) {
       return;
     }

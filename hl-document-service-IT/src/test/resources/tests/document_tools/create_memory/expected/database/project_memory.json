@@ -1,16 +1,16 @@
 [
   {
-    "id": "{{createdId}}",
+    "id": "${createdId}",
     "kind": "MEMORY",
     "scope": "PROJECT",
     "type": "TEXT",
     "custom_extension": null,
     "author": "AGENT",
-    "author_name": "{{agentName}}",
-    "project_key": "{{projectKey}}",
+    "author_name": "${agentName}",
+    "project_key": "${projectKey}",
     "name": null,
     "summary": "Deployment guide",
-    "content_id": "${json-unit.any-string}",
+    "content_id": "${json-unit.any-number}",
     "created_at": "${json-unit.any-string}",
     "updated_at": "${json-unit.any-string}"
   }

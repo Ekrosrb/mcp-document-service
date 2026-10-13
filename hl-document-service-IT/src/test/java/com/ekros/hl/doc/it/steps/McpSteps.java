@@ -76,8 +76,8 @@ public class McpSteps {
   @Then("I remember the MCP tool result field {string} as {string}")
   public void rememberToolResultField(String field, String name) {
     var value = OBJECT_MAPPER.readTree(JToon.decodeToJson(resultText())).path(field);
-    assertThat(value.isString()).as("tool result field [%s]", field).isTrue();
-    context.remember(name, value.asString());
+    assertThat(value.isString() || value.isNumber()).as("tool result field [%s]", field).isTrue();
+    context.remember(name, value);
   }
 
   @After
@@ -94,7 +94,7 @@ public class McpSteps {
           .endpoint(ApplicationHooks.property(ItTestData.MCP_ENDPOINT_PROPERTY))
           .build();
       client = McpClient.sync(transport)
-          .clientInfo(ItTestData.buildMcpClientInfo(context.value(ItTestData.MCP_AGENT_NAME_PLACEHOLDER)))
+          .clientInfo(ItTestData.buildMcpClientInfo(context.value(ItTestData.MCP_AGENT_NAME_VARIABLE)))
           .build();
       client.initialize();
     }

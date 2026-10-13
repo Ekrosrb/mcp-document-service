@@ -1,4 +1,4 @@
 {
-  "authorName": "{{authorName}}",
+  "authorName": "${authorName}",
   "kind": "MEMORY"
 }

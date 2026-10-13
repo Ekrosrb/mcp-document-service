@@ -10,14 +10,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
-import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class DocumentResponse {
-  private UUID id;
+  private Long id;
   private DocumentKind kind;
   private DocumentScope scope;
   private DocumentType type;

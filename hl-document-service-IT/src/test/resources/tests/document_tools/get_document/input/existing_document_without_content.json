@@ -1,4 +1,4 @@
 {
-  "id": "{{documentId}}",
+  "id": "${documentId}",
   "includeContent": false
 }

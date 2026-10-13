@@ -1,5 +1,5 @@
 {
-  "authorName": "{{authorName}}",
+  "authorName": "${authorName}",
   "author": "AGENT",
   "includeContent": true
 }

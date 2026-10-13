@@ -28,13 +28,13 @@ public class DocumentController implements DocumentApi {
 
   @Override
   @DeleteMapping("/{id}")
-  public void removeDocument(@PathVariable String id) {
+  public void removeDocument(@PathVariable Long id) {
     documentService.removeDocument(id);
   }
 
   @Override
   @GetMapping("/{id}")
-  public DocumentResponse getDocument(@PathVariable String id, @RequestParam(required = false, defaultValue = "false") boolean includeContent) {
+  public DocumentResponse getDocument(@PathVariable Long id, @RequestParam(required = false, defaultValue = "false") boolean includeContent) {
     return documentService.getDocument(id, includeContent);
   }
 

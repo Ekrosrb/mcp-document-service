@@ -1,5 +1,5 @@
 {
-  "authorName": "{{authorName}}",
+  "authorName": "${authorName}",
   "scope": "GLOBAL",
   "includeSummary": true
 }

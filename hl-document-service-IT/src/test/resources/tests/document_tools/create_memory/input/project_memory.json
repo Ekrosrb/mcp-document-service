@@ -1,7 +1,7 @@
 {
   "request": {
     "scope": "PROJECT",
-    "projectKey": "{{projectKey}}",
+    "projectKey": "${projectKey}",
     "summary": "Deployment guide",
     "content": "How to deploy the service."
   }

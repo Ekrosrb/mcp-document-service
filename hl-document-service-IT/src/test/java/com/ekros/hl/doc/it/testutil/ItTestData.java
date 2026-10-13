@@ -1,9 +1,12 @@
 package com.ekros.hl.doc.it.testutil;
 
+import com.ekros.hl.doc.it.support.VariableType;
 import io.modelcontextprotocol.spec.McpSchema;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Pattern;
 
 public final class ItTestData {
@@ -16,21 +19,28 @@ public final class ItTestData {
   public static final String DATASOURCE_PASSWORD_PROPERTY = "spring.datasource.password";
 
   public static final String MCP_ENDPOINT_PROPERTY = "spring.ai.mcp.server.streamable-http.mcp-endpoint";
-  public static final String MCP_AGENT_NAME_PLACEHOLDER = "agentName";
+  public static final String MCP_AGENT_NAME_VARIABLE = "agentName";
   public static final String MCP_CLIENT_VERSION = "0.0.1";
 
   public static final String CONTENT_TYPE_HEADER = "Content-Type";
   public static final String JSON_CONTENT_TYPE = "application/json";
 
   public static final String CLASSPATH_SCHEME = "classpath";
-  public static final Pattern PLACEHOLDER = Pattern.compile("\\{\\{(\\w+)}}");
+  public static final String DEFAULT_PARAMS_FILE = "params/params.json";
+  public static final String PARAMS_TAG_PREFIX = "@params:";
+  public static final Pattern VARIABLE_TOKEN = Pattern.compile("\\$\\{(\\w+)}");
   public static final Pattern SQL_IDENTIFIER = Pattern.compile("[a-z_][a-z0-9_]*");
 
   public static final List<String> CLEANUP_TABLES = List.of("document_content", "project");
 
+  public static final long ID_RANGE_PER_MILLISECOND = 1_000L;
+
+  private static final AtomicLong UNIQUE_ID = new AtomicLong(System.currentTimeMillis() * ID_RANGE_PER_MILLISECOND);
+  private static final String VARIABLE_TOKEN_FORMAT = "${%s}";
+  private static final String QUOTED_VARIABLE_TOKEN_FORMAT = "\"${%s}\"";
   private static final String URL = "http://localhost:%s%s";
   private static final String INSERT_ROWS_SQL =
-      "insert into %1$s select * from json_populate_recordset(null::%1$s, ?::json)";
+      "insert into %1$s overriding system value select * from json_populate_recordset(null::%1$s, ?::json)";
   private static final String SELECT_ROWS_SQL =
       "select coalesce(json_agg(to_jsonb(t)), '[]')::text from %s t where t.%s::text = ?";
   private static final String DELETE_SCENARIO_ROWS_SQL =
@@ -42,8 +52,38 @@ public final class ItTestData {
   private ItTestData() {
   }
 
-  public static String buildUniqueValue() {
-    return UUID.randomUUID().toString();
+  public static String buildUniqueValue(VariableType type) {
+    return switch (type) {
+      case LONG -> String.valueOf(UNIQUE_ID.incrementAndGet());
+      case STRING -> UUID.randomUUID().toString();
+    };
+  }
+
+  /**
+   * Returns the params file of a scenario: the one named by its last "@params:" tag, or the feature default.
+   */
+  public static String buildParamsFile(Collection<String> tags) {
+    return tags.stream()
+        .filter(tag -> tag.startsWith(PARAMS_TAG_PREFIX))
+        .map(tag -> tag.substring(PARAMS_TAG_PREFIX.length()))
+        .reduce((first, second) -> second)
+        .orElse(DEFAULT_PARAMS_FILE);
+  }
+
+  public static String buildVariableToken(String name) {
+    return VARIABLE_TOKEN_FORMAT.formatted(name);
+  }
+
+  public static String buildQuotedVariableToken(String name) {
+    return QUOTED_VARIABLE_TOKEN_FORMAT.formatted(name);
+  }
+
+  public static String buildVariableName(String token) {
+    var matcher = VARIABLE_TOKEN.matcher(token);
+    if (!matcher.matches()) {
+      throw new IllegalArgumentException("Not a variable token: [%s]".formatted(token));
+    }
+    return matcher.group(1);
   }
 
   public static String buildUrl(String port, String path) {

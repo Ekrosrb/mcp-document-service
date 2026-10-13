@@ -1,11 +1,11 @@
 {
-  "id": "{{createdId}}",
+  "id": "${createdId}",
   "kind": "DOCUMENT",
   "scope": "GLOBAL",
   "type": "CUSTOM",
   "author": "HUMAN",
   "name": "coding-rules",
-  "authorName": "{{authorName}}",
+  "authorName": "${authorName}",
   "summary": "Coding rules",
   "content": "Keep methods short.",
   "customExtension": ".adoc",

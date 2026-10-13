@@ -1,2 +1,1 @@
-Error invoking method: getDocument
-getDocument.id: Invalid UUID: [not-a-uuid]
+Tool (getDocument) input validation failed: Validation failed: JSON schema validation errors: [/id: string found, integer expected]

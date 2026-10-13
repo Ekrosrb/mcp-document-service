@@ -1,11 +1,11 @@
 {
-  "id": "{{createdId}}",
+  "id": "${createdId}",
   "kind": "MEMORY",
   "scope": "GLOBAL",
   "type": "CUSTOM",
   "author": "AGENT",
   "name": "coding-rules",
-  "authorName": "{{agentName}}",
+  "authorName": "${agentName}",
   "summary": "Coding rules",
   "content": "Keep methods short.",
   "customExtension": ".adoc",

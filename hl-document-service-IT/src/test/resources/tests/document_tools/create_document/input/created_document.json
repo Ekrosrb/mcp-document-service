@@ -1,4 +1,4 @@
 {
-  "id": "{{createdId}}",
+  "id": "${createdId}",
   "includeContent": true
 }

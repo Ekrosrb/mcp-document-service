@@ -1,4 +1,4 @@
 {
-  "message": "Document with id [{{unknownId}}] not found",
-  "metadata": {"id": "{{unknownId}}"}
+  "message": "Document with id [${unknownId}] not found",
+  "metadata": {"id": "${unknownId}"}
 }

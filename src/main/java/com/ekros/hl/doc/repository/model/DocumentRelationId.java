@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -16,8 +15,8 @@ import java.util.UUID;
 public class DocumentRelationId implements Serializable {
 
   @Column(name = "document_id")
-  private UUID documentId;
+  private Long documentId;
 
   @Column(name = "related_document_id")
-  private UUID relatedDocumentId;
+  private Long relatedDocumentId;
 }

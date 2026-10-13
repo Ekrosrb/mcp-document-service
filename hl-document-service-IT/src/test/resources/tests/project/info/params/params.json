@@ -1,0 +1,15 @@
+{
+  "${authorName}": "string",
+  "${projectKey}": "string",
+  "${otherProjectKey}": "string",
+  "${emptyProjectKey}": "string",
+  "${projectId}": "long",
+  "${otherProjectId}": "long",
+  "${emptyProjectId}": "long",
+  "${documentId}": "long",
+  "${memoryId}": "long",
+  "${globalId}": "long",
+  "${documentContentId}": "long",
+  "${memoryContentId}": "long",
+  "${globalContentId}": "long"
+}

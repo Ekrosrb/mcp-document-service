@@ -1,4 +1,4 @@
 {
-  "projectKey": "{{projectKey}}",
+  "projectKey": "${projectKey}",
   "documents": 2
 }

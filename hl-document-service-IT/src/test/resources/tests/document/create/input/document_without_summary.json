@@ -5,6 +5,6 @@
   "customExtension": ".adoc",
   "author": "HUMAN",
   "name": "coding-rules",
-  "authorName": "{{authorName}}",
+  "authorName": "${authorName}",
   "content": "Keep methods short."
 }

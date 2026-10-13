@@ -10,9 +10,9 @@ import java.util.List;
 public interface DocumentService {
   DocumentCreateResponse createDocument(DocumentCreateRequest request);
 
-  DocumentResponse getDocument(String id, boolean includeContent);
+  DocumentResponse getDocument(Long id, boolean includeContent);
 
-  void removeDocument(String id);
+  void removeDocument(Long id);
 
   List<DocumentResponse> search(DocumentSearchRequest request);
 

@@ -10,20 +10,20 @@ CREATE TYPE document_relation_type AS ENUM ('DEPENDS_ON', 'SUPERSEDES', 'EXTENDS
 
 CREATE TABLE project
 (
-    id          UUID PRIMARY KEY             DEFAULT gen_random_uuid(),
+    id          BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     project_key VARCHAR(250) UNIQUE NOT NULL,
     created_at  timestamp           NOT NULL DEFAULT now()
 );
 
 CREATE TABLE document_content
 (
-    id      UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     content text
 );
 
 CREATE TABLE document
 (
-    id               UUID PRIMARY KEY        DEFAULT gen_random_uuid(),
+    id               BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     kind             document_kind  NOT NULL DEFAULT 'DOCUMENT',
     scope            document_scope NOT NULL DEFAULT 'PROJECT',
     type             document_type  NOT NULL DEFAULT 'TEXT',
@@ -33,7 +33,7 @@ CREATE TABLE document
     project_key      varchar(250),
     name             varchar(250),
     summary          varchar(1024),
-    content_id       UUID           NOT NULL,
+    content_id       BIGINT         NOT NULL,
     created_at       timestamp      NOT NULL DEFAULT now(),
     updated_at       timestamp      NOT NULL DEFAULT now(),
 
@@ -49,8 +49,8 @@ CREATE TABLE document
 
 CREATE TABLE document_relations
 (
-    document_id         UUID,
-    related_document_id UUID,
+    document_id         BIGINT,
+    related_document_id BIGINT,
     type                document_relation_type NOT NULL DEFAULT 'RELATED_TO',
 
     PRIMARY KEY (document_id, related_document_id),

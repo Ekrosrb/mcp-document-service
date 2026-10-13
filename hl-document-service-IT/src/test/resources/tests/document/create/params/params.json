@@ -1,0 +1,5 @@
+{
+  "${authorName}": "string",
+  "${projectKey}": "string",
+  "${projectId}": "long"
+}

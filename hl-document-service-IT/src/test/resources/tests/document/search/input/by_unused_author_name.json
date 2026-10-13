@@ -1,5 +1,5 @@
 {
-  "authorName": "{{unusedAuthorName}}",
+  "authorName": "${unusedAuthorName}",
   "includeContent": true,
   "includeSummary": true
 }
