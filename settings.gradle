@@ -11,6 +11,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = 'hl-document-service'
+rootProject.name = 'mcp-document-service'
 
-include 'hl-document-service-IT'
+include 'mcp-document-service-IT'

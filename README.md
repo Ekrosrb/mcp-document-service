@@ -1,4 +1,4 @@
-# hl-document-service
+# mcp-document-service
 
 A shared store of documents and memories for AI agents and people. Agents use it through MCP
 (Model Context Protocol), and people through a REST API. Agents can find what they need, read it,
@@ -176,7 +176,7 @@ The client's name becomes the author name of the entries an agent creates.
 shared memory store; leave it out to add it to the current project only.
 
 ```bash
-claude mcp add --transport http --scope user hl-document-service http://localhost:55535/mcp
+claude mcp add --transport http --scope user mcp-document-service http://localhost:55535/mcp
 ```
 
 **Claude Code, by editing the configuration.** For every project, add the server to the top-level
@@ -186,7 +186,7 @@ block in `.mcp.json` in the project root instead; that file can be committed and
 ```json
 {
   "mcpServers": {
-    "hl-document-service": {
+    "mcp-document-service": {
       "type": "http",
       "url": "http://localhost:55535/mcp"
     }
@@ -194,7 +194,7 @@ block in `.mcp.json` in the project root instead; that file can be committed and
 }
 ```
 
-Keep the other content of `~/.claude.json` as it is and only add the `hl-document-service` entry. Restart
+Keep the other content of `~/.claude.json` as it is and only add the `mcp-document-service` entry. Restart
 Claude Code, then run `/mcp` inside it to check that the server is connected and its tools are listed.
 
 **Claude Desktop.** Its configuration file starts local servers as commands, so it reaches an HTTP server
@@ -205,7 +205,7 @@ through the [`mcp-remote`](https://github.com/geelen/mcp-remote) bridge, which n
 ```json
 {
   "mcpServers": {
-    "hl-document-service": {
+    "mcp-document-service": {
       "command": "npx",
       "args": [
         "-y",
@@ -268,8 +268,8 @@ Environment variables take precedence over `deploy/.env`.
 | `POSTGRES_CONTAINER_NAME` | `postgres-document-service` | Name of the Postgres container.                                |
 | `SERVICE_BIND_ADDRESS`    | `0.0.0.0`                   | Host address the service port is published on.                 |
 | `SERVICE_PORT`            | `55535`                     | Host port of the service.                                      |
-| `SERVICE_CONTAINER_NAME`  | `hl-document-service`       | Name of the service container.                                 |
-| `SERVICE_IMAGE`           | `hl-document-service`       | Name of the built image. The tag is the project version.       |
+| `SERVICE_CONTAINER_NAME`  | `mcp-document-service`      | Name of the service container.                                 |
+| `SERVICE_IMAGE`           | `mcp-document-service`      | Name of the built image. The tag is the project version.       |
 | `JAVA_OPTS`               | empty                       | JVM options for the service, for example `-Xmx512m`.           |
 
 Notes:
@@ -295,17 +295,17 @@ Build the executable jar (needs JDK 26):
 ./gradlew bootJar
 ```
 
-The jar is written to `build/libs/hl-document-service-<version>.jar`. Run it against a Postgres (see
+The jar is written to `build/libs/mcp-document-service-<version>.jar`. Run it against a Postgres (see
 Prerequisites), with the settings from the section above as environment variables:
 
 ```bash
-DB_HOST=localhost DB_PORT=5445 java -jar build/libs/hl-document-service-1.0.0.jar
+DB_HOST=localhost DB_PORT=5445 java -jar build/libs/mcp-document-service-1.0.0.jar
 ```
 
 Build only the Docker image (needs only Docker; the build runs inside a container):
 
 ```bash
-docker build -t hl-document-service:1.0.0 .
+docker build -t mcp-document-service:1.0.0 .
 ```
 
 Start everything with Docker Compose directly, without the script:
@@ -320,7 +320,7 @@ the data directory.
 Run the integration tests (needs JDK 26 and Docker; uses ports 43555–43556):
 
 ```bash
-./gradlew :hl-document-service-IT:test
+./gradlew :mcp-document-service-IT:test
 ```
 
 Dependency versions are kept in `gradle/libs.versions.toml`.

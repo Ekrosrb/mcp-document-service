@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Deploys hl-document-service and its Postgres with Docker Compose (deploy/docker-compose.yaml).
+# Deploys mcp-document-service and its Postgres with Docker Compose (deploy/docker-compose.yaml).
 #
 # Postgres is created on the first run, started when it is stopped and left untouched when it runs.
 # The service image is built from the local sources and its container is recreated when the image changed.
@@ -111,10 +111,10 @@ ensure_postgres() {
 }
 
 deploy_service() {
-  echo "Building and deploying hl-document-service $SERVICE_VERSION."
+  echo "Building and deploying mcp-document-service $SERVICE_VERSION."
   if ! compose up --detach --build --no-deps --wait --wait-timeout "$HEALTH_TIMEOUT_SECONDS" "$APP_SERVICE"; then
     compose logs --tail 100 "$APP_SERVICE" >&2 || true
-    fail "hl-document-service did not start."
+    fail "mcp-document-service did not start."
   fi
 }
 
@@ -123,7 +123,7 @@ print_summary() {
   port="$(setting SERVICE_PORT 55535)"
   cat <<EOF
 
-hl-document-service $SERVICE_VERSION is running.
+mcp-document-service $SERVICE_VERSION is running.
   MCP endpoint: http://<host>:$port/mcp
   REST API:     http://<host>:$port/api/v1
   Swagger UI:   http://<host>:$port/swagger-ui/index.html

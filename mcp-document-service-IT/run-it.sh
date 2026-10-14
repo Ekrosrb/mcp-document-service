@@ -15,7 +15,7 @@ set -euo pipefail
 
 MODULE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$MODULE_DIR")"
-PROJECT_NAME="hl-document-service-it"
+PROJECT_NAME="mcp-document-service-it"
 SERVICE="postgres"
 DATABASE="document-db"
 DATABASE_USER="admin"
@@ -52,4 +52,4 @@ drop_database
 compose exec -T "$SERVICE" createdb -U "$DATABASE_USER" "$DATABASE"
 
 cd "$ROOT_DIR"
-./gradlew :hl-document-service-IT:test -PexternalInfrastructure
+./gradlew :mcp-document-service-IT:test -PexternalInfrastructure

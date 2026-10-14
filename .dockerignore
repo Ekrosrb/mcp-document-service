@@ -3,5 +3,5 @@
 !gradle/
 !settings.gradle
 !build.gradle
-!hl-document-service-IT/build.gradle
+!mcp-document-service-IT/build.gradle
 !src/

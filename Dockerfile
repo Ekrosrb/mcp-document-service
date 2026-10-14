@@ -2,7 +2,7 @@ FROM eclipse-temurin:26-jdk-noble AS build
 WORKDIR /workspace
 COPY gradlew settings.gradle build.gradle ./
 COPY gradle gradle
-COPY hl-document-service-IT/build.gradle hl-document-service-IT/
+COPY mcp-document-service-IT/build.gradle mcp-document-service-IT/
 COPY src src
 RUN --mount=type=cache,target=/root/.gradle \
     sh ./gradlew --no-daemon bootJar \

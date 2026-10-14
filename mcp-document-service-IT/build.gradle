@@ -34,7 +34,7 @@ dependencies {
     testRuntimeOnly libs.postgresql
 }
 
-def compose = ['docker', 'compose', '-p', 'hl-document-service-it', '-f', file('docker/docker-compose.yaml').path]
+def compose = ['docker', 'compose', '-p', 'mcp-document-service-it', '-f', file('docker/docker-compose.yaml').path]
 
 tasks.register('composeUp', Exec) {
     group = 'verification'

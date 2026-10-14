@@ -1,4 +1,4 @@
-name: hl-document-service
+name: mcp-document-service
 
 services:
   postgres:
@@ -27,8 +27,8 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile
-    image: ${SERVICE_IMAGE:-hl-document-service}:${SERVICE_VERSION:-latest}
-    container_name: ${SERVICE_CONTAINER_NAME:-hl-document-service}
+    image: ${SERVICE_IMAGE:-mcp-document-service}:${SERVICE_VERSION:-latest}
+    container_name: ${SERVICE_CONTAINER_NAME:-mcp-document-service}
     restart: unless-stopped
 
     depends_on:

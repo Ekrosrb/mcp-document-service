@@ -96,7 +96,7 @@ Spring Boot service storing documents and agent memories in Postgres, exposed ov
 
 ### 7.2 Conventions
 
-- Tests: Cucumber ITs in `hl-document-service-IT` (`./gradlew :hl-document-service-IT:test`, Docker required; or `hl-document-service-IT/run-it.sh`). Every change ships with IT coverage; the suite must pass.
+- Tests: Cucumber ITs in `mcp-document-service-IT` (`./gradlew :mcp-document-service-IT:test`, Docker required; or `mcp-document-service-IT/run-it.sh`). Every change ships with IT coverage; the suite must pass.
 - IT layout: `tests/<group>/<subgroup>/` with one `.feature`, `params/`, `input/`, `expected/{responses,database}/`. Data stays beside its feature; reuse fixtures within a feature instead of duplicating.
 - Fixtures are valid JSON. Variables are `"${name}"` tokens declared with type in `params/params.json`, generated per scenario. No hard-coded ids; every scenario is parallel-safe and cleans up after itself.
 - Shared steps only in `CommonSteps`, `DatabaseSteps`, `McpSteps`. IT ports: 43555–43999.
@@ -121,7 +121,7 @@ Spring Boot service storing documents and agent memories in Postgres, exposed ov
 
 ### 7.4 Forbidden Operations
 
-- `./deploy.sh` and any `docker compose` command against `deploy/docker-compose.yaml` — never run. They change the live homelab deployment and its database. Use the IT stack in `hl-document-service-IT/docker/` instead.
+- `./deploy.sh` and any `docker compose` command against `deploy/docker-compose.yaml` — never run. They change the live homelab deployment and its database. Use the IT stack in `mcp-document-service-IT/docker/` instead.
 - Any command against the deployed database (port 5445): no drops, no manual SQL, no `pg_dump` restores.
 
 ## 8. Web Research
