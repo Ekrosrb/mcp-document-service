@@ -36,6 +36,13 @@ Feature: MCP tool recall
     Then the MCP tool call succeeds
     And the MCP tool result decoded from TOON contains the fields from "expected/responses/best_match_with_content.json" in order
 
+  Scenario: Matches far weaker than the best match are left out
+    Given the table "document_content" contains the rows from "params/focus_document_contents.json"
+    And the table "document" contains the rows from "params/focus_documents.json"
+    When I call the MCP tool "recall" with arguments "input/focus_task.json"
+    Then the MCP tool call succeeds
+    And the MCP tool result decoded from TOON contains the fields from "expected/responses/strong_focus_only.json" in order
+
   Scenario: Deleted entries are left out and the entry a deleted one replaced is current again
     Given I send a DELETE request to "/api/v1/document/${partialMatchId}"
     And I send a DELETE request to "/api/v1/document/${extensionId}"

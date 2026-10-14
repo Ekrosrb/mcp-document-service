@@ -1,0 +1,10 @@
+[
+  {
+    "id": "${strongFocusContentId}",
+    "content": "Steps to follow."
+  },
+  {
+    "id": "${weakFocusContentId}",
+    "content": "An unrelated note that mentions focus${focusId} once."
+  }
+]

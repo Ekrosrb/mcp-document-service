@@ -29,8 +29,8 @@ public final class McpDescriptions {
       + "Call it before starting a task. Returns id, name and metadata; "
       + "use the include flags or getDocument for the text. " + SEARCH_ORDER;
   public static final String RECALL = "Gather what is known for a task you are about to start. Call it first. "
-      + "Returns matches: memories and documents containing any word of the task, most relevant first; "
-      + "and linked: entries linked to the matches in either direction, nearest first. "
+      + "Returns matches: memories and documents containing any word of the task, most relevant first, "
+      + "far weaker matches left out; and linked: entries linked to the matches in either direction, nearest first. "
       + "Each entry comes with its summary and relations; replaced entries are left out. "
       + "Use getDocument for the full text, searchMemories or searchDocuments for exact filters.";
   public static final String GET_PROJECTS_INFO = "List project keys with the number of documents in each. "

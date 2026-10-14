@@ -1,6 +1,7 @@
 package com.ekros.hl.doc.repository;
 
 import com.ekros.hl.doc.repository.model.DocumentData;
+import com.ekros.hl.doc.repository.projection.DocumentRankProjection;
 import com.ekros.hl.doc.repository.projection.ProjectDocumentsCountProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,14 @@ public interface DocumentRepository extends JpaRepository<DocumentData, Long>, J
       "WHERE d.projectKey IN :projectKeys AND d.deletedAt IS NULL " +
       "GROUP BY d.projectKey")
   List<ProjectDocumentsCountProjection> countBySpecificProjectKeys(@Param("projectKeys") Collection<String> projectKeys);
+
+  /**
+   * Returns the full-text rank of the given documents for a websearch query, as used to order search results.
+   */
+  @Query(value = "SELECT d.id AS id, "
+      + "ts_rank(d.search_vector, websearch_to_tsquery('english'::regconfig, :query))::float8 AS rank "
+      + "FROM document d WHERE d.id IN (:ids)", nativeQuery = true)
+  List<DocumentRankProjection> findRanks(@Param("ids") Collection<Long> ids, @Param("query") String query);
 
   Optional<DocumentData> findByIdAndDeletedAtIsNull(Long id);
 

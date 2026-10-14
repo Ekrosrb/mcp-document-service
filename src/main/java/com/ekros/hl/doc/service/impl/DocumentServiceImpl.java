@@ -11,6 +11,7 @@ import com.ekros.hl.doc.repository.DocumentRepository;
 import com.ekros.hl.doc.repository.ProjectRepository;
 import com.ekros.hl.doc.repository.model.DocumentData;
 import com.ekros.hl.doc.repository.model.DocumentKind;
+import com.ekros.hl.doc.repository.projection.DocumentRankProjection;
 import com.ekros.hl.doc.repository.specification.DocumentSearchSpecifications;
 import com.ekros.hl.doc.service.DocumentService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -176,8 +178,8 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     var matchRequest = DocumentSearchRequest.builder().query(query.get()).build();
-    var matches = findDocuments(matchRequest,
-        DocumentSearchSpecifications.withoutOtherProjects(request.getProjectKey()), request.getLimit());
+    var matches = keepStrongMatches(findDocuments(matchRequest,
+        DocumentSearchSpecifications.withoutOtherProjects(request.getProjectKey()), request.getLimit()), query.get());
     var linked = findLinkedDocuments(matches, request.getDepth(), request.getLimit());
 
     return DocumentRecallResponse.builder()
@@ -236,6 +238,21 @@ public class DocumentServiceImpl implements DocumentService {
         .and(restriction)
         .and(DocumentSearchSpecifications.withOrder(request));
     return documentRepository.findAll(spec, PageRequest.of(0, limit)).getContent();
+  }
+
+  /**
+   * Leaves out matches ranked below a share of the best match's rank, keeping the order.
+   */
+  private List<DocumentData> keepStrongMatches(List<DocumentData> matches, String query) {
+    if (matches.isEmpty()) {
+      return matches;
+    }
+    var ranks = documentRepository.findRanks(matches.stream().map(DocumentData::getId).toList(), query).stream()
+        .collect(Collectors.toMap(DocumentRankProjection::getId, DocumentRankProjection::getRank));
+    var minRank = Collections.max(ranks.values()) * DocumentRecallRequest.MIN_RELATIVE_RANK;
+    return matches.stream()
+        .filter(doc -> ranks.get(doc.getId()) >= minRank)
+        .toList();
   }
 
   /**

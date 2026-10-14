@@ -17,6 +17,7 @@ public class DocumentRecallRequest {
   public static final int MAX_LIMIT = 50;
   public static final int DEFAULT_DEPTH = 1;
   public static final int MAX_DEPTH = 2;
+  public static final double MIN_RELATIVE_RANK = 0.3;
 
   private String task;
   private String projectKey;

@@ -20,5 +20,10 @@
   "${supersededContentId}": "long",
   "${dependencyContentId}": "long",
   "${extensionContentId}": "long",
-  "${secondHopContentId}": "long"
+  "${secondHopContentId}": "long",
+  "${focusId}": "long",
+  "${strongFocusId}": "long",
+  "${weakFocusId}": "long",
+  "${strongFocusContentId}": "long",
+  "${weakFocusContentId}": "long"
 }

@@ -99,6 +99,8 @@ Every tool and parameter carries a description the agent can read.
 
 - The task is plain text. Entries containing any of its words match, those with more of the words
   first. Search syntax in the task is treated as plain words.
+- Matches ranked below 30% of the best match are left out, so an entry that shares only a common
+  word with the task does not crowd out the strong matches.
 - With a `projectKey`, entries of other projects are left out; global and agent entries stay.
 - From the matches, recall follows relations in both directions for `depth` steps (default 1, at
   most 2) and returns those entries as `linked`, nearest first, then most recently updated first.
@@ -165,13 +167,61 @@ If `./deploy.sh` reports "Permission denied", run `bash deploy.sh` or `chmod +x 
 
 ### Connect an MCP client
 
-Point the client at `http://<host>:55535/mcp`. For example, with Claude Code:
-
-```bash
-claude mcp add --transport http hl-document-service http://localhost:55535/mcp
-```
+The endpoint is `http://<host>:55535/mcp` (streamable HTTP, no authentication). Replace `localhost` in the
+examples below with the host name or IP address of the machine running the service.
 
 The client's name becomes the author name of the entries an agent creates.
+
+**Claude Code, with the CLI.** `--scope user` makes the server available in every project, which suits a
+shared memory store; leave it out to add it to the current project only.
+
+```bash
+claude mcp add --transport http --scope user hl-document-service http://localhost:55535/mcp
+```
+
+**Claude Code, by editing the configuration.** For every project, add the server to the top-level
+`mcpServers` of `~/.claude.json` (on Windows `%USERPROFILE%\.claude.json`). For one project, put the same
+block in `.mcp.json` in the project root instead; that file can be committed and shared.
+
+```json
+{
+  "mcpServers": {
+    "hl-document-service": {
+      "type": "http",
+      "url": "http://localhost:55535/mcp"
+    }
+  }
+}
+```
+
+Keep the other content of `~/.claude.json` as it is and only add the `hl-document-service` entry. Restart
+Claude Code, then run `/mcp` inside it to check that the server is connected and its tools are listed.
+
+**Claude Desktop.** Its configuration file starts local servers as commands, so it reaches an HTTP server
+through the [`mcp-remote`](https://github.com/geelen/mcp-remote) bridge, which needs Node.js. Edit
+`claude_desktop_config.json` (Windows: `%APPDATA%\Claude\claude_desktop_config.json`, macOS:
+`~/Library/Application Support/Claude/claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "hl-document-service": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "http://localhost:55535/mcp",
+        "--transport",
+        "http-only",
+        "--allow-http"
+      ]
+    }
+  }
+}
+```
+
+`--allow-http` is needed because the service does not use HTTPS; use it only on a network you trust.
+Quit Claude Desktop completely (on Windows from the system tray) and start it again to load the change.
 
 ### Day-to-day commands
 

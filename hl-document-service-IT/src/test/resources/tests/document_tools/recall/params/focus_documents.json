@@ -1,0 +1,36 @@
+[
+  {
+    "id": "${strongFocusId}",
+    "kind": "MEMORY",
+    "scope": "PROJECT",
+    "type": "TEXT",
+    "custom_extension": null,
+    "author": "AGENT",
+    "author_name": "${authorName}",
+    "project_key": "${projectKey}",
+    "name": "focus${focusId} guide",
+    "summary": "How focus${focusId} works",
+    "content_id": "${strongFocusContentId}",
+    "created_at": "2026-01-01T09:00:00",
+    "updated_at": "2026-01-10T10:00:00",
+    "memory_type": "FACT",
+    "allow_mcp_write": false
+  },
+  {
+    "id": "${weakFocusId}",
+    "kind": "MEMORY",
+    "scope": "PROJECT",
+    "type": "TEXT",
+    "custom_extension": null,
+    "author": "AGENT",
+    "author_name": "${authorName}",
+    "project_key": "${projectKey}",
+    "name": "unrelated-note",
+    "summary": "Unrelated note",
+    "content_id": "${weakFocusContentId}",
+    "created_at": "2026-01-01T09:00:00",
+    "updated_at": "2026-02-10T10:00:00",
+    "memory_type": "FACT",
+    "allow_mcp_write": false
+  }
+]
