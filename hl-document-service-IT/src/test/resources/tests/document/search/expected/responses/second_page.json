@@ -1,0 +1,12 @@
+{
+  "content": [
+    {
+      "id": "${strongMatchId}",
+      "name": "rollback-guide"
+    }
+  ],
+  "number": 1,
+  "size": 1,
+  "totalElements": 2,
+  "totalPages": 2
+}

@@ -7,9 +7,10 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -50,8 +51,9 @@ public class DocumentController implements DocumentApi {
 
   @Override
   @PostMapping("/search")
-  public List<DocumentResponse> search(@Valid @RequestBody DocumentSearchRequest request) {
-    return documentService.search(request);
+  public Page<DocumentResponse> search(@Valid @RequestBody DocumentSearchRequest request,
+                                     @PageableDefault(size = DocumentSearchRequest.DEFAULT_PAGE_SIZE) Pageable pageable) {
+    return documentService.search(request, pageable);
   }
 
   @Override

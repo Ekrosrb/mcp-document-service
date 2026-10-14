@@ -2,7 +2,8 @@ package com.ekros.hl.doc.service;
 
 import com.ekros.hl.doc.controller.model.document.*;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface DocumentService {
   DocumentCreateResponse createDocument(DocumentCreateRequest request);
@@ -14,7 +15,7 @@ public interface DocumentService {
 
   void removeDocument(Long id, boolean isMcp);
 
-  List<DocumentResponse> search(DocumentSearchRequest request);
+  Page<DocumentResponse> search(DocumentSearchRequest request, Pageable pageable);
 
   void createDocumentRelation(DocumentRelationCreateRequest request, boolean isMcp);
 

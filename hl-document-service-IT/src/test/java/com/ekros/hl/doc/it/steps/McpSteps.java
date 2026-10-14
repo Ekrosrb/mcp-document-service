@@ -65,6 +65,13 @@ public class McpSteps {
         .isEqualTo(context.fixture(expectedFixture));
   }
 
+  @Then("the MCP tool result decoded from TOON contains the fields from {string} in order")
+  public void assertToolResultFieldsInOrder(String expectedFixture) {
+    assertThatJson(JToon.decodeToJson(resultText()))
+        .when(Option.IGNORING_EXTRA_FIELDS)
+        .isEqualTo(context.fixture(expectedFixture));
+  }
+
   @Then("the MCP tool result decoded from TOON contains the element from {string}")
   public void assertToolResultContainsElement(String expectedFixture) {
     assertThatJson(JToon.decodeToJson(resultText()))

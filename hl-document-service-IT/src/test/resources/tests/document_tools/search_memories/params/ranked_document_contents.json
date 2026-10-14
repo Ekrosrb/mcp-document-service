@@ -1,0 +1,10 @@
+[
+  {
+    "id": "${strongMatchContentId}",
+    "content": "How to rollback a release."
+  },
+  {
+    "id": "${weakMatchContentId}",
+    "content": "One rollback happened during the release."
+  }
+]

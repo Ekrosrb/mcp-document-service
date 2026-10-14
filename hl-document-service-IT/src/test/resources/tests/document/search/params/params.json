@@ -10,5 +10,10 @@
   "${globalId}": "long",
   "${documentContentId}": "long",
   "${memoryContentId}": "long",
-  "${globalContentId}": "long"
+  "${globalContentId}": "long",
+  "${rankedAuthorName}": "string",
+  "${strongMatchId}": "long",
+  "${weakMatchId}": "long",
+  "${strongMatchContentId}": "long",
+  "${weakMatchContentId}": "long"
 }

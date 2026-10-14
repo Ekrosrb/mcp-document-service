@@ -68,6 +68,21 @@ public class CommonSteps {
         .isEqualTo(context.fixture(expectedFixture));
   }
 
+  @Then("the response body at {string} matches {string}")
+  public void assertResponseBodyAt(String path, String expectedFixture) {
+    assertThatJson(context.getResponse().body())
+        .when(Option.IGNORING_ARRAY_ORDER, Option.TREATING_NULL_AS_ABSENT)
+        .inPath(path)
+        .isEqualTo(context.fixture(expectedFixture));
+  }
+
+  @Then("the response body contains the fields from {string} in order")
+  public void assertResponseBodyFieldsInOrder(String expectedFixture) {
+    assertThatJson(context.getResponse().body())
+        .when(Option.IGNORING_EXTRA_FIELDS)
+        .isEqualTo(context.fixture(expectedFixture));
+  }
+
   @Then("the response body at {string} contains the element from {string}")
   public void assertResponseBodyContainsElement(String path, String expectedFixture) {
     assertThatJson(context.getResponse().body())

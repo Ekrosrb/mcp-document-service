@@ -25,3 +25,22 @@ Feature: MCP tool searchDocuments
     When I call the MCP tool "searchDocuments" with arguments "input/by_author_name_with_superseded.json"
     Then the MCP tool call succeeds
     And the MCP tool result decoded from TOON matches "expected/responses/documents.json"
+
+  Scenario: Results of a query come most relevant first
+    Given the table "document_content" contains the rows from "params/ranked_document_contents.json"
+    And the table "document" contains the rows from "params/ranked_documents.json"
+    When I call the MCP tool "searchDocuments" with arguments "input/by_ranked_query.json"
+    Then the MCP tool call succeeds
+    And the MCP tool result decoded from TOON contains the fields from "expected/responses/most_relevant_first.json" in order
+
+  Scenario: A later page holds the remaining results
+    Given the table "document_content" contains the rows from "params/ranked_document_contents.json"
+    And the table "document" contains the rows from "params/ranked_documents.json"
+    When I call the MCP tool "searchDocuments" with arguments "input/second_page.json"
+    Then the MCP tool call succeeds
+    And the MCP tool result decoded from TOON contains the fields from "expected/responses/older_document.json" in order
+
+  Scenario: A page size above 50 is rejected
+    When I call the MCP tool "searchDocuments" with arguments "input/too_large_page.json"
+    Then the MCP tool call fails
+    And the MCP tool result is the text from "expected/responses/too_large_page.txt"

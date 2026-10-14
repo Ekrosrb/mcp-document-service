@@ -16,6 +16,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @DocumentSearchValid
 public class DocumentSearchRequest {
+  public static final int DEFAULT_PAGE_SIZE = 10;
+  public static final int MAX_MCP_PAGE_SIZE = 50;
+
   private DocumentKind kind;
   private DocumentScope scope;
   private AuthorType author;

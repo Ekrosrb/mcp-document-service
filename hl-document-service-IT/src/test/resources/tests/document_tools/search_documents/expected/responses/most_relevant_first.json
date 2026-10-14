@@ -1,0 +1,10 @@
+[
+  {
+    "id": "${strongMatchId}",
+    "name": "rollback-guide"
+  },
+  {
+    "id": "${weakMatchId}",
+    "name": "incident-log"
+  }
+]

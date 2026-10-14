@@ -5,6 +5,9 @@ package com.ekros.hl.doc.mcp;
  */
 public final class McpDescriptions {
 
+  private static final String SEARCH_ORDER = "Most relevant first when a query is given, otherwise most recently "
+      + "updated first.";
+
   public static final String CREATE_DOCUMENT = "Store a long-form document (guide, spec, reference). "
       + "For a short fact, decision or note use createMemory. Returns the new id.";
   public static final String CREATE_MEMORY = "Store a short note that will still matter after this conversation: "
@@ -20,10 +23,11 @@ public final class McpDescriptions {
   public static final String REMOVE_DOCUMENT_RELATION = "Unlink two documents or memories. "
       + "Requires allowWrite on documentId only.";
   public static final String SEARCH_DOCUMENTS = "Find documents by filters and/or a full-text query. "
-      + "Returns id, name and metadata; use the include flags or getDocument for the text.";
+      + "Returns id, name and metadata; use the include flags or getDocument for the text. "
+      + SEARCH_ORDER;
   public static final String SEARCH_MEMORIES = "Find memories by filters, memory type and/or a full-text query. "
       + "Call it before starting a task. Returns id, name and metadata; "
-      + "use the include flags or getDocument for the text.";
+      + "use the include flags or getDocument for the text. " + SEARCH_ORDER;
   public static final String GET_PROJECTS_INFO = "List project keys with the number of documents in each. "
       + "Use it to find the projectKey to filter by.";
 
@@ -37,6 +41,8 @@ public final class McpDescriptions {
   public static final String SEARCH_REQUEST = "Filters and options. All are optional and combined with AND.";
   public static final String PAGE = "Page to fetch, starting at 0. Default 0.";
   public static final String PAGE_SIZE = "Projects per page. Default 100.";
+  public static final String SEARCH_PAGE_SIZE = "Results per page, 1 to 50. Default 10. "
+      + "Fewer results than this means there are no more pages.";
 
   public static final String SCOPE = "Where it applies. GLOBAL: every project. "
       + "PROJECT: one project, projectKey is required. AGENT: notes of one agent, not tied to a project.";

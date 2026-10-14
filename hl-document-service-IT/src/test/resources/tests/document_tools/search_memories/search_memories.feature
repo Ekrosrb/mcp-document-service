@@ -41,3 +41,10 @@ Feature: MCP tool searchMemories
     When I call the MCP tool "searchMemories" with arguments "input/by_author_name_with_superseded.json"
     Then the MCP tool call succeeds
     And the MCP tool result decoded from TOON matches "expected/responses/memory_without_text.json"
+
+  Scenario: A page holds the most recently updated memories
+    Given the table "document_content" contains the rows from "params/ranked_document_contents.json"
+    And the table "document" contains the rows from "params/ranked_documents.json"
+    When I call the MCP tool "searchMemories" with arguments "input/first_page_of_one.json"
+    Then the MCP tool call succeeds
+    And the MCP tool result decoded from TOON contains the fields from "expected/responses/newest_memory.json" in order

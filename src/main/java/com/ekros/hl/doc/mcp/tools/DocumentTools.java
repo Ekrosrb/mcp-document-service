@@ -2,20 +2,27 @@ package com.ekros.hl.doc.mcp.tools;
 
 import com.ekros.hl.doc.controller.model.document.DocumentRelationCreateRequest;
 import com.ekros.hl.doc.controller.model.document.DocumentRelationRemoveRequest;
+import com.ekros.hl.doc.controller.model.document.DocumentSearchRequest;
 import com.ekros.hl.doc.mapper.DocumentMapper;
 import com.ekros.hl.doc.mcp.McpDescriptions;
 import com.ekros.hl.doc.mcp.ToonConverter;
 import com.ekros.hl.doc.mcp.model.*;
 import com.ekros.hl.doc.service.DocumentService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.mcp.annotation.McpTool;
 import org.springframework.ai.mcp.annotation.McpToolParam;
 import org.springframework.ai.mcp.annotation.context.McpSyncRequestContext;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.Optional;
 
 import static com.ekros.hl.doc.util.McpUtil.getAgentName;
 
@@ -76,17 +83,28 @@ public class DocumentTools {
   }
 
   @McpTool(name = "searchDocuments", description = McpDescriptions.SEARCH_DOCUMENTS)
-  public String searchDocuments(@McpToolParam(description = McpDescriptions.SEARCH_REQUEST) @Valid DocumentSearchMcpRequest request, McpSyncRequestContext context) {
+  public String searchDocuments(@McpToolParam(description = McpDescriptions.SEARCH_REQUEST) @Valid DocumentSearchMcpRequest request,
+                                @McpToolParam(description = McpDescriptions.PAGE, required = false) @PositiveOrZero Integer page,
+                                @McpToolParam(description = McpDescriptions.SEARCH_PAGE_SIZE, required = false) @Positive @Max(DocumentSearchRequest.MAX_MCP_PAGE_SIZE) Integer size,
+                                McpSyncRequestContext context) {
     log.info("Received mcp request to search documents from [{}]", getAgentName(context));
     return toonConverter.toToon(documentMapper.mapToDocumentMcpResponses(
-        documentService.search(documentMapper.mapToDocumentSearchRequest(request))));
+        documentService.search(documentMapper.mapToDocumentSearchRequest(request), buildPageable(page, size)).getContent()));
   }
 
   @McpTool(name = "searchMemories", description = McpDescriptions.SEARCH_MEMORIES)
-  public String searchMemories(@McpToolParam(description = McpDescriptions.SEARCH_REQUEST) @Valid MemorySearchMcpRequest request, McpSyncRequestContext context) {
+  public String searchMemories(@McpToolParam(description = McpDescriptions.SEARCH_REQUEST) @Valid MemorySearchMcpRequest request,
+                               @McpToolParam(description = McpDescriptions.PAGE, required = false) @PositiveOrZero Integer page,
+                               @McpToolParam(description = McpDescriptions.SEARCH_PAGE_SIZE, required = false) @Positive @Max(DocumentSearchRequest.MAX_MCP_PAGE_SIZE) Integer size,
+                               McpSyncRequestContext context) {
     log.info("Received mcp request to search memories from [{}]", getAgentName(context));
     return toonConverter.toToon(documentMapper.mapToDocumentMcpResponses(
-        documentService.search(documentMapper.mapToMemorySearchRequest(request))));
+        documentService.search(documentMapper.mapToMemorySearchRequest(request), buildPageable(page, size)).getContent()));
+  }
+
+  private Pageable buildPageable(Integer page, Integer size) {
+    return PageRequest.of(Optional.ofNullable(page).orElse(0),
+        Optional.ofNullable(size).orElse(DocumentSearchRequest.DEFAULT_PAGE_SIZE));
   }
 
 }

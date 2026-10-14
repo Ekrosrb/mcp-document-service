@@ -1,0 +1,7 @@
+{
+  "request": {
+    "authorName": "${rankedAuthorName}"
+  },
+  "page": 1,
+  "size": 1
+}

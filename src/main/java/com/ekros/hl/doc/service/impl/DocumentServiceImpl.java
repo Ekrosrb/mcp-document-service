@@ -17,6 +17,9 @@ import com.ekros.hl.doc.service.DocumentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -102,18 +105,19 @@ public class DocumentServiceImpl implements DocumentService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<DocumentResponse> search(DocumentSearchRequest request) {
-    var spec = DocumentSearchSpecifications.withFilters(request);
-    return documentRepository.findAll(spec)
-        .stream()
-        .map(doc -> documentMapper.mapToDocumentResponseLight(
-            doc, request.isIncludeContent(), request.isIncludeSummary(), request.isIncludeRelations()))
-        .peek(doc -> {
+  public Page<DocumentResponse> search(DocumentSearchRequest request, Pageable pageable) {
+    var spec = DocumentSearchSpecifications.withFilters(request)
+        .and(DocumentSearchSpecifications.withOrder(request));
+    var page = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+    return documentRepository.findAll(spec, page)
+        .map(doc -> {
+          var response = documentMapper.mapToDocumentResponseLight(
+              doc, request.isIncludeContent(), request.isIncludeSummary(), request.isIncludeRelations());
           if (request.isIncludeRelations()) {
-            populateWithReferencedBy(doc);
+            populateWithReferencedBy(response);
           }
-        })
-        .toList();
+          return response;
+        });
   }
 
   @Override

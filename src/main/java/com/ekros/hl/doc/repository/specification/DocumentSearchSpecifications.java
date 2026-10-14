@@ -4,6 +4,7 @@ import com.ekros.hl.doc.controller.model.document.DocumentSearchRequest;
 import com.ekros.hl.doc.repository.model.DocumentData;
 import com.ekros.hl.doc.repository.model.DocumentRelationData;
 import com.ekros.hl.doc.repository.model.DocumentRelationType;
+import jakarta.persistence.criteria.Order;
 import jakarta.persistence.criteria.Predicate;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 public class DocumentSearchSpecifications {
 
   private static final String SEARCH_VECTOR_MATCH = "? @@ websearch_to_tsquery('english'::regconfig, ?)";
+  private static final String SEARCH_VECTOR_RANK = "ts_rank(?, websearch_to_tsquery('english'::regconfig, ?))";
 
   public static Specification<DocumentData> withFilters(DocumentSearchRequest searchRequest) {
     return (root, query, criteriaBuilder) -> {
@@ -63,6 +65,29 @@ public class DocumentSearchSpecifications {
       }
 
       return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+    };
+  }
+
+  /**
+   * Orders search results by relevance to the query when one is given, then by the newest update.
+   */
+  public static Specification<DocumentData> withOrder(DocumentSearchRequest searchRequest) {
+    return (root, query, criteriaBuilder) -> {
+      if (Long.class.equals(query.getResultType())) {
+        return criteriaBuilder.conjunction();
+      }
+
+      var orders = new ArrayList<Order>();
+      if (StringUtils.isNotBlank(searchRequest.getQuery())) {
+        orders.add(criteriaBuilder.desc(((HibernateCriteriaBuilder) criteriaBuilder).sql(SEARCH_VECTOR_RANK, Double.class,
+            root.get("searchVector"),
+            criteriaBuilder.literal(searchRequest.getQuery()))));
+      }
+      orders.add(criteriaBuilder.desc(root.get("updatedAt")));
+      orders.add(criteriaBuilder.desc(root.get("id")));
+
+      query.orderBy(orders);
+      return criteriaBuilder.conjunction();
     };
   }
 }
