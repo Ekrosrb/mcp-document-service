@@ -1,0 +1,6 @@
+{
+  "authorName": "${authorName}",
+  "includeContent": true,
+  "includeSummary": true,
+  "includeSuperseded": true
+}

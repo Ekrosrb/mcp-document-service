@@ -27,7 +27,7 @@ spring:
           Search returns ids, names and metadata only; call getDocument for the full text.
           When you learn something that will stay true after this conversation, save it with
           createMemory. When an entry replaces an older one, link them with createDocumentRelation
-          and type SUPERSEDES. You can update or remove only entries whose allowWrite is true.
+          and type SUPERSEDES; search then leaves the older one out. You can update or remove only entries whose allowWrite is true.
         protocol: STREAMABLE
         streamable-http:
           mcp-endpoint: /mcp

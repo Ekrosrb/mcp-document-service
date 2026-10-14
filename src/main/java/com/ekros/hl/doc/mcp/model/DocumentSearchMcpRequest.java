@@ -39,4 +39,7 @@ public class DocumentSearchMcpRequest {
   @JsonPropertyDescription(McpDescriptions.INCLUDE_RELATIONS)
   @JsonProperty(required = false)
   private boolean includeRelations = false;
+  @JsonPropertyDescription(McpDescriptions.INCLUDE_SUPERSEDED)
+  @JsonProperty(required = false)
+  private boolean includeSuperseded = false;
 }

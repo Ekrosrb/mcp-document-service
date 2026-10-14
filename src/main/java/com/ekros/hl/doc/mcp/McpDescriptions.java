@@ -74,6 +74,9 @@ public final class McpDescriptions {
   public static final String INCLUDE_CONTENT = "Add the full content to each result. Default false; "
       + "costly when there are many results.";
   public static final String INCLUDE_RELATIONS = "Add relations and referencedBy to each result. Default false.";
+  public static final String INCLUDE_SUPERSEDED = "Also return entries replaced by a newer one "
+      + "(targets of a SUPERSEDES relation). Default false. If nothing current matches, retry with true and "
+      + "includeRelations; referencedBy then shows the newer entry.";
 
   public static final String RELATION_DOCUMENT_ID = "Id of the source: the document the relation starts from.";
   public static final String RELATION_RELATED_DOCUMENT_ID = "Id of the target document.";

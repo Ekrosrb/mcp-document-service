@@ -86,3 +86,21 @@ Feature: Search documents
     When I send a POST request to "/api/v1/document/search" with body "input/by_unused_author_name.json"
     Then the response status is 200
     And the response body matches "expected/responses/no_documents.json"
+
+  Scenario: A superseded document is left out by default
+    Given the table "document_relations" contains the rows from "params/superseding_relation.json"
+    When I send a POST request to "/api/v1/document/search" with body "input/by_author_name.json"
+    Then the response status is 200
+    And the response body matches "expected/responses/current_documents.json"
+
+  Scenario: A superseded document is returned on request
+    Given the table "document_relations" contains the rows from "params/superseding_relation.json"
+    When I send a POST request to "/api/v1/document/search" with body "input/by_author_name_with_superseded.json"
+    Then the response status is 200
+    And the response body matches "expected/responses/all_documents.json"
+
+  Scenario: A query that matches only a superseded document returns an empty list
+    Given the table "document_relations" contains the rows from "params/superseding_relation.json"
+    When I send a POST request to "/api/v1/document/search" with body "input/by_query_in_content.json"
+    Then the response status is 200
+    And the response body matches "expected/responses/no_documents.json"

@@ -2,6 +2,8 @@ package com.ekros.hl.doc.repository.specification;
 
 import com.ekros.hl.doc.controller.model.document.DocumentSearchRequest;
 import com.ekros.hl.doc.repository.model.DocumentData;
+import com.ekros.hl.doc.repository.model.DocumentRelationData;
+import com.ekros.hl.doc.repository.model.DocumentRelationType;
 import jakarta.persistence.criteria.Predicate;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
@@ -31,6 +33,16 @@ public class DocumentSearchSpecifications {
 
       if (searchRequest.getMemoryType() != null) {
         predicates.add(criteriaBuilder.equal(root.get("memoryType"), searchRequest.getMemoryType()));
+      }
+
+      if (!searchRequest.isIncludeSuperseded()) {
+        var subquery = query.subquery(Integer.class);
+        var relation = subquery.from(DocumentRelationData.class);
+        subquery.select(criteriaBuilder.literal(1))
+            .where(
+                criteriaBuilder.equal(relation.get("id").get("relatedDocumentId"), root.get("id")),
+                criteriaBuilder.equal(relation.get("type"), DocumentRelationType.SUPERSEDES));
+        predicates.add(criteriaBuilder.not(criteriaBuilder.exists(subquery)));
       }
 
       if (StringUtils.isNotBlank(searchRequest.getAuthorName())) {

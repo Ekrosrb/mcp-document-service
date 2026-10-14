@@ -29,3 +29,15 @@ Feature: MCP tool searchMemories
     When I call the MCP tool "searchMemories" with arguments "input/by_document_query.json"
     Then the MCP tool call succeeds
     And the MCP tool result decoded from TOON matches "expected/responses/no_documents.json"
+
+  Scenario: A superseded memory is left out by default
+    Given the table "document_relations" contains the rows from "params/superseding_relation.json"
+    When I call the MCP tool "searchMemories" with arguments "input/by_author_name.json"
+    Then the MCP tool call succeeds
+    And the MCP tool result decoded from TOON matches "expected/responses/no_documents.json"
+
+  Scenario: A superseded memory is returned on request
+    Given the table "document_relations" contains the rows from "params/superseding_relation.json"
+    When I call the MCP tool "searchMemories" with arguments "input/by_author_name_with_superseded.json"
+    Then the MCP tool call succeeds
+    And the MCP tool result decoded from TOON matches "expected/responses/memory_without_text.json"

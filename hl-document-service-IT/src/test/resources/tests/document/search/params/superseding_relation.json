@@ -1,0 +1,7 @@
+[
+  {
+    "document_id": "${globalId}",
+    "related_document_id": "${documentId}",
+    "type": "SUPERSEDES"
+  }
+]

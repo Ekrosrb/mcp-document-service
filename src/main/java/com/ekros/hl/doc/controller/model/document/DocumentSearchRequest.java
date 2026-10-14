@@ -26,4 +26,5 @@ public class DocumentSearchRequest {
   private boolean includeContent;
   private boolean includeSummary;
   private boolean includeRelations;
+  private boolean includeSuperseded;
 }
