@@ -11,11 +11,17 @@ import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.regex.Pattern;
 
 public class DocumentSearchSpecifications {
 
   private static final String SEARCH_VECTOR_MATCH = "? @@ websearch_to_tsquery('english'::regconfig, ?)";
   private static final String SEARCH_VECTOR_RANK = "ts_rank(?, websearch_to_tsquery('english'::regconfig, ?))";
+  private static final Pattern QUERY_SYNTAX = Pattern.compile("\"|(^|\\s)-|(^|\\s)or(\\s|$)", Pattern.CASE_INSENSITIVE);
+  private static final Pattern NON_WORD = Pattern.compile("[^\\p{L}\\p{N}]+");
+  private static final String ANY_WORD_SEPARATOR = " or ";
 
   public static Specification<DocumentData> withFilters(DocumentSearchRequest searchRequest) {
     return (root, query, criteriaBuilder) -> {
@@ -66,6 +72,22 @@ public class DocumentSearchSpecifications {
 
       return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     };
+  }
+
+  /**
+   * Rewrites a query of plain words so that any of the words matches.
+   * Returns empty when the query has fewer than two words or uses phrase, OR or exclusion syntax.
+   */
+  public static Optional<String> buildAnyWordQuery(String query) {
+    if (StringUtils.isBlank(query) || QUERY_SYNTAX.matcher(query).find()) {
+      return Optional.empty();
+    }
+
+    var words = Arrays.stream(NON_WORD.split(query))
+        .filter(StringUtils::isNotBlank)
+        .distinct()
+        .toList();
+    return words.size() < 2 ? Optional.empty() : Optional.of(String.join(ANY_WORD_SEPARATOR, words));
   }
 
   /**

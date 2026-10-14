@@ -44,3 +44,10 @@ Feature: MCP tool searchDocuments
     When I call the MCP tool "searchDocuments" with arguments "input/too_large_page.json"
     Then the MCP tool call fails
     And the MCP tool result is the text from "expected/responses/too_large_page.txt"
+
+  Scenario: A query whose words never appear together falls back to any of the words
+    Given the table "document_content" contains the rows from "params/ranked_document_contents.json"
+    And the table "document" contains the rows from "params/ranked_documents.json"
+    When I call the MCP tool "searchDocuments" with arguments "input/by_any_word_query.json"
+    Then the MCP tool call succeeds
+    And the MCP tool result decoded from TOON contains the fields from "expected/responses/most_relevant_first.json" in order

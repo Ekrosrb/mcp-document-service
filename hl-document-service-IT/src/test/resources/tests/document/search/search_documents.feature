@@ -125,3 +125,24 @@ Feature: Search documents
     When I send a POST request to "/api/v1/document/search?page=1&size=1" with body "input/by_ranked_author_name.json"
     Then the response status is 200
     And the response body contains the fields from "expected/responses/second_page.json" in order
+
+  Scenario: A query whose words never appear together falls back to any of the words
+    Given the table "document_content" contains the rows from "params/ranked_document_contents.json"
+    And the table "document" contains the rows from "params/ranked_documents.json"
+    When I send a POST request to "/api/v1/document/search" with body "input/by_any_word_query.json"
+    Then the response status is 200
+    And the response body contains the fields from "expected/responses/most_relevant_first.json" in order
+
+  Scenario: Entries with all words are returned without the fallback
+    Given the table "document_content" contains the rows from "params/ranked_document_contents.json"
+    And the table "document" contains the rows from "params/ranked_documents.json"
+    When I send a POST request to "/api/v1/document/search" with body "input/by_all_words_query.json"
+    Then the response status is 200
+    And the response body contains the fields from "expected/responses/all_words_match.json" in order
+
+  Scenario: A query with an excluded word does not fall back
+    Given the table "document_content" contains the rows from "params/ranked_document_contents.json"
+    And the table "document" contains the rows from "params/ranked_documents.json"
+    When I send a POST request to "/api/v1/document/search" with body "input/by_query_with_excluded_word.json"
+    Then the response status is 200
+    And the response body at "content" matches "expected/responses/no_documents.json"

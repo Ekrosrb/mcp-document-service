@@ -1,0 +1,9 @@
+{
+  "content": [
+    {
+      "id": "${strongMatchId}",
+      "name": "rollback-guide"
+    }
+  ],
+  "totalElements": 1
+}

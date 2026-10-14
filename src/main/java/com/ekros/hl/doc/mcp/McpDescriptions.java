@@ -73,7 +73,8 @@ public final class McpDescriptions {
       + "For an agent it is its MCP client name.";
   public static final String SEARCH_PROJECT_KEY = "Return only entries of this project.";
   public static final String SEARCH_QUERY = "English full-text search over name, summary and content. "
-      + "All words must match; use \"quoted phrase\", OR, and -word to exclude. "
+      + "Returns entries with all words; when there are none, entries with any of the words. "
+      + "\"quoted phrase\", OR and -word to exclude are supported and turn that fallback off. "
       + "It is not semantic, so use words likely to appear in the text.";
   public static final String SEARCH_MEMORY_TYPE = "Return only memories of this type. " + MEMORY_TYPE_VALUES;
   public static final String INCLUDE_SUMMARY = "Add the summary to each result. Default false.";

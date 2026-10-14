@@ -106,10 +106,18 @@ public class DocumentServiceImpl implements DocumentService {
   @Override
   @Transactional(readOnly = true)
   public Page<DocumentResponse> search(DocumentSearchRequest request, Pageable pageable) {
-    var spec = DocumentSearchSpecifications.withFilters(request)
-        .and(DocumentSearchSpecifications.withOrder(request));
     var page = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
-    return documentRepository.findAll(spec, page)
+    var documents = findDocuments(request, page);
+
+    if (documents.getTotalElements() == 0) {
+      var anyWordQuery = DocumentSearchSpecifications.buildAnyWordQuery(request.getQuery());
+      if (anyWordQuery.isPresent()) {
+        log.info("No document matches all words of [{}], searching for any of them", request.getQuery());
+        documents = findDocuments(request.toBuilder().query(anyWordQuery.get()).build(), page);
+      }
+    }
+
+    return documents
         .map(doc -> {
           var response = documentMapper.mapToDocumentResponseLight(
               doc, request.isIncludeContent(), request.isIncludeSummary(), request.isIncludeRelations());
@@ -157,6 +165,12 @@ public class DocumentServiceImpl implements DocumentService {
 
     var id = documentMapper.mapToDocumentRelationId(request);
     documentRelationRepository.deleteById(id);
+  }
+
+  private Page<DocumentData> findDocuments(DocumentSearchRequest request, Pageable page) {
+    var spec = DocumentSearchSpecifications.withFilters(request)
+        .and(DocumentSearchSpecifications.withOrder(request));
+    return documentRepository.findAll(spec, page);
   }
 
   private DocumentData getExistingDocumentReference(Long id) {
