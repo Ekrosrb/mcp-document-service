@@ -7,8 +7,11 @@ import com.ekros.hl.doc.exception.DocumentNotFoundException;
 import com.ekros.hl.doc.exception.DocumentRelationExistsException;
 import com.ekros.hl.doc.exception.DocumentWriteForbiddenException;
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.exc.InvalidFormatException;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.method.ParameterErrors;
@@ -29,6 +32,7 @@ public class ExceptionHandlerController {
 
   private static final String VALIDATION_ERROR_MESSAGE = "Request validation failed";
   private static final String INVALID_VALUE_MESSAGE = "Invalid value: [%s]";
+  private static final String UNREADABLE_BODY_MESSAGE = "Request body could not be read";
 
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ExceptionHandler(exception = DocumentNotFoundException.class)
@@ -118,6 +122,21 @@ public class ExceptionHandlerController {
         .build();
   }
 
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(exception = HttpMessageNotReadableException.class)
+  public GeneralErrorResponse handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+    log.warn("HttpMessageNotReadableException occurred: {}", ex.getMessage());
+    if (ex.getCause() instanceof InvalidFormatException invalidFormat) {
+      return GeneralErrorResponse.builder()
+          .message(VALIDATION_ERROR_MESSAGE)
+          .metadata(Map.of(buildFieldPath(invalidFormat), String.format(INVALID_VALUE_MESSAGE, invalidFormat.getValue())))
+          .build();
+    }
+    return GeneralErrorResponse.builder()
+        .message(UNREADABLE_BODY_MESSAGE)
+        .build();
+  }
+
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   @ExceptionHandler(Exception.class)
   public GeneralErrorResponse handleException(Exception ex) {
@@ -125,5 +144,17 @@ public class ExceptionHandlerController {
     return GeneralErrorResponse.builder()
         .message(ex.getMessage())
         .build();
+  }
+
+  private String buildFieldPath(JacksonException ex) {
+    var path = new StringBuilder();
+    for (var reference : ex.getPath()) {
+      if (reference.getPropertyName() == null) {
+        path.append('[').append(reference.getIndex()).append(']');
+      } else {
+        path.append(path.isEmpty() ? "" : ".").append(reference.getPropertyName());
+      }
+    }
+    return path.toString();
   }
 }

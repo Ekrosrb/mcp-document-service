@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'com.ekros.hl.doc'
-version = '0.0.1'
+version = '1.0.0'
 
 dependencies {
     def sdkPlatform = platform('com.ekros.hl:hl-dependency-platform:0.0.+')

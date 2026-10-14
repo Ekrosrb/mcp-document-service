@@ -11,7 +11,6 @@ import com.ekros.hl.doc.repository.DocumentRepository;
 import com.ekros.hl.doc.repository.ProjectRepository;
 import com.ekros.hl.doc.repository.model.DocumentData;
 import com.ekros.hl.doc.repository.model.DocumentKind;
-import com.ekros.hl.doc.repository.model.ProjectData;
 import com.ekros.hl.doc.repository.specification.DocumentSearchSpecifications;
 import com.ekros.hl.doc.service.DocumentService;
 import lombok.RequiredArgsConstructor;
@@ -73,10 +72,10 @@ public class DocumentServiceImpl implements DocumentService {
       throw new DocumentMemoryTypeChangeException(documentData.getId());
     }
 
+    updateProjectIfPresent(request.getProjectKey());
+
     documentMapper.updateDocument(documentData, request);
     documentData.setUpdatedAt(Timestamp.from(Instant.now()));
-
-    updateProjectIfPresent(request.getProjectKey());
     documentRepository.save(documentData);
   }
 
@@ -181,13 +180,9 @@ public class DocumentServiceImpl implements DocumentService {
   }
 
   private void updateProjectIfPresent(String projectKey) {
-    if (StringUtils.isBlank(projectKey) || projectRepository.existsByProjectKey(projectKey)) {
-      return;
+    if (StringUtils.isNotBlank(projectKey) && projectRepository.insertIfAbsent(projectKey) > 0) {
+      log.info("New project [{}] is created", projectKey);
     }
-
-    var project = ProjectData.builder().projectKey(projectKey).build();
-    project = projectRepository.save(project);
-    log.info("New project [{}] is created with id [{}]", project.getProjectKey(), project.getId());
   }
 
   private void populateWithReferencedBy(DocumentResponse documentResponse) {

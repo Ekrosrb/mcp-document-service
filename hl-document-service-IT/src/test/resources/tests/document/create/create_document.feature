@@ -104,3 +104,15 @@ Feature: Create document
     Then the response status is 400
     And the response body matches "expected/responses/duplicate_relations.json"
     And the rows of table "document" where "author_name" is "${authorName}" match "expected/database/no_documents.json"
+
+  Scenario: An unknown enum value is rejected
+    When I send a POST request to "/api/v1/document" with body "input/document_with_unknown_kind.json"
+    Then the response status is 400
+    And the response body matches "expected/responses/unknown_kind.json"
+    And the rows of table "document" where "author_name" is "${authorName}" match "expected/database/no_documents.json"
+
+  Scenario: An unknown enum value inside a relation is rejected with its path
+    When I send a POST request to "/api/v1/document" with body "input/document_with_unknown_relation_type.json"
+    Then the response status is 400
+    And the response body matches "expected/responses/unknown_relation_type.json"
+    And the rows of table "document" where "author_name" is "${authorName}" match "expected/database/no_documents.json"
