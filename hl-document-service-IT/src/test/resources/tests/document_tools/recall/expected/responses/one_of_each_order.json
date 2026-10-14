@@ -1,0 +1,12 @@
+{
+  "matches": [
+    {
+      "id": "${bestMatchId}"
+    }
+  ],
+  "linked": [
+    {
+      "id": "${extensionId}"
+    }
+  ]
+}

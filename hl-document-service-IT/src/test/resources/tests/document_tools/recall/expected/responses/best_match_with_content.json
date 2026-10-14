@@ -1,0 +1,10 @@
+{
+  "matches": [
+    {
+      "id": "${bestMatchId}",
+      "summary": "Release checklist",
+      "content": "Check topic${topicId} and subject${subjectId} before a release."
+    }
+  ],
+  "linked": []
+}

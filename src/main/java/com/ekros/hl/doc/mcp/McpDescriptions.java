@@ -28,6 +28,11 @@ public final class McpDescriptions {
   public static final String SEARCH_MEMORIES = "Find memories by filters, memory type and/or a full-text query. "
       + "Call it before starting a task. Returns id, name and metadata; "
       + "use the include flags or getDocument for the text. " + SEARCH_ORDER;
+  public static final String RECALL = "Gather what is known for a task you are about to start. Call it first. "
+      + "Returns matches: memories and documents containing any word of the task, most relevant first; "
+      + "and linked: entries linked to the matches in either direction, nearest first. "
+      + "Each entry comes with its summary and relations; replaced entries are left out. "
+      + "Use getDocument for the full text, searchMemories or searchDocuments for exact filters.";
   public static final String GET_PROJECTS_INFO = "List project keys with the number of documents in each. "
       + "Use it to find the projectKey to filter by.";
 
@@ -84,6 +89,18 @@ public final class McpDescriptions {
   public static final String INCLUDE_SUPERSEDED = "Also return entries replaced by a newer one "
       + "(targets of a SUPERSEDES relation). Default false. If nothing current matches, retry with true and "
       + "includeRelations; referencedBy then shows the newer entry.";
+
+  public static final String RECALL_TASK = "What you are about to do, in a sentence or a few keywords. "
+      + "Its words are matched against name, summary and content; it is not semantic, "
+      + "so use words likely to appear in the text.";
+  public static final String RECALL_PROJECT_KEY = "Key of the project you work in. "
+      + "Entries of other projects are left out; global and agent entries stay. Default: all projects.";
+  public static final String RECALL_LIMIT = "Maximum number of matches, and separately of linked entries, 1 to 50. "
+      + "Default 10.";
+  public static final String RECALL_DEPTH = "How many links to follow from the matches, 0 to 2. Default 1; "
+      + "0 returns no linked entries.";
+  public static final String RECALL_INCLUDE_CONTENT = "Add the full content to each entry. Default false; "
+      + "costly when there are many entries.";
 
   public static final String RELATION_DOCUMENT_ID = "Id of the source: the document the relation starts from.";
   public static final String RELATION_RELATED_DOCUMENT_ID = "Id of the target document.";

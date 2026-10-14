@@ -1,0 +1,30 @@
+[
+  {
+    "id": "${bestMatchContentId}",
+    "content": "Check topic${topicId} and subject${subjectId} before a release."
+  },
+  {
+    "id": "${partialMatchContentId}",
+    "content": "Name every topic${topicId} in lower case."
+  },
+  {
+    "id": "${otherProjectMatchContentId}",
+    "content": "The subject${subjectId} moved."
+  },
+  {
+    "id": "${supersededContentId}",
+    "content": "Check topic${topicId} only."
+  },
+  {
+    "id": "${dependencyContentId}",
+    "content": "How to deploy the service."
+  },
+  {
+    "id": "${extensionContentId}",
+    "content": "Ship a hotfix the same way."
+  },
+  {
+    "id": "${secondHopContentId}",
+    "content": "Everything about operations."
+  }
+]

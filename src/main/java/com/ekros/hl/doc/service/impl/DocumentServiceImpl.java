@@ -19,13 +19,19 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -128,6 +134,26 @@ public class DocumentServiceImpl implements DocumentService {
   }
 
   @Override
+  @Transactional(readOnly = true)
+  public DocumentRecallResponse recall(DocumentRecallRequest request) {
+    log.info("Recalling context for project [{}] with depth [{}]", request.getProjectKey(), request.getDepth());
+    var query = DocumentSearchSpecifications.buildFreeTextQuery(request.getTask());
+    if (query.isEmpty()) {
+      return DocumentRecallResponse.builder().matches(List.of()).linked(List.of()).build();
+    }
+
+    var matchRequest = DocumentSearchRequest.builder().query(query.get()).build();
+    var matches = findDocuments(matchRequest,
+        DocumentSearchSpecifications.withoutOtherProjects(request.getProjectKey()), request.getLimit());
+    var linked = findLinkedDocuments(matches, request.getDepth(), request.getLimit());
+
+    return DocumentRecallResponse.builder()
+        .matches(mapToRecallResponses(matches, request.isIncludeContent()))
+        .linked(mapToRecallResponses(linked, request.isIncludeContent()))
+        .build();
+  }
+
+  @Override
   @Transactional
   public void createDocumentRelation(DocumentRelationCreateRequest request, boolean isMcp) {
     log.info("Creating new document relation for [{}] and [{}] with type [{}]",
@@ -170,6 +196,51 @@ public class DocumentServiceImpl implements DocumentService {
     var spec = DocumentSearchSpecifications.withFilters(request)
         .and(DocumentSearchSpecifications.withOrder(request));
     return documentRepository.findAll(spec, page);
+  }
+
+  private List<DocumentData> findDocuments(DocumentSearchRequest request, Specification<DocumentData> restriction, int limit) {
+    var spec = DocumentSearchSpecifications.withFilters(request)
+        .and(restriction)
+        .and(DocumentSearchSpecifications.withOrder(request));
+    return documentRepository.findAll(spec, PageRequest.of(0, limit)).getContent();
+  }
+
+  /**
+   * Returns the current entries linked in either direction to the given ones, up to the given number of hops,
+   * nearest first and then most recently updated first.
+   */
+  private List<DocumentData> findLinkedDocuments(List<DocumentData> documents, int depth, int limit) {
+    var visited = documents.stream().map(DocumentData::getId).collect(Collectors.toCollection(HashSet::new));
+    Set<Long> frontier = Set.copyOf(visited);
+    var linked = new ArrayList<DocumentData>();
+
+    for (var hop = 0; hop < depth && !frontier.isEmpty() && linked.size() < limit; hop++) {
+      var neighbourIds = documentRelationRepository.findAllByIdDocumentIdInOrIdRelatedDocumentIdIn(frontier, frontier)
+          .stream()
+          .flatMap(relation -> Stream.of(relation.getId().getDocumentId(), relation.getId().getRelatedDocumentId()))
+          .collect(Collectors.toCollection(HashSet::new));
+      neighbourIds.removeAll(visited);
+      visited.addAll(neighbourIds);
+      if (neighbourIds.isEmpty()) {
+        break;
+      }
+
+      var hopDocuments = findDocuments(DocumentSearchRequest.builder().build(),
+          DocumentSearchSpecifications.withIds(neighbourIds), limit - linked.size());
+      linked.addAll(hopDocuments);
+      frontier = hopDocuments.stream().map(DocumentData::getId).collect(Collectors.toSet());
+    }
+    return linked;
+  }
+
+  private List<DocumentResponse> mapToRecallResponses(List<DocumentData> documents, boolean includeContent) {
+    return documents.stream()
+        .map(doc -> {
+          var response = documentMapper.mapToDocumentResponseLight(doc, includeContent, true, true);
+          populateWithReferencedBy(response);
+          return response;
+        })
+        .toList();
   }
 
   private DocumentData getExistingDocumentReference(Long id) {

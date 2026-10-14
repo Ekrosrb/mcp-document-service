@@ -1,0 +1,76 @@
+matches[2]:
+  - id: ${bestMatchId}
+    kind: MEMORY
+    scope: PROJECT
+    type: TEXT
+    author: AGENT
+    memoryType: PROCEDURE
+    name: release-checklist
+    authorName: ${authorName}
+    projectKey: ${projectKey}
+    relations[1]{id,name,type}:
+      ${dependencyId},deployment-guide,DEPENDS_ON
+    referencedBy[1]{id,name,type}:
+      ${extensionId},hotfix-steps,EXTENDS
+    summary: Release checklist
+    content: null
+    customExtension: null
+    allowWrite: false
+    createdAt: "2026-01-01T09:00:00.000Z"
+    updatedAt: "2026-01-10T10:00:00.000Z"
+  - id: ${partialMatchId}
+    kind: MEMORY
+    scope: GLOBAL
+    type: TEXT
+    author: AGENT
+    memoryType: RULE
+    name: naming-rule
+    authorName: ${authorName}
+    projectKey: null
+    relations[1]{id,name,type}:
+      ${supersededId},old-checklist,SUPERSEDES
+    referencedBy: []
+    summary: Naming rule
+    content: null
+    customExtension: null
+    allowWrite: false
+    createdAt: "2026-01-01T09:00:00.000Z"
+    updatedAt: "2026-02-10T10:00:00.000Z"
+linked[2]:
+  - id: ${extensionId}
+    kind: MEMORY
+    scope: PROJECT
+    type: TEXT
+    author: AGENT
+    memoryType: PROCEDURE
+    name: hotfix-steps
+    authorName: ${authorName}
+    projectKey: ${projectKey}
+    relations[1]{id,name,type}:
+      ${bestMatchId},release-checklist,EXTENDS
+    referencedBy: []
+    summary: Hotfix steps
+    content: null
+    customExtension: null
+    allowWrite: false
+    createdAt: "2026-01-01T09:00:00.000Z"
+    updatedAt: "2026-01-20T10:00:00.000Z"
+  - id: ${dependencyId}
+    kind: DOCUMENT
+    scope: PROJECT
+    type: MARKDOWN
+    author: HUMAN
+    memoryType: null
+    name: deployment-guide
+    authorName: ${authorName}
+    projectKey: ${projectKey}
+    relations[1]{id,name,type}:
+      ${secondHopId},operations-handbook,PART_OF
+    referencedBy[1]{id,name,type}:
+      ${bestMatchId},release-checklist,DEPENDS_ON
+    summary: Deployment guide
+    content: null
+    customExtension: null
+    allowWrite: false
+    createdAt: "2026-01-01T09:00:00.000Z"
+    updatedAt: "2026-01-05T10:00:00.000Z"

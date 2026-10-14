@@ -16,6 +16,11 @@ Feature: MCP tool getDocument
     Then the MCP tool call succeeds
     And the MCP tool result decoded from TOON matches "expected/responses/document_without_content.json"
 
+  Scenario: The content is left out when includeContent is omitted
+    When I call the MCP tool "getDocument" with arguments "input/existing_document_by_id_only.json"
+    Then the MCP tool call succeeds
+    And the MCP tool result decoded from TOON matches "expected/responses/document_without_content.json"
+
   Scenario: An unknown document is reported as not found
     Given the variable "targetId" is "${unknownId}"
     When I call the MCP tool "getDocument" with arguments "input/document_with_content.json"

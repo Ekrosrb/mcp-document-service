@@ -59,7 +59,8 @@ usage instructions to the client when it connects.
 
 | Tool                     | What it does                                                                 |
 |--------------------------|------------------------------------------------------------------------------|
-| `searchMemories`         | Find memories by filters, memory type and/or a full-text query. Agents should call it before starting a task. |
+| `recall`                 | Gather context for a task: entries matching the task's words and the entries linked to them. Agents should call it before starting a task. |
+| `searchMemories`         | Find memories by filters, memory type and/or a full-text query.              |
 | `searchDocuments`        | Find documents by filters and/or a full-text query.                          |
 | `getDocument`            | Read one document or memory by id, with its relations and the entries that reference it. |
 | `createMemory`           | Store a short note: a decision, rule, fact, pitfall or status.               |
@@ -85,6 +86,18 @@ Every tool and parameter carries a description the agent can read.
 - Results come most relevant first when a query is given, otherwise most recently updated first.
 - Entries replaced by another one (the target of `SUPERSEDES`) are hidden unless `includeSuperseded` is set.
 - Results are paged, 10 per page by default. MCP allows at most 50 per page.
+
+### How recall works
+
+- The task is plain text. Entries containing any of its words match, those with more of the words
+  first. Search syntax in the task is treated as plain words.
+- With a `projectKey`, entries of other projects are left out; global and agent entries stay.
+- From the matches, recall follows relations in both directions for `depth` steps (default 1, at
+  most 2) and returns those entries as `linked`, nearest first, then most recently updated first.
+  Linked entries are not filtered by project, because a link is deliberate.
+- Replaced entries (targets of `SUPERSEDES`) are left out of both lists.
+- `limit` caps the matches and, separately, the linked entries (default 10, at most 50).
+- Every entry comes with its summary and relations; the content only with `includeContent`.
 
 ## REST API
 

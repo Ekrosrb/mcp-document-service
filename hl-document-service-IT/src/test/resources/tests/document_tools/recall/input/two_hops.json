@@ -1,0 +1,5 @@
+{
+  "task": "topic${topicId} subject${subjectId}",
+  "projectKey": "${projectKey}",
+  "depth": 2
+}

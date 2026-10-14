@@ -1,0 +1,4 @@
+{
+  "task": "topic${topicId}",
+  "depth": 3
+}

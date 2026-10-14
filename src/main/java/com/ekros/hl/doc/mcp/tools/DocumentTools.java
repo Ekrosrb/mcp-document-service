@@ -1,5 +1,6 @@
 package com.ekros.hl.doc.mcp.tools;
 
+import com.ekros.hl.doc.controller.model.document.DocumentRecallRequest;
 import com.ekros.hl.doc.controller.model.document.DocumentRelationCreateRequest;
 import com.ekros.hl.doc.controller.model.document.DocumentRelationRemoveRequest;
 import com.ekros.hl.doc.controller.model.document.DocumentSearchRequest;
@@ -10,6 +11,7 @@ import com.ekros.hl.doc.mcp.model.*;
 import com.ekros.hl.doc.service.DocumentService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
@@ -65,9 +67,10 @@ public class DocumentTools {
 
   @McpTool(name = "getDocument", description = McpDescriptions.GET_DOCUMENT)
   public String getDocument(@McpToolParam(description = McpDescriptions.ID) @Positive Long id,
-                            @McpToolParam(description = McpDescriptions.GET_INCLUDE_CONTENT, required = false) boolean includeContent, McpSyncRequestContext context) {
+                            @McpToolParam(description = McpDescriptions.GET_INCLUDE_CONTENT, required = false) Boolean includeContent, McpSyncRequestContext context) {
     log.info("Received mcp request to get document by id from: [{}]", getAgentName(context));
-    return toonConverter.toToon(documentMapper.mapToDocumentMcpResponse(documentService.getDocument(id, includeContent)));
+    return toonConverter.toToon(documentMapper.mapToDocumentMcpResponse(
+        documentService.getDocument(id, Boolean.TRUE.equals(includeContent))));
   }
 
   @McpTool(name = "createDocumentRelation", description = McpDescriptions.CREATE_DOCUMENT_RELATION)
@@ -100,6 +103,24 @@ public class DocumentTools {
     log.info("Received mcp request to search memories from [{}]", getAgentName(context));
     return toonConverter.toToon(documentMapper.mapToDocumentMcpResponses(
         documentService.search(documentMapper.mapToMemorySearchRequest(request), buildPageable(page, size)).getContent()));
+  }
+
+  @McpTool(name = "recall", description = McpDescriptions.RECALL)
+  public String recall(@McpToolParam(description = McpDescriptions.RECALL_TASK) @NotBlank String task,
+                       @McpToolParam(description = McpDescriptions.RECALL_PROJECT_KEY, required = false) String projectKey,
+                       @McpToolParam(description = McpDescriptions.RECALL_LIMIT, required = false) @Positive @Max(DocumentRecallRequest.MAX_LIMIT) Integer limit,
+                       @McpToolParam(description = McpDescriptions.RECALL_DEPTH, required = false) @PositiveOrZero @Max(DocumentRecallRequest.MAX_DEPTH) Integer depth,
+                       @McpToolParam(description = McpDescriptions.RECALL_INCLUDE_CONTENT, required = false) Boolean includeContent,
+                       McpSyncRequestContext context) {
+    log.info("Received mcp request to recall context from [{}]", getAgentName(context));
+    var request = DocumentRecallRequest.builder()
+        .task(task)
+        .projectKey(projectKey)
+        .limit(Optional.ofNullable(limit).orElse(DocumentRecallRequest.DEFAULT_LIMIT))
+        .depth(Optional.ofNullable(depth).orElse(DocumentRecallRequest.DEFAULT_DEPTH))
+        .includeContent(Boolean.TRUE.equals(includeContent))
+        .build();
+    return toonConverter.toToon(documentMapper.mapToRecallMcpResponse(documentService.recall(request)));
   }
 
   private Pageable buildPageable(Integer page, Integer size) {

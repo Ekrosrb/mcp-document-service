@@ -1,0 +1,22 @@
+{
+  "matches": [
+    {
+      "id": "${bestMatchId}"
+    },
+    {
+      "id": "${partialMatchId}"
+    }
+  ],
+  "linked": [
+    {
+      "id": "${extensionId}"
+    },
+    {
+      "id": "${dependencyId}"
+    },
+    {
+      "id": "${secondHopId}",
+      "name": "operations-handbook"
+    }
+  ]
+}

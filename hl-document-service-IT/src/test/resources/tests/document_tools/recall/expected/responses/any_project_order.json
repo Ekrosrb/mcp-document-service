@@ -1,0 +1,22 @@
+{
+  "matches": [
+    {
+      "id": "${bestMatchId}"
+    },
+    {
+      "id": "${otherProjectMatchId}",
+      "projectKey": "${otherProjectKey}"
+    },
+    {
+      "id": "${partialMatchId}"
+    }
+  ],
+  "linked": [
+    {
+      "id": "${extensionId}"
+    },
+    {
+      "id": "${dependencyId}"
+    }
+  ]
+}

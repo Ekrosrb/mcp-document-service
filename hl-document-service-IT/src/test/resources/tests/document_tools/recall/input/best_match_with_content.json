@@ -1,0 +1,7 @@
+{
+  "task": "topic${topicId} subject${subjectId}",
+  "projectKey": "${projectKey}",
+  "limit": 1,
+  "depth": 0,
+  "includeContent": true
+}

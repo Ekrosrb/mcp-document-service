@@ -1,0 +1,4 @@
+{
+  "task": "topic${topicId} subject${subjectId}",
+  "projectKey": "${projectKey}"
+}

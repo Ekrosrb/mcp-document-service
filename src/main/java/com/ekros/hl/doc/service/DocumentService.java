@@ -17,6 +17,8 @@ public interface DocumentService {
 
   Page<DocumentResponse> search(DocumentSearchRequest request, Pageable pageable);
 
+  DocumentRecallResponse recall(DocumentRecallRequest request);
+
   void createDocumentRelation(DocumentRelationCreateRequest request, boolean isMcp);
 
   void removeDocumentRelation(DocumentRelationRemoveRequest request, boolean isMcp);

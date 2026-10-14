@@ -12,6 +12,8 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -21,7 +23,8 @@ public class DocumentSearchSpecifications {
   private static final String SEARCH_VECTOR_RANK = "ts_rank(?, websearch_to_tsquery('english'::regconfig, ?))";
   private static final Pattern QUERY_SYNTAX = Pattern.compile("\"|(^|\\s)-|(^|\\s)or(\\s|$)", Pattern.CASE_INSENSITIVE);
   private static final Pattern NON_WORD = Pattern.compile("[^\\p{L}\\p{N}]+");
-  private static final String ANY_WORD_SEPARATOR = " or ";
+  private static final String OR_OPERATOR = "or";
+  private static final String ANY_WORD_SEPARATOR = " " + OR_OPERATOR + " ";
 
   public static Specification<DocumentData> withFilters(DocumentSearchRequest searchRequest) {
     return (root, query, criteriaBuilder) -> {
@@ -83,11 +86,45 @@ public class DocumentSearchSpecifications {
       return Optional.empty();
     }
 
-    var words = Arrays.stream(NON_WORD.split(query))
+    var words = extractWords(query);
+    return words.size() < 2 ? Optional.empty() : Optional.of(String.join(ANY_WORD_SEPARATOR, words));
+  }
+
+  /**
+   * Rewrites free text, such as a task description, into a query that matches any of its words.
+   * Search syntax in the text is treated as plain words. Returns empty when the text has no words.
+   */
+  public static Optional<String> buildFreeTextQuery(String text) {
+    if (StringUtils.isBlank(text)) {
+      return Optional.empty();
+    }
+
+    var words = extractWords(text).stream()
+        .filter(word -> !OR_OPERATOR.equalsIgnoreCase(word))
+        .toList();
+    return words.isEmpty() ? Optional.empty() : Optional.of(String.join(ANY_WORD_SEPARATOR, words));
+  }
+
+  /**
+   * Leaves out entries that belong to a project other than the given one. Keeps everything when no project is given.
+   */
+  public static Specification<DocumentData> withoutOtherProjects(String projectKey) {
+    return (root, query, criteriaBuilder) -> StringUtils.isBlank(projectKey)
+        ? criteriaBuilder.conjunction()
+        : criteriaBuilder.or(
+            criteriaBuilder.isNull(root.get("projectKey")),
+            criteriaBuilder.equal(root.get("projectKey"), projectKey));
+  }
+
+  public static Specification<DocumentData> withIds(Collection<Long> ids) {
+    return (root, query, criteriaBuilder) -> root.get("id").in(ids);
+  }
+
+  private static List<String> extractWords(String text) {
+    return Arrays.stream(NON_WORD.split(text))
         .filter(StringUtils::isNotBlank)
         .distinct()
         .toList();
-    return words.size() < 2 ? Optional.empty() : Optional.of(String.join(ANY_WORD_SEPARATOR, words));
   }
 
   /**

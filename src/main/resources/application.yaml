@@ -22,9 +22,9 @@ spring:
         version: 1.0.0
         instructions: >-
           Shared store of documents (reference material, usually written by people) and memories
-          (short notes written by agents). Before a task call searchMemories, and searchDocuments
-          when you need reference material; filter by projectKey when you work in a project.
-          Search returns ids, names and metadata only; call getDocument for the full text.
+          (short notes written by agents). Before a task call recall with the task and, when you work
+          in a project, its projectKey. Use searchMemories and searchDocuments for exact filters.
+          Neither returns the full text by default; call getDocument for it.
           When you learn something that will stay true after this conversation, save it with
           createMemory. When an entry replaces an older one, link them with createDocumentRelation
           and type SUPERSEDES; search then leaves the older one out. You can update or remove only entries whose allowWrite is true.

@@ -102,6 +102,8 @@ public interface DocumentMapper {
 
   List<DocumentMcpResponse> mapToDocumentMcpResponses(List<DocumentResponse> responses);
 
+  RecallMcpResponse mapToRecallMcpResponse(DocumentRecallResponse response);
+
   @Named("mapMemoryType")
   default MemoryType mapMemoryType(DocumentCreateRequest request) {
     if (request.getKind() != DocumentKind.MEMORY) {

@@ -1,0 +1,22 @@
+[
+  {
+    "document_id": "${bestMatchId}",
+    "related_document_id": "${dependencyId}",
+    "type": "DEPENDS_ON"
+  },
+  {
+    "document_id": "${partialMatchId}",
+    "related_document_id": "${supersededId}",
+    "type": "SUPERSEDES"
+  },
+  {
+    "document_id": "${extensionId}",
+    "related_document_id": "${bestMatchId}",
+    "type": "EXTENDS"
+  },
+  {
+    "document_id": "${dependencyId}",
+    "related_document_id": "${secondHopId}",
+    "type": "PART_OF"
+  }
+]
