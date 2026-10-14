@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,8 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 public class DocumentServiceImpl implements DocumentService {
+
+  private static final Sort DELETED_ORDER = Sort.by(Sort.Order.desc("deletedAt"), Sort.Order.desc("id"));
 
   private final DocumentRepository documentRepository;
   private final DocumentRelationRepository documentRelationRepository;
@@ -69,7 +72,7 @@ public class DocumentServiceImpl implements DocumentService {
   @Transactional
   public void updateDocument(Long id, DocumentUpdateRequest request, boolean isMcp) {
     log.info("Updating document with id [{}]", id);
-    var documentData = documentRepository.findById(id)
+    var documentData = documentRepository.findByIdAndDeletedAtIsNull(id)
         .orElseThrow(() -> new DocumentNotFoundException(id));
 
     validateAllowMcpWrite(documentData, isMcp);
@@ -88,24 +91,54 @@ public class DocumentServiceImpl implements DocumentService {
   @Override
   @Transactional(readOnly = true)
   public DocumentResponse getDocument(Long id, boolean includeContent) {
-    return documentRepository.findById(id)
-        .map(doc -> documentMapper.mapToDocumentResponse(doc, includeContent))
-        .map(doc -> {
-          populateWithReferencedBy(doc);
-          return doc;
-        })
+    return documentRepository.findByIdAndDeletedAtIsNull(id)
+        .map(doc -> mapToDocumentResponse(doc, includeContent))
         .orElseThrow(() -> new DocumentNotFoundException(id));
   }
 
   @Override
+  @Transactional
   public void removeDocument(Long id, boolean isMcp) {
-    log.info("Removing document with id [{}]", id);
+    log.info("Marking document with id [{}] as deleted", id);
 
-    documentRepository.findById(id)
+    documentRepository.findByIdAndDeletedAtIsNull(id)
         .ifPresent(documentData -> {
           validateAllowMcpWrite(documentData, isMcp);
-          documentRepository.delete(documentData);
+          documentRepository.markDeleted(id, Timestamp.from(Instant.now()));
         });
+  }
+
+  @Override
+  @Transactional
+  public void removeDocumentPermanently(Long id) {
+    log.info("Removing document with id [{}] permanently", id);
+    documentRepository.findById(id).ifPresent(documentRepository::delete);
+  }
+
+  @Override
+  @Transactional
+  public void restoreDocument(Long id) {
+    log.info("Restoring document with id [{}]", id);
+    if (!documentRepository.existsById(id)) {
+      throw new DocumentNotFoundException(id);
+    }
+    documentRepository.clearDeleted(id);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<DocumentResponse> getDeletedDocuments(Pageable pageable) {
+    var page = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), DELETED_ORDER);
+    return documentRepository.findAllByDeletedAtIsNotNull(page)
+        .map(doc -> documentMapper.mapToDocumentResponseLight(doc, false, true, false));
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public DocumentResponse getDeletedDocument(Long id, boolean includeContent) {
+    return documentRepository.findByIdAndDeletedAtIsNotNull(id)
+        .map(doc -> mapToDocumentResponse(doc, includeContent))
+        .orElseThrow(() -> new DocumentNotFoundException(id));
   }
 
   @Override
@@ -161,12 +194,12 @@ public class DocumentServiceImpl implements DocumentService {
     long documentId = request.getDocumentId();
     long relatedDocumentId = request.getRelatedDocumentId();
 
-    documentRepository.findById(documentId)
+    documentRepository.findByIdAndDeletedAtIsNull(documentId)
         .ifPresentOrElse(documentData -> validateAllowMcpWrite(documentData, isMcp), () -> {
           throw new DocumentNotFoundException(documentId);
         });
 
-    if (!documentRepository.existsById(relatedDocumentId)) {
+    if (!documentRepository.existsByIdAndDeletedAtIsNull(relatedDocumentId)) {
       throw new DocumentNotFoundException(relatedDocumentId);
     }
 
@@ -244,7 +277,7 @@ public class DocumentServiceImpl implements DocumentService {
   }
 
   private DocumentData getExistingDocumentReference(Long id) {
-    if (!documentRepository.existsById(id)) {
+    if (!documentRepository.existsByIdAndDeletedAtIsNull(id)) {
       throw new DocumentNotFoundException(id);
     }
     return documentRepository.getReferenceById(id);
@@ -256,8 +289,14 @@ public class DocumentServiceImpl implements DocumentService {
     }
   }
 
+  private DocumentResponse mapToDocumentResponse(DocumentData documentData, boolean includeContent) {
+    var response = documentMapper.mapToDocumentResponse(documentData, includeContent);
+    populateWithReferencedBy(response);
+    return response;
+  }
+
   private void populateWithReferencedBy(DocumentResponse documentResponse) {
-    var referencedBy = documentRelationRepository.findAllByIdRelatedDocumentId(documentResponse.getId())
+    var referencedBy = documentRelationRepository.findAllByIdRelatedDocumentIdAndDocumentDeletedAtIsNull(documentResponse.getId())
         .stream().map(documentMapper::mapToReferencingDocumentRelation).toList();
     documentResponse.setReferencedBy(referencedBy);
   }

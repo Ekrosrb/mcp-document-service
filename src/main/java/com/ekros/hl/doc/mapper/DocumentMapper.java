@@ -7,6 +7,7 @@ import org.mapstruct.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
@@ -64,6 +65,19 @@ public interface DocumentMapper {
   @Mapping(target = "id", source = "id.relatedDocumentId")
   @Mapping(target = "name", source = "documentRelationData.relatedDocument.name")
   DocumentRelation mapToDocumentRelation(DocumentRelationData documentRelationData);
+
+  /**
+   * Maps the outgoing relations of a document, leaving out those that point to deleted documents.
+   */
+  default List<DocumentRelation> mapToLiveDocumentRelations(Set<DocumentRelationData> relations) {
+    if (relations == null) {
+      return null;
+    }
+    return relations.stream()
+        .filter(relation -> relation.getRelatedDocument().getDeletedAt() == null)
+        .map(this::mapToDocumentRelation)
+        .toList();
+  }
 
   @Named("mapToReferencingDocumentRelation")
   @Mapping(target = "id", source = "id.documentId")

@@ -16,8 +16,8 @@ public final class McpDescriptions {
       + "and referencedBy (incoming).";
   public static final String UPDATE_DOCUMENT = "Change fields of a document or memory. Omitted fields stay as they are. "
       + "Fails when allowWrite is false.";
-  public static final String REMOVE_DOCUMENT = "Delete a document or memory together with its relations. "
-      + "Fails when allowWrite is false.";
+  public static final String REMOVE_DOCUMENT = "Delete a document or memory. It disappears from search, recall "
+      + "and getDocument, and links to it are hidden; only a person can restore it. Fails when allowWrite is false.";
   public static final String CREATE_DOCUMENT_RELATION = "Link two documents or memories. "
       + "Requires allowWrite on documentId only.";
   public static final String REMOVE_DOCUMENT_RELATION = "Unlink two documents or memories. "

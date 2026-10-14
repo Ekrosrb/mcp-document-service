@@ -1,0 +1,6 @@
+{
+  "message": "Document with id [${targetId}] not found",
+  "metadata": {
+    "id": "${targetId}"
+  }
+}

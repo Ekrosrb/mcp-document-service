@@ -18,6 +18,14 @@ public interface DocumentApi {
 
   void removeDocument(@Positive @PathVariable Long id);
 
+  void removeDocumentPermanently(@Positive @PathVariable Long id);
+
+  void restoreDocument(@Positive @PathVariable Long id);
+
+  Page<DocumentResponse> getDeletedDocuments(@PageableDefault(size = DocumentSearchRequest.DEFAULT_PAGE_SIZE) Pageable pageable);
+
+  DocumentResponse getDeletedDocument(@Positive @PathVariable Long id, @RequestParam(required = false, defaultValue = "false") boolean includeContent);
+
   DocumentResponse getDocument(@Positive @PathVariable Long id, @RequestParam(required = false, defaultValue = "false") boolean includeContent);
 
   Page<DocumentResponse> search(@Valid @RequestBody DocumentSearchRequest request,

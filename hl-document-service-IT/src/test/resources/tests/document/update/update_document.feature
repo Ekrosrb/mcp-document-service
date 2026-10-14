@@ -30,7 +30,15 @@ Feature: Update document
     And the rows of table "project" where "project_key" is "${newProjectKey}" match "expected/database/new_project.json"
 
   Scenario: Updating an unknown document is reported as not found
+    Given the variable "targetId" is "${unknownId}"
     When I send a PUT request to "/api/v1/document/${unknownId}" with body "input/content_only.json"
+    Then the response status is 404
+    And the response body matches "expected/responses/document_not_found.json"
+
+  Scenario: Updating a deleted document is reported as not found
+    Given I send a DELETE request to "/api/v1/document/${documentId}"
+    And the variable "targetId" is "${documentId}"
+    When I send a PUT request to "/api/v1/document/${documentId}" with body "input/content_only.json"
     Then the response status is 404
     And the response body matches "expected/responses/document_not_found.json"
 

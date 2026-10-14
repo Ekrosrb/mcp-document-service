@@ -10,20 +10,14 @@ import java.util.List;
 
 @Repository
 public interface DocumentRelationRepository extends JpaRepository<DocumentRelationData, DocumentRelationId> {
-
   /**
-   * Returns the relations that start at the given document.
+   * Returns the relations that point to the given document from documents that are not deleted.
    */
-  List<DocumentRelationData> findAllByIdDocumentId(Long documentId);
-
-  /**
-   * Returns the relations that point to the given document.
-   */
-  List<DocumentRelationData> findAllByIdRelatedDocumentId(Long relatedDocumentId);
+  List<DocumentRelationData> findAllByIdRelatedDocumentIdAndDocumentDeletedAtIsNull(Long relatedDocumentId);
 
   /**
    * Returns the relations that start at or point to any of the given documents.
    */
   List<DocumentRelationData> findAllByIdDocumentIdInOrIdRelatedDocumentIdIn(Collection<Long> documentIds,
-                                                                           Collection<Long> relatedDocumentIds);
+                                                                            Collection<Long> relatedDocumentIds);
 }

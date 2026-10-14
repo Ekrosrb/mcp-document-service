@@ -80,6 +80,9 @@ public class DocumentData {
   @Column(name = "updated_at")
   private Timestamp updatedAt;
 
+  @Column(name = "deleted_at")
+  private Timestamp deletedAt;
+
   @Builder.Default
   @ToString.Exclude
   @EqualsAndHashCode.Exclude

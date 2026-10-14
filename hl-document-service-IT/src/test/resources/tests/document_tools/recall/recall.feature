@@ -36,6 +36,13 @@ Feature: MCP tool recall
     Then the MCP tool call succeeds
     And the MCP tool result decoded from TOON contains the fields from "expected/responses/best_match_with_content.json" in order
 
+  Scenario: Deleted entries are left out and the entry a deleted one replaced is current again
+    Given I send a DELETE request to "/api/v1/document/${partialMatchId}"
+    And I send a DELETE request to "/api/v1/document/${extensionId}"
+    When I call the MCP tool "recall" with arguments "input/project_task.json"
+    Then the MCP tool call succeeds
+    And the MCP tool result decoded from TOON contains the fields from "expected/responses/without_deleted_order.json" in order
+
   Scenario: A task without words recalls nothing
     When I call the MCP tool "recall" with arguments "input/task_without_words.json"
     Then the MCP tool call succeeds

@@ -1,6 +1,6 @@
 {
-  "message": "Document with id [${unknownId}] not found",
+  "message": "Document with id [${relatedId}] not found",
   "metadata": {
-    "id": "${unknownId}"
+    "id": "${relatedId}"
   }
 }

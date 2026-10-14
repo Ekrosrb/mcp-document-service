@@ -44,6 +44,32 @@ public class DocumentController implements DocumentApi {
   }
 
   @Override
+  @ResponseStatus(OK)
+  @DeleteMapping("/{id}/permanent")
+  public void removeDocumentPermanently(@Positive @PathVariable Long id) {
+    documentService.removeDocumentPermanently(id);
+  }
+
+  @Override
+  @ResponseStatus(OK)
+  @PostMapping("/{id}/restore")
+  public void restoreDocument(@Positive @PathVariable Long id) {
+    documentService.restoreDocument(id);
+  }
+
+  @Override
+  @GetMapping("/deleted")
+  public Page<DocumentResponse> getDeletedDocuments(@PageableDefault(size = DocumentSearchRequest.DEFAULT_PAGE_SIZE) Pageable pageable) {
+    return documentService.getDeletedDocuments(pageable);
+  }
+
+  @Override
+  @GetMapping("/deleted/{id}")
+  public DocumentResponse getDeletedDocument(@Positive @PathVariable Long id, @RequestParam(required = false, defaultValue = "false") boolean includeContent) {
+    return documentService.getDeletedDocument(id, includeContent);
+  }
+
+  @Override
   @GetMapping("/{id}")
   public DocumentResponse getDocument(@Positive @PathVariable Long id, @RequestParam(required = false, defaultValue = "false") boolean includeContent) {
     return documentService.getDocument(id, includeContent);

@@ -1,0 +1,16 @@
+{
+  "matches": [
+    {
+      "id": "${bestMatchId}"
+    },
+    {
+      "id": "${supersededId}",
+      "name": "old-checklist"
+    }
+  ],
+  "linked": [
+    {
+      "id": "${dependencyId}"
+    }
+  ]
+}

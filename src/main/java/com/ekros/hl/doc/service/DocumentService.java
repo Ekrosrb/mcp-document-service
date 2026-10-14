@@ -15,6 +15,14 @@ public interface DocumentService {
 
   void removeDocument(Long id, boolean isMcp);
 
+  void removeDocumentPermanently(Long id);
+
+  void restoreDocument(Long id);
+
+  Page<DocumentResponse> getDeletedDocuments(Pageable pageable);
+
+  DocumentResponse getDeletedDocument(Long id, boolean includeContent);
+
   Page<DocumentResponse> search(DocumentSearchRequest request, Pageable pageable);
 
   DocumentRecallResponse recall(DocumentRecallRequest request);

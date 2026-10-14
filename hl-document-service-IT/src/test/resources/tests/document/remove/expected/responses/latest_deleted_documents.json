@@ -1,0 +1,16 @@
+{
+  "content": [
+    {
+      "id": "${deletedNewerId}",
+      "name": "wrong-note",
+      "summary": "Wrong note",
+      "deletedAt": "2999-02-01T10:00:00.000Z"
+    },
+    {
+      "id": "${deletedOlderId}",
+      "name": "outdated-plan",
+      "summary": "Outdated plan",
+      "deletedAt": "2999-01-01T10:00:00.000Z"
+    }
+  ]
+}

@@ -35,4 +35,5 @@ public class DocumentResponse {
   private Boolean allowMcpWrite;
   private Timestamp createdAt;
   private Timestamp updatedAt;
+  private Timestamp deletedAt;
 }

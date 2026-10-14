@@ -48,3 +48,9 @@ Feature: MCP tool searchMemories
     When I call the MCP tool "searchMemories" with arguments "input/first_page_of_one.json"
     Then the MCP tool call succeeds
     And the MCP tool result decoded from TOON contains the fields from "expected/responses/newest_memory.json" in order
+
+  Scenario: A deleted memory is left out
+    Given I send a DELETE request to "/api/v1/document/${memoryId}"
+    When I call the MCP tool "searchMemories" with arguments "input/by_author_name.json"
+    Then the MCP tool call succeeds
+    And the MCP tool result decoded from TOON matches "expected/responses/no_documents.json"

@@ -7,5 +7,10 @@
   "${documentId}": "long",
   "${memoryId}": "long",
   "${documentContentId}": "long",
-  "${memoryContentId}": "long"
+  "${memoryContentId}": "long",
+  "${unknownId}": "long",
+  "${deletedOlderId}": "long",
+  "${deletedNewerId}": "long",
+  "${deletedOlderContentId}": "long",
+  "${deletedNewerContentId}": "long"
 }

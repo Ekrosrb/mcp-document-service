@@ -33,6 +33,14 @@ Feature: Create document relation
     And the response body matches "expected/responses/related_document_not_found.json"
     And the rows of table "document_relations" where "document_id" is "${documentId}" match "expected/database/no_relations.json"
 
+  Scenario: A relation to a deleted document is rejected
+    Given the variable "relatedId" is "${memoryId}"
+    And I send a DELETE request to "/api/v1/document/${memoryId}"
+    When I send a POST request to "/api/v1/document/relation" with body "input/relation.json"
+    Then the response status is 404
+    And the response body matches "expected/responses/related_document_not_found.json"
+    And the rows of table "document_relations" where "document_id" is "${documentId}" match "expected/database/no_relations.json"
+
   Scenario: A relation from a document to itself is rejected
     Given the variable "relatedId" is "${documentId}"
     When I send a POST request to "/api/v1/document/relation" with body "input/relation.json"
@@ -44,8 +52,14 @@ Feature: Create document relation
     Then the response status is 400
     And the response body matches "expected/responses/relation_without_type.json"
 
-  Scenario: Removing a related document removes the relation
+  Scenario: Removing a related document permanently removes the relation
+    Given the table "document_relations" contains the rows from "params/relations.json"
+    When I send a DELETE request to "/api/v1/document/${memoryId}/permanent"
+    Then the response status is 200
+    And the rows of table "document_relations" where "document_id" is "${documentId}" match "expected/database/no_relations.json"
+
+  Scenario: Deleting a related document keeps the relation for a restore
     Given the table "document_relations" contains the rows from "params/relations.json"
     When I send a DELETE request to "/api/v1/document/${memoryId}"
     Then the response status is 200
-    And the rows of table "document_relations" where "document_id" is "${documentId}" match "expected/database/no_relations.json"
+    And the rows of table "document_relations" where "document_id" is "${documentId}" match "params/relations.json"

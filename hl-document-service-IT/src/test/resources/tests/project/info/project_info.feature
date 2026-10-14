@@ -15,3 +15,9 @@ Feature: Projects info
     When I send a GET request to "/api/v1/project/info?size=1000"
     Then the response status is 200
     And the response body at "content" contains the element from "expected/responses/project_without_documents.json"
+
+  Scenario: Deleted documents are not counted
+    Given I send a DELETE request to "/api/v1/document/${memoryId}"
+    When I send a GET request to "/api/v1/project/info?size=1000"
+    Then the response status is 200
+    And the response body at "content" contains the element from "expected/responses/other_project_without_documents.json"

@@ -52,6 +52,13 @@ Entries can be **related**. A relation reads "source `<type>` target":
 - The flag can only be changed through REST.
 - Creating or removing a relation needs write access to the source entry only.
 
+**Deleting.** Deleting an entry only marks it as deleted (soft delete); this is what the MCP tool and
+`DELETE /document/{id}` do.
+- A deleted entry disappears from search, recall, `getDocument` and project counts. Links to and from it
+  are hidden but kept, so a restore brings everything back.
+- If a deleted entry replaced another one (`SUPERSEDES`), the replaced entry shows up in search again.
+- Only the REST API can list, read, restore or permanently remove deleted entries.
+
 ## MCP tools
 
 The MCP endpoint is `http://<host>:55535/mcp` (streamable HTTP). The server also sends short
@@ -66,7 +73,7 @@ usage instructions to the client when it connects.
 | `createMemory`           | Store a short note: a decision, rule, fact, pitfall or status.               |
 | `createDocument`         | Store a long-form document.                                                  |
 | `updateDocument`         | Change fields of an entry; omitted fields stay as they are.                  |
-| `removeDocument`         | Delete an entry together with its relations.                                 |
+| `removeDocument`         | Delete an entry (soft delete). Only a person can restore or permanently remove it. |
 | `createDocumentRelation` | Link two entries.                                                            |
 | `removeDocumentRelation` | Unlink two entries.                                                          |
 | `getProjectsInfo`        | List project keys with the number of documents in each.                      |
@@ -85,6 +92,7 @@ Every tool and parameter carries a description the agent can read.
   that fallback is off.
 - Results come most relevant first when a query is given, otherwise most recently updated first.
 - Entries replaced by another one (the target of `SUPERSEDES`) are hidden unless `includeSuperseded` is set.
+  Deleted entries never appear.
 - Results are paged, 10 per page by default. MCP allows at most 50 per page.
 
 ### How recall works
@@ -95,7 +103,7 @@ Every tool and parameter carries a description the agent can read.
 - From the matches, recall follows relations in both directions for `depth` steps (default 1, at
   most 2) and returns those entries as `linked`, nearest first, then most recently updated first.
   Linked entries are not filtered by project, because a link is deliberate.
-- Replaced entries (targets of `SUPERSEDES`) are left out of both lists.
+- Replaced entries (targets of `SUPERSEDES`) and deleted entries are left out of both lists.
 - `limit` caps the matches and, separately, the linked entries (default 10, at most 50).
 - Every entry comes with its summary and relations; the content only with `includeContent`.
 
@@ -108,7 +116,11 @@ The base path is `/api/v1`. Swagger UI is at `http://<host>:55535/swagger-ui/ind
 | `POST /document`                                         | Create a document or memory.                    |
 | `GET /document/{id}?includeContent=true`                 | Read one entry.                                 |
 | `PUT /document/{id}`                                     | Update an entry, including `allowMcpWrite`.     |
-| `DELETE /document/{id}`                                  | Delete an entry.                                |
+| `DELETE /document/{id}`                                  | Delete an entry (soft delete).                  |
+| `DELETE /document/{id}/permanent`                        | Remove an entry, deleted or not, with its content and relations for good. |
+| `POST /document/{id}/restore`                            | Restore a deleted entry.                        |
+| `GET /document/deleted?page=0&size=10`                   | List deleted entries, most recently deleted first. |
+| `GET /document/deleted/{id}?includeContent=true`         | Read one deleted entry.                         |
 | `POST /document/search?page=0&size=10`                   | Search; the filters go in the body.             |
 | `POST /document/relation`                                | Create a relation.                              |
 | `DELETE /document/relation/{documentId}/{relatedDocumentId}` | Remove a relation.                          |

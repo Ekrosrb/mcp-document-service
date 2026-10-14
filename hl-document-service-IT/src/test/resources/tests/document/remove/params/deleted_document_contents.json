@@ -1,0 +1,10 @@
+[
+  {
+    "id": "${deletedOlderContentId}",
+    "content": "An outdated plan."
+  },
+  {
+    "id": "${deletedNewerContentId}",
+    "content": "A wrong note."
+  }
+]

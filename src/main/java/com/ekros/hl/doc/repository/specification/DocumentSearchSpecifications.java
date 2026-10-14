@@ -29,6 +29,7 @@ public class DocumentSearchSpecifications {
   public static Specification<DocumentData> withFilters(DocumentSearchRequest searchRequest) {
     return (root, query, criteriaBuilder) -> {
       var predicates = new ArrayList<Predicate>();
+      predicates.add(criteriaBuilder.isNull(root.get("deletedAt")));
 
       if (searchRequest.getKind() != null) {
         predicates.add(criteriaBuilder.equal(root.get("kind"), searchRequest.getKind()));
@@ -52,7 +53,8 @@ public class DocumentSearchSpecifications {
         subquery.select(criteriaBuilder.literal(1))
             .where(
                 criteriaBuilder.equal(relation.get("id").get("relatedDocumentId"), root.get("id")),
-                criteriaBuilder.equal(relation.get("type"), DocumentRelationType.SUPERSEDES));
+                criteriaBuilder.equal(relation.get("type"), DocumentRelationType.SUPERSEDES),
+                criteriaBuilder.isNull(relation.get("document").get("deletedAt")));
         predicates.add(criteriaBuilder.not(criteriaBuilder.exists(subquery)));
       }
 

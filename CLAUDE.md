@@ -90,6 +90,7 @@ Spring Boot service storing documents and agent memories in Postgres, exposed ov
 - Search: `DocumentSearchSpecifications` — filters, `websearch_to_tsquery('english')` on a trigger-maintained `search_vector` (GIN), `ts_rank` order, OR fallback when all-words matching finds nothing, superseded entries hidden by default, paged (default 10, MCP max 50).
 - Recall (MCP tool `recall`, no REST endpoint): `DocumentServiceImpl.recall` — any word of the task text, other projects' entries left out when `projectKey` is given, then relations followed both ways up to `depth` (default 1, max 2); `limit` caps matches and linked entries separately (default 10, max 50); superseded entries left out.
 - Relations: `document_relations` (source → target, typed). Write access (`allowMcpWrite`) is checked on the source only.
+- Soft delete: `document.deleted_at` (null = live). MCP `removeDocument` and REST `DELETE /document/{id}` set it with a native update so `updated_at` stays; REST also has `/{id}/permanent`, `/{id}/restore`, `/deleted` and `/deleted/{id}`. Every read of live entries must exclude deleted ones: `withFilters`, `findByIdAndDeletedAtIsNull`, relation mapping (`mapToLiveDocumentRelations`, referencedBy query), project counts, and the `SUPERSEDES` check (live sources only). Relation rows are kept on soft delete.
 - Schema: Liquibase formatted SQL in `src/main/resources/db/changelog/changes/`, registered in `db.changelog-master.yaml`.
 - Deploy: `Dockerfile` (multi-stage, JDK 26 build → JRE 26 runtime), `deploy/docker-compose.yaml` (Postgres + service), `deploy.sh`. Runtime settings are environment variables with defaults in `application.yaml`.
 
@@ -105,7 +106,8 @@ Spring Boot service storing documents and agent memories in Postgres, exposed ov
 - Dependency versions live only in `gradle/libs.versions.toml`. Reference them via `libs.*`; never inline a version in `build.gradle`.
 - New runtime setting: environment variable with a default in `application.yaml`, plus `deploy/docker-compose.yaml`, `deploy/.env.example` and the README configuration table.
 - New build input (file or directory the Gradle build reads): whitelist it in `.dockerignore`, or the image build fails.
-- `README.md` documents MCP tools, REST endpoints, search and recall behaviour and configuration. Update it when any of these change.
+- `README.md` documents MCP tools, REST endpoints, search, recall and delete behaviour and configuration. Update it when any of these change.
+- New `document` column: add it to every `expected/database` fixture of the `document` table (full-row comparison), as `null` or a json-unit placeholder.
 - Ids are `BIGINT GENERATED ALWAYS AS IDENTITY`; Postgres enums map with `@JdbcTypeCode(SqlTypes.NAMED_ENUM)`.
 - Comments: class/method Javadoc only, describe what not how. No line comments, no TODOs.
 - Line endings: `*.sh` and `gradlew` LF, `*.bat` CRLF (`.gitattributes`).

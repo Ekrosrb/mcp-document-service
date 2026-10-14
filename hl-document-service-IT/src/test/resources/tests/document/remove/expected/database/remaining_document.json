@@ -15,6 +15,7 @@
     "updated_at": "2026-01-16T11:30:00",
     "search_vector": "${json-unit.any-string}",
     "memory_type": null,
-    "allow_mcp_write": false
+    "allow_mcp_write": false,
+    "deleted_at": null
   }
 ]
