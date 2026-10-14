@@ -78,6 +78,14 @@ public class ScenarioContext {
   }
 
   /**
+   * Stores a variable set by a scenario step, typed as long when the value is a whole number.
+   */
+  public void define(String name, String value) {
+    var type = ItTestData.LONG_VALUE.matcher(value).matches() ? VariableType.LONG : VariableType.STRING;
+    variables.put(name, new Variable(value, type, false));
+  }
+
+  /**
    * Returns the values generated for this scenario. Values produced by the service are left out,
    * because a database-assigned id is not unique across tables.
    */

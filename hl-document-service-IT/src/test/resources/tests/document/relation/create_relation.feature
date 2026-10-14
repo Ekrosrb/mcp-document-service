@@ -6,6 +6,7 @@ Feature: Create document relation
     And the table "document" contains the rows from "params/documents.json"
 
   Scenario: A relation is created and shown on both documents
+    Given the variable "relatedId" is "${memoryId}"
     When I send a POST request to "/api/v1/document/relation" with body "input/relation.json"
     Then the response status is 201
     And the response body is empty
@@ -18,20 +19,23 @@ Feature: Create document relation
     And the response body matches "expected/responses/referenced_document.json"
 
   Scenario: A relation between the same two documents cannot be created twice
+    Given the variable "relatedId" is "${memoryId}"
     Given the table "document_relations" contains the rows from "params/relations.json"
     When I send a POST request to "/api/v1/document/relation" with body "input/relation.json"
     Then the response status is 409
     And the response body matches "expected/responses/relation_exists.json"
-    And the rows of table "document_relations" where "document_id" is "${documentId}" match "expected/database/existing_relation.json"
+    And the rows of table "document_relations" where "document_id" is "${documentId}" match "params/relations.json"
 
   Scenario: A relation to an unknown document is rejected
-    When I send a POST request to "/api/v1/document/relation" with body "input/relation_to_unknown_document.json"
+    Given the variable "relatedId" is "${unknownId}"
+    When I send a POST request to "/api/v1/document/relation" with body "input/relation.json"
     Then the response status is 404
     And the response body matches "expected/responses/related_document_not_found.json"
     And the rows of table "document_relations" where "document_id" is "${documentId}" match "expected/database/no_relations.json"
 
   Scenario: A relation from a document to itself is rejected
-    When I send a POST request to "/api/v1/document/relation" with body "input/relation_to_itself.json"
+    Given the variable "relatedId" is "${documentId}"
+    When I send a POST request to "/api/v1/document/relation" with body "input/relation.json"
     Then the response status is 400
     And the response body matches "expected/responses/relation_to_itself.json"
 

@@ -6,28 +6,31 @@ Feature: MCP tool updateDocument
     And the table "document" contains the rows from "params/documents.json"
 
   Scenario: A document that allows MCP writes is updated
-    When I call the MCP tool "updateDocument" with arguments "input/writable_memory.json"
+    Given the variable "targetId" is "${memoryId}"
+    When I call the MCP tool "updateDocument" with arguments "input/change.json"
     Then the MCP tool call succeeds
     And the rows of table "document" where "id" is "${memoryId}" match "expected/database/updated_memory.json"
 
   Scenario: A document created through MCP can be updated through MCP
     When I call the MCP tool "createDocument" with arguments "input/new_document.json"
     Then the MCP tool call succeeds
-    And I remember the MCP tool result field "id" as "createdId"
-    When I call the MCP tool "updateDocument" with arguments "input/created_document.json"
+    And I remember the MCP tool result field "id" as "targetId"
+    When I call the MCP tool "updateDocument" with arguments "input/change.json"
     Then the MCP tool call succeeds
-    And the rows of table "document" where "id" is "${createdId}" match "expected/database/updated_created_document.json"
+    And the rows of table "document" where "id" is "${targetId}" match "expected/database/updated_created_document.json"
 
   Scenario: A document that does not allow MCP writes is not updated
-    When I call the MCP tool "updateDocument" with arguments "input/protected_document.json"
+    Given the variable "targetId" is "${documentId}"
+    When I call the MCP tool "updateDocument" with arguments "input/change.json"
     Then the MCP tool call fails
     And the MCP tool result is the text from "expected/responses/write_forbidden.txt"
     And the rows of table "document" where "id" is "${documentId}" match "expected/database/unchanged_document.json"
 
   Scenario: A protected document can be updated after write access is granted through REST
+    Given the variable "targetId" is "${documentId}"
     When I send a PUT request to "/api/v1/document/${documentId}" with body "input/allow_mcp_write.json"
     Then the response status is 200
-    When I call the MCP tool "updateDocument" with arguments "input/protected_document.json"
+    When I call the MCP tool "updateDocument" with arguments "input/change.json"
     Then the MCP tool call succeeds
     And the rows of table "document" where "id" is "${documentId}" match "expected/database/updated_document.json"
 
@@ -37,6 +40,7 @@ Feature: MCP tool updateDocument
     And the rows of table "document" where "id" is "${memoryId}" match "expected/database/updated_memory.json"
 
   Scenario: Updating an unknown document is reported as not found
-    When I call the MCP tool "updateDocument" with arguments "input/unknown_document.json"
+    Given the variable "targetId" is "${unknownId}"
+    When I call the MCP tool "updateDocument" with arguments "input/change.json"
     Then the MCP tool call fails
     And the MCP tool result is the text from "expected/responses/document_not_found.txt"

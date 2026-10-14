@@ -32,6 +32,7 @@ public final class ItTestData {
   public static final String CLASSPATH_SCHEME = "classpath";
   public static final String DEFAULT_PARAMS_FILE = "params/params.json";
   public static final String PARAMS_TAG_PREFIX = "@params:";
+  public static final Pattern LONG_VALUE = Pattern.compile("-?\\d+");
   public static final Pattern VARIABLE_TOKEN = Pattern.compile("\\$\\{(\\w+)}");
   public static final Pattern SQL_IDENTIFIER = Pattern.compile("[a-z_][a-z0-9_]*");
 

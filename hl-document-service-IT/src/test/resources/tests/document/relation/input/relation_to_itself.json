@@ -1,5 +1,0 @@
-{
-  "documentId": "${documentId}",
-  "relatedDocumentId": "${documentId}",
-  "type": "DEPENDS_ON"
-}

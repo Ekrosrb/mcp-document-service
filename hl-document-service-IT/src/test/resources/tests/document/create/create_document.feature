@@ -27,7 +27,7 @@ Feature: Create document
     Then the response status is 200
     And I remember the response field "id" as "createdId"
     And the rows of table "document" where "author_name" is "${authorName}" match "expected/database/project_document.json"
-    And the rows of table "project" where "project_key" is "${projectKey}" match "expected/database/existing_project.json"
+    And the rows of table "project" where "project_key" is "${projectKey}" match "params/projects.json"
 
   Scenario: A project document without a project key is rejected
     When I send a POST request to "/api/v1/document" with body "input/project_document_without_project_key.json"

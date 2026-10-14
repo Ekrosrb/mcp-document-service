@@ -5,6 +5,7 @@ import com.ekros.hl.doc.it.support.ScenarioContext;
 import com.ekros.hl.doc.it.testutil.ItTestData;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.javacrumbs.jsonunit.core.Option;
@@ -36,6 +37,11 @@ public class CommonSteps {
   public void prepareScenario(Scenario scenario) {
     context.setFeatureUri(scenario.getUri());
     context.generateVariables(ItTestData.buildParamsFile(scenario.getSourceTagNames()));
+  }
+
+  @Given("the variable {string} is {string}")
+  public void defineVariable(String name, String value) {
+    context.define(name, context.resolve(value));
   }
 
   @When("I send a {word} request to {string}")

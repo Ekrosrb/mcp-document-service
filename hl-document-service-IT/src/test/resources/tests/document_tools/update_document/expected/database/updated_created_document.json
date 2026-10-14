@@ -1,6 +1,6 @@
 [
   {
-    "id": "${createdId}",
+    "id": "${targetId}",
     "kind": "DOCUMENT",
     "scope": "GLOBAL",
     "type": "TEXT",

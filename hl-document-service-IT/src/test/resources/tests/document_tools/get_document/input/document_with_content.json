@@ -1,4 +1,4 @@
 {
-  "id": "not-a-number",
+  "id": "${targetId}",
   "includeContent": true
 }

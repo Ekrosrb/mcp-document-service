@@ -1,0 +1,6 @@
+{
+  "request": {
+    "documentId": "${sourceId}",
+    "relatedDocumentId": "${relatedId}"
+  }
+}
