@@ -130,6 +130,17 @@ public class DocumentServiceImpl implements DocumentService {
     documentRelationRepository.save(data);
   }
 
+  @Override
+  public void removeDocumentRelation(DocumentRelationRemoveRequest request, boolean isMcp) {
+    log.info("Removing document relation for [{}] and [{}]", request.getDocumentId(), request.getRelatedDocumentId());
+    long documentId = request.getDocumentId();
+    documentRepository.findById(documentId)
+        .ifPresent(documentData -> validateAllowMcpWrite(documentData, isMcp));
+
+    var id = documentMapper.mapToDocumentRelationId(request);
+    documentRelationRepository.deleteById(id);
+  }
+
   private void updateProjectIfPresent(String projectKey) {
     if (StringUtils.isBlank(projectKey) || projectRepository.existsByProjectKey(projectKey)) {
       return;

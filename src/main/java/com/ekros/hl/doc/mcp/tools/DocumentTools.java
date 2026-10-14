@@ -1,6 +1,7 @@
 package com.ekros.hl.doc.mcp.tools;
 
 import com.ekros.hl.doc.controller.model.document.DocumentRelationCreateRequest;
+import com.ekros.hl.doc.controller.model.document.DocumentRelationRemoveRequest;
 import com.ekros.hl.doc.mapper.DocumentMapper;
 import com.ekros.hl.doc.mcp.McpDescriptions;
 import com.ekros.hl.doc.mcp.ToonConverter;
@@ -64,8 +65,14 @@ public class DocumentTools {
 
   @McpTool(name = "createDocumentRelation", description = McpDescriptions.CREATE_DOCUMENT_RELATION)
   public void createDocumentRelation(@McpToolParam(description = McpDescriptions.RELATION_REQUEST) @Valid DocumentRelationCreateRequest request, McpSyncRequestContext context) {
-    log.info("Received mcp request to create document relation by id from: [{}]", getAgentName(context));
+    log.info("Received mcp request to create document relation from: [{}]", getAgentName(context));
     documentService.createDocumentRelation(request, true);
+  }
+
+  @McpTool(name = "removeDocumentRelation", description = McpDescriptions.REMOVE_DOCUMENT_RELATION)
+  public void removeDocumentRelation(@McpToolParam(description = McpDescriptions.RELATION_REMOVE_REQUEST) @Valid DocumentRelationRemoveRequest request, McpSyncRequestContext context) {
+    log.info("Received mcp request to remove document relation from: [{}]", getAgentName(context));
+    documentService.removeDocumentRelation(request, true);
   }
 
   @McpTool(name = "searchDocuments", description = McpDescriptions.SEARCH_DOCUMENTS)

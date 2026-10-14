@@ -8,10 +8,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = DocumentRelationCreateValidator.class)
+@Constraint(validatedBy = {DocumentRelationCreateValidator.class, DocumentRelationRemoveValidator.class})
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DocumentRelationCreateValid {
+public @interface DocumentRelationValid {
 
   String message() default "Invalid document relation";
 

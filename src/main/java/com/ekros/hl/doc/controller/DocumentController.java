@@ -60,4 +60,11 @@ public class DocumentController implements DocumentApi {
   public void createDocumentRelation(@Valid @RequestBody DocumentRelationCreateRequest request) {
     documentService.createDocumentRelation(request, false);
   }
+
+  @Override
+  @ResponseStatus(OK)
+  @DeleteMapping("/relation/{documentId}/{relatedDocumentId}")
+  public void removeDocumentRelation(@Valid DocumentRelationRemoveRequest request) {
+    documentService.removeDocumentRelation(request, false);
+  }
 }

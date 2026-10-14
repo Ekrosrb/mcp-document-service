@@ -1,0 +1,7 @@
+[
+  {
+    "document_id": "${memoryId}",
+    "related_document_id": "${documentId}",
+    "type": "EXTENDS"
+  }
+]

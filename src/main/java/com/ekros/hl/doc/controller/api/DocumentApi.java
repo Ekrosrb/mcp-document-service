@@ -23,4 +23,5 @@ public interface DocumentApi {
 
   void createDocumentRelation(@Valid @RequestBody DocumentRelationCreateRequest request);
 
+  void removeDocumentRelation(@Valid DocumentRelationRemoveRequest request);
 }

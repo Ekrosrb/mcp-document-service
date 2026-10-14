@@ -17,4 +17,6 @@ public interface DocumentService {
   List<DocumentResponse> search(DocumentSearchRequest request);
 
   void createDocumentRelation(DocumentRelationCreateRequest request, boolean isMcp);
+
+  void removeDocumentRelation(DocumentRelationRemoveRequest request, boolean isMcp);
 }

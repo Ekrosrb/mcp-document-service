@@ -72,6 +72,8 @@ public interface DocumentMapper {
 
   DocumentRelationId mapToDocumentRelationId(DocumentRelationCreateRequest request);
 
+  DocumentRelationId mapToDocumentRelationId(DocumentRelationRemoveRequest request);
+
   @Mapping(target = "id", source = "request")
   @Mapping(target = "document", ignore = true)
   @Mapping(target = "relatedDocument", ignore = true)

@@ -17,6 +17,8 @@ public final class McpDescriptions {
       + "Fails when allowWrite is false.";
   public static final String CREATE_DOCUMENT_RELATION = "Link two documents or memories. "
       + "Requires allowWrite on documentId only.";
+  public static final String REMOVE_DOCUMENT_RELATION = "Unlink two documents or memories. "
+      + "Requires allowWrite on documentId only.";
   public static final String SEARCH_DOCUMENTS = "Find documents by filters and/or a full-text query. "
       + "Returns id, name and metadata; use the include flags or getDocument for the text.";
   public static final String SEARCH_MEMORIES = "Find memories by filters, memory type and/or a full-text query. "
@@ -31,6 +33,7 @@ public final class McpDescriptions {
   public static final String CREATE_MEMORY_REQUEST = "The memory to store.";
   public static final String UPDATE_REQUEST = "The fields to change.";
   public static final String RELATION_REQUEST = "The relation to create.";
+  public static final String RELATION_REMOVE_REQUEST = "The relation to remove.";
   public static final String SEARCH_REQUEST = "Filters and options. All are optional and combined with AND.";
   public static final String PAGE = "Page to fetch, starting at 0. Default 0.";
   public static final String PAGE_SIZE = "Projects per page. Default 100.";

@@ -3,7 +3,7 @@ package com.ekros.hl.doc.controller.model.document;
 import com.ekros.hl.doc.mcp.McpDescriptions;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.ekros.hl.doc.repository.model.DocumentRelationType;
-import com.ekros.hl.doc.validation.DocumentRelationCreateValid;
+import com.ekros.hl.doc.validation.DocumentRelationValid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@DocumentRelationCreateValid
+@DocumentRelationValid
 public class DocumentRelationCreateRequest {
   @JsonPropertyDescription(McpDescriptions.RELATION_DOCUMENT_ID)
   @Positive

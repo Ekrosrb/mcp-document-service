@@ -5,7 +5,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 public class DocumentRelationCreateValidator
-    implements ConstraintValidator<DocumentRelationCreateValid, DocumentRelationCreateRequest> {
+    implements ConstraintValidator<DocumentRelationValid, DocumentRelationCreateRequest> {
 
   @Override
   public boolean isValid(DocumentRelationCreateRequest value, ConstraintValidatorContext context) {
