@@ -2,37 +2,12 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
-        mavenLocal()
-        maven {
-            url "artifactregistry://europe-west1-maven.pkg.dev/hl-private-project-5c3a/hl-repository"
-        }
     }
 }
-
-buildscript {
-    repositories {
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath "com.google.cloud.artifactregistry:artifactregistry-gradle-plugin:2.2.5"
-    }
-}
-
-apply plugin: "com.google.cloud.artifactregistry.gradle-plugin"
 
 dependencyResolutionManagement {
     repositories {
-        google()
         mavenCentral()
-        mavenLocal()
-        maven {
-            url "artifactregistry://europe-west1-maven.pkg.dev/hl-private-project-5c3a/hl-repository"
-        }
-    }
-    versionCatalogs {
-        create("hl") {
-            from("com.ekros.hl:hl-dependency-catalog:0.0.+")
-        }
     }
 }
 

@@ -3,30 +3,35 @@ plugins {
 }
 
 group = 'com.ekros.hl.doc'
-version = '0.0.1'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(libs.versions.java.get())
+    }
+}
 
 dependencies {
-    def sdkPlatform = platform('com.ekros.hl:hl-dependency-platform:0.0.+')
-
-    testImplementation sdkPlatform
-    testRuntimeOnly sdkPlatform
-    testImplementation platform('io.cucumber:cucumber-bom:8.0.4')
+    testImplementation platform(libs.spring.boot.dependencies)
+    testImplementation platform(libs.spring.ai.bom)
+    testImplementation platform(libs.jackson.bom)
+    testImplementation platform(libs.cucumber.bom)
 
     testImplementation project(':')
-    testImplementation 'org.springframework.boot:spring-boot'
-    testImplementation 'tools.jackson.core:jackson-databind'
-    testImplementation 'org.springframework.ai:spring-ai-mcp'
-    testImplementation 'dev.toonformat:jtoon:2.0.7'
+    testImplementation libs.spring.boot.core
+    testImplementation libs.jackson.databind
+    testImplementation libs.spring.ai.mcp
+    testImplementation libs.jtoon
 
-    testImplementation 'io.cucumber:cucumber-java'
-    testImplementation 'io.cucumber:cucumber-picocontainer'
-    testImplementation 'io.cucumber:cucumber-junit-platform-engine'
-    testImplementation 'org.junit.platform:junit-platform-suite'
-    testImplementation 'net.javacrumbs.json-unit:json-unit-assertj:6.3.0'
-    testImplementation 'org.assertj:assertj-core'
+    testImplementation libs.cucumber.java
+    testImplementation libs.cucumber.picocontainer
+    testImplementation libs.cucumber.junit.platform.engine
+    testImplementation libs.junit.platform.suite
+    testImplementation libs.json.unit.assertj
+    testImplementation libs.assertj.core
 
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    testRuntimeOnly 'org.postgresql:postgresql'
+    testRuntimeOnly libs.junit.platform.launcher
+    testRuntimeOnly libs.postgresql
 }
 
 def compose = ['docker', 'compose', '-p', 'hl-document-service-it', '-f', file('docker/docker-compose.yaml').path]

@@ -1,47 +1,47 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '4.1.+'
+    alias(libs.plugins.spring.boot)
 }
 
 group = 'com.ekros.hl.doc'
 version = '1.0.0'
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(libs.versions.java.get())
+    }
+}
+
 dependencies {
-    def sdkPlatform = platform('com.ekros.hl:hl-dependency-platform:0.0.+')
+    implementation platform(libs.spring.boot.dependencies)
+    implementation platform(libs.spring.ai.bom)
+    implementation platform(libs.jackson.bom)
 
-    implementation sdkPlatform
-    runtimeOnly sdkPlatform
-    compileOnly sdkPlatform
-    annotationProcessor sdkPlatform
-    testAnnotationProcessor sdkPlatform
+    implementation libs.spring.boot.starter.web
+    implementation libs.spring.boot.starter.data.jpa
+    implementation libs.spring.boot.starter.validation
+    implementation libs.spring.boot.starter.liquibase
+    implementation libs.spring.ai.starter.mcp.server.webmvc
+    implementation libs.jtoon
+    implementation libs.springdoc.openapi.starter.webmvc.ui
 
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-liquibase'
-    implementation 'org.springframework.ai:spring-ai-starter-mcp-server-webmvc'
-    implementation 'dev.toonformat:jtoon:2.0.7'
+    implementation libs.liquibase.core
+    implementation libs.logback.core
+    implementation libs.logback.classic
+    implementation libs.slf4j.api
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.1'
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstruct.processor
+    annotationProcessor libs.lombok.mapstruct.binding
 
-    implementation 'io.hypersistence:hypersistence-utils-hibernate-71:3.11.0'
-    implementation 'org.liquibase:liquibase-core'
-    implementation 'ch.qos.logback:logback-core'
-    implementation 'ch.qos.logback:logback-classic'
-    implementation 'org.slf4j:slf4j-api'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    runtimeOnly libs.postgresql
 
-    implementation 'org.mapstruct:mapstruct'
-    annotationProcessor 'org.mapstruct:mapstruct-processor'
-    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding'
-
-    runtimeOnly 'org.postgresql:postgresql'
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'ch.qos.logback:logback-core'
-    testImplementation 'ch.qos.logback:logback-classic'
-    testImplementation 'org.slf4j:slf4j-api'
+    testImplementation libs.spring.boot.starter.test
+    testImplementation libs.logback.core
+    testImplementation libs.logback.classic
+    testImplementation libs.slf4j.api
 }
 
 test {

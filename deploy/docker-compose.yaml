@@ -1,22 +1,54 @@
+name: hl-document-service
+
 services:
   postgres:
     image: pgvector/pgvector:pg18
-    container_name: postgres-document-service
+    container_name: ${POSTGRES_CONTAINER_NAME:-postgres-document-service}
     restart: unless-stopped
 
     environment:
-      POSTGRES_DB: document-db
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: ${DB_NAME:-document-db}
+      POSTGRES_USER: ${DB_USERNAME:-admin}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-admin}
 
     ports:
-      - "5445:5432"
+      - "${POSTGRES_BIND_ADDRESS:-0.0.0.0}:${POSTGRES_PORT:-5445}:5432"
 
     volumes:
-      - ./document/postgres:/var/lib/postgresql
+      - ${POSTGRES_DATA_DIR:-./document/postgres}:/var/lib/postgresql
 
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U admin -d document-db" ]
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}" ]
       interval: 5s
       timeout: 5s
       retries: 10
+
+  document-service:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: ${SERVICE_IMAGE:-hl-document-service}:${SERVICE_VERSION:-latest}
+    container_name: ${SERVICE_CONTAINER_NAME:-hl-document-service}
+    restart: unless-stopped
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    environment:
+      DB_HOST: ${DB_HOST:-postgres}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME:-document-db}
+      DB_USERNAME: ${DB_USERNAME:-admin}
+      DB_PASSWORD: ${DB_PASSWORD:-admin}
+      JAVA_OPTS: ${JAVA_OPTS:-}
+
+    ports:
+      - "${SERVICE_BIND_ADDRESS:-0.0.0.0}:${SERVICE_PORT:-55535}:55535"
+
+    healthcheck:
+      test: [ "CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/55535" ]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 20s
