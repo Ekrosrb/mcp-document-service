@@ -1,19 +1,19 @@
 package com.ekros.hl.doc.controller.model.document;
 
-import com.ekros.hl.doc.repository.model.AuthorType;
-import com.ekros.hl.doc.repository.model.DocumentKind;
-import com.ekros.hl.doc.repository.model.DocumentScope;
-import com.ekros.hl.doc.repository.model.DocumentType;
-import com.ekros.hl.doc.repository.model.MemoryType;
+import com.ekros.hl.doc.repository.model.*;
 import com.ekros.hl.doc.validation.DocumentCreateValid;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -44,4 +44,18 @@ public class DocumentCreateRequest {
   @Size(max = 50)
   private String customExtension;
   private Boolean allowMcpWrite;
+  @Valid
+  private List<DocumentRelation> relations;
+
+  @Data
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class DocumentRelation {
+    @NotNull
+    @Positive
+    private Long relatedDocumentId;
+    @NotNull
+    private DocumentRelationType type;
+  }
 }

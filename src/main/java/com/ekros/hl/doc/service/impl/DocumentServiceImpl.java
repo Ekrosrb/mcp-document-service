@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -44,7 +45,14 @@ public class DocumentServiceImpl implements DocumentService {
     var content = documentMapper.mapToDocumentContentData(request);
 
     var documentData = documentMapper.mapToDocumentData(request, content);
-    documentData = documentRepository.save(documentData);
+    var savedDocumentData = documentRepository.save(documentData);
+
+    var relations = Optional.ofNullable(request.getRelations()).orElseGet(List::of).stream()
+        .map(relation -> documentMapper.mapToDocumentRelationData(
+            savedDocumentData, getExistingDocumentReference(relation.getRelatedDocumentId()), relation))
+        .toList();
+    documentRelationRepository.saveAll(relations);
+
     log.info("Document saved with id [{}]", documentData.getId());
     return documentMapper.mapToDocumentCreateResponse(documentData);
   }
@@ -58,7 +66,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     validateAllowMcpWrite(documentData, isMcp);
 
-    if(request.getMemoryType() != null && documentData.getKind() != DocumentKind.MEMORY) {
+    if (request.getMemoryType() != null && documentData.getKind() != DocumentKind.MEMORY) {
       throw new DocumentMemoryTypeChangeException(documentData.getId());
     }
 
@@ -145,6 +153,13 @@ public class DocumentServiceImpl implements DocumentService {
 
     var id = documentMapper.mapToDocumentRelationId(request);
     documentRelationRepository.deleteById(id);
+  }
+
+  private DocumentData getExistingDocumentReference(Long id) {
+    if (!documentRepository.existsById(id)) {
+      throw new DocumentNotFoundException(id);
+    }
+    return documentRepository.getReferenceById(id);
   }
 
   private void updateProjectIfPresent(String projectKey) {

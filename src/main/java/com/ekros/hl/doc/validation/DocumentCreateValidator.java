@@ -9,6 +9,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 @Slf4j
 public class DocumentCreateValidator implements ConstraintValidator<DocumentCreateValid, DocumentCreateRequest> {
 
@@ -27,7 +29,7 @@ public class DocumentCreateValidator implements ConstraintValidator<DocumentCrea
         return false;
       }
 
-      if(value.getType() == DocumentType.CUSTOM && StringUtils.isBlank(value.getCustomExtension())) {
+      if (value.getType() == DocumentType.CUSTOM && StringUtils.isBlank(value.getCustomExtension())) {
         context.disableDefaultConstraintViolation();
         context.buildConstraintViolationWithTemplate("Document customExtension must be specified for type: [CUSTOM]")
             .addPropertyNode("customExtension")
@@ -43,11 +45,26 @@ public class DocumentCreateValidator implements ConstraintValidator<DocumentCrea
         return false;
       }
 
+      if (hasDuplicateRelatedDocuments(value.getRelations())) {
+        context.disableDefaultConstraintViolation();
+        context.buildConstraintViolationWithTemplate("Each related document can be listed only once")
+            .addPropertyNode("relations")
+            .addConstraintViolation();
+        return false;
+      }
+
     } catch (Exception e) {
       log.error("Unexpected validation exception: {}", e.getMessage(), e);
       return false;
     }
 
     return true;
+  }
+
+  private boolean hasDuplicateRelatedDocuments(List<DocumentCreateRequest.DocumentRelation> relations) {
+    return relations != null && relations.stream()
+        .map(DocumentCreateRequest.DocumentRelation::getRelatedDocumentId)
+        .distinct()
+        .count() != relations.size();
   }
 }

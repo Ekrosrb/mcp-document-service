@@ -74,6 +74,13 @@ public interface DocumentMapper {
 
   DocumentRelationId mapToDocumentRelationId(DocumentRelationRemoveRequest request);
 
+  @Mapping(target = "id", expression = "java(new DocumentRelationId(document.getId(), relation.getRelatedDocumentId()))")
+  @Mapping(target = "document", source = "document")
+  @Mapping(target = "relatedDocument", source = "relatedDocument")
+  @Mapping(target = "type", source = "relation.type")
+  DocumentRelationData mapToDocumentRelationData(DocumentData document, DocumentData relatedDocument,
+                                                 DocumentCreateRequest.DocumentRelation relation);
+
   @Mapping(target = "id", source = "request")
   @Mapping(target = "document", ignore = true)
   @Mapping(target = "relatedDocument", ignore = true)

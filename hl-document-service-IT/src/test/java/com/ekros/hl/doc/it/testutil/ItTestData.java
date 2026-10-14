@@ -24,6 +24,7 @@ public final class ItTestData {
   public static final String MCP_TOOL_NAME_FIELD = "name";
   public static final String MCP_TOOL_INPUT_SCHEMA_FIELD = "inputSchema";
   public static final String JSON_SCHEMA_PROPERTIES_FIELD = "properties";
+  public static final String JSON_SCHEMA_ITEMS_FIELD = "items";
   public static final String DESCRIPTION_FIELD = "description";
 
   public static final String CONTENT_TYPE_HEADER = "Content-Type";

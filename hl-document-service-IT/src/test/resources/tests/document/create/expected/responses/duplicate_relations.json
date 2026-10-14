@@ -1,0 +1,6 @@
+{
+  "message": "Request validation failed",
+  "metadata": {
+    "relations": "Each related document can be listed only once"
+  }
+}

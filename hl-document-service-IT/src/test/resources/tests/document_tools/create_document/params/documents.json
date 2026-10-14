@@ -1,0 +1,34 @@
+[
+  {
+    "id": "${documentId}",
+    "kind": "DOCUMENT",
+    "scope": "GLOBAL",
+    "type": "TEXT",
+    "custom_extension": null,
+    "author": "HUMAN",
+    "author_name": "${targetAuthorName}",
+    "project_key": null,
+    "name": "deployment-guide",
+    "summary": "deployment-guide",
+    "content_id": "${documentContentId}",
+    "created_at": "2026-01-15T10:00:00",
+    "updated_at": "2026-01-16T11:30:00",
+    "allow_mcp_write": false
+  },
+  {
+    "id": "${memoryId}",
+    "kind": "MEMORY",
+    "scope": "GLOBAL",
+    "type": "TEXT",
+    "custom_extension": null,
+    "author": "HUMAN",
+    "author_name": "${targetAuthorName}",
+    "project_key": null,
+    "name": "release-notes",
+    "summary": "release-notes",
+    "content_id": "${memoryContentId}",
+    "created_at": "2026-01-15T10:00:00",
+    "updated_at": "2026-01-16T11:30:00",
+    "allow_mcp_write": false
+  }
+]

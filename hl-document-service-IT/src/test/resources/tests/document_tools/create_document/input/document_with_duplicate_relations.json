@@ -1,0 +1,20 @@
+{
+  "request": {
+    "scope": "GLOBAL",
+    "type": "CUSTOM",
+    "customExtension": ".adoc",
+    "name": "coding-rules",
+    "summary": "Coding rules",
+    "content": "Keep methods short.",
+    "relations": [
+      {
+        "relatedDocumentId": "${documentId}",
+        "type": "DEPENDS_ON"
+      },
+      {
+        "relatedDocumentId": "${documentId}",
+        "type": "RELATED_TO"
+      }
+    ]
+  }
+}

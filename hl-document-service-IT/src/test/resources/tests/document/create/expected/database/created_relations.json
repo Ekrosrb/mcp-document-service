@@ -1,0 +1,12 @@
+[
+  {
+    "document_id": "${createdId}",
+    "related_document_id": "${documentId}",
+    "type": "DEPENDS_ON"
+  },
+  {
+    "document_id": "${createdId}",
+    "related_document_id": "${memoryId}",
+    "type": "RELATED_TO"
+  }
+]

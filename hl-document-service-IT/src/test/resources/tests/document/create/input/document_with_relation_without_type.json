@@ -1,0 +1,16 @@
+{
+  "kind": "DOCUMENT",
+  "scope": "GLOBAL",
+  "type": "CUSTOM",
+  "customExtension": ".adoc",
+  "author": "HUMAN",
+  "name": "coding-rules",
+  "authorName": "${authorName}",
+  "summary": "Coding rules",
+  "content": "Keep methods short.",
+  "relations": [
+    {
+      "relatedDocumentId": "${documentId}"
+    }
+  ]
+}

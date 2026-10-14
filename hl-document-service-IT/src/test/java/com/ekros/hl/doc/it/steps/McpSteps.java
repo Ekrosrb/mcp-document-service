@@ -132,6 +132,7 @@ public class McpSteps {
       var propertyPath = ItTestData.buildSchemaPath(path, property.getKey());
       collectUndescribed(propertyPath, property.getValue(), undescribed);
       collectUndescribedProperties(propertyPath, property.getValue(), undescribed);
+      collectUndescribedProperties(propertyPath, property.getValue().path(ItTestData.JSON_SCHEMA_ITEMS_FIELD), undescribed);
     }
   }
 

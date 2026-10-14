@@ -40,3 +40,29 @@ Feature: MCP tool createDocument
     Then the MCP tool call fails
     And the MCP tool result is the text from "expected/responses/missing_custom_extension.txt"
     And the rows of table "document" where "author_name" is "${agentName}" match "expected/database/no_documents.json"
+
+  Scenario: A document is created with relations, even to documents that do not allow MCP writes
+    Given the table "document_content" contains the rows from "params/document_contents.json"
+    And the table "document" contains the rows from "params/documents.json"
+    When I call the MCP tool "createDocument" with arguments "input/document_with_relations.json"
+    Then the MCP tool call succeeds
+    And I remember the MCP tool result field "id" as "createdId"
+    And the rows of table "document_relations" where "document_id" is "${createdId}" match "expected/database/created_relations.json"
+
+  Scenario: A relation to an unknown document is rejected and nothing is created
+    When I call the MCP tool "createDocument" with arguments "input/document_with_relation_to_unknown_document.json"
+    Then the MCP tool call fails
+    And the MCP tool result is the text from "expected/responses/related_document_not_found.txt"
+    And the rows of table "document" where "author_name" is "${agentName}" match "expected/database/no_documents.json"
+
+  Scenario: A relation without a type is rejected
+    When I call the MCP tool "createDocument" with arguments "input/document_with_relation_without_type.json"
+    Then the MCP tool call fails
+    And the MCP tool result is the text from "expected/responses/relation_without_type.txt"
+    And the rows of table "document" where "author_name" is "${agentName}" match "expected/database/no_documents.json"
+
+  Scenario: The same related document listed twice is rejected
+    When I call the MCP tool "createDocument" with arguments "input/document_with_duplicate_relations.json"
+    Then the MCP tool call fails
+    And the MCP tool result is the text from "expected/responses/duplicate_relations.txt"
+    And the rows of table "document" where "author_name" is "${agentName}" match "expected/database/no_documents.json"

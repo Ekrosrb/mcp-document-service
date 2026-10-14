@@ -1,19 +1,24 @@
 package com.ekros.hl.doc.mcp.model;
 
 import com.ekros.hl.doc.mcp.McpDescriptions;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import com.ekros.hl.doc.repository.model.DocumentRelationType;
 import com.ekros.hl.doc.repository.model.DocumentScope;
 import com.ekros.hl.doc.repository.model.DocumentType;
 import com.ekros.hl.doc.validation.DocumentCreateValid;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -46,4 +51,22 @@ public class DocumentCreateMcpRequest {
   @JsonPropertyDescription(McpDescriptions.CUSTOM_EXTENSION)
   @JsonProperty(required = false)
   private String customExtension;
+  @JsonPropertyDescription(McpDescriptions.CREATE_RELATIONS)
+  @JsonProperty(required = false)
+  @Valid
+  private List<DocumentRelation> relations;
+
+  @Data
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class DocumentRelation {
+    @JsonPropertyDescription(McpDescriptions.RELATION_RELATED_DOCUMENT_ID)
+    @NotNull
+    @Positive
+    private Long relatedDocumentId;
+    @JsonPropertyDescription(McpDescriptions.CREATE_RELATION_TYPE)
+    @NotNull
+    private DocumentRelationType type;
+  }
 }

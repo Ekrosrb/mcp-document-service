@@ -1,5 +1,11 @@
 {
   "${authorName}": "string",
   "${projectKey}": "string",
-  "${projectId}": "long"
+  "${projectId}": "long",
+  "${targetAuthorName}": "string",
+  "${documentId}": "long",
+  "${memoryId}": "long",
+  "${documentContentId}": "long",
+  "${memoryContentId}": "long",
+  "${unknownId}": "long"
 }

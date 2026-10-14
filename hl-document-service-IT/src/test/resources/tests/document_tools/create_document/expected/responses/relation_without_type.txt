@@ -1,0 +1,1 @@
+Tool (createDocument) input validation failed: Validation failed: JSON schema validation errors: [/request/relations/0: required property 'type' not found]

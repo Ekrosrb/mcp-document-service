@@ -77,13 +77,19 @@ public final class McpDescriptions {
 
   public static final String RELATION_DOCUMENT_ID = "Id of the source: the document the relation starts from.";
   public static final String RELATION_RELATED_DOCUMENT_ID = "Id of the target document.";
-  public static final String RELATION_TYPE = "Meaning, read as: documentId <type> relatedDocumentId. "
-      + "DEPENDS_ON: the source cannot be understood without the target, read the target first. "
+  private static final String RELATION_TYPE_VALUES = "DEPENDS_ON: the source cannot be understood without the target, "
+      + "read the target first. "
       + "SUPERSEDES: the source replaces the target, the target is outdated. "
       + "EXTENDS: the source adds detail to the target. "
       + "PART_OF: the source is a section of the target. "
       + "DERIVED_FROM: the source was produced from the target. "
       + "RELATED_TO: same topic, no stronger link.";
+  public static final String RELATION_TYPE = "Meaning, read as: documentId <type> relatedDocumentId. "
+      + RELATION_TYPE_VALUES;
+  public static final String CREATE_RELATIONS = "Links from the new entry to existing documents or memories. "
+      + "Optional. Fails when a related document does not exist.";
+  public static final String CREATE_RELATION_TYPE = "Meaning, read as: new entry <type> relatedDocumentId; "
+      + "the new entry is the source. " + RELATION_TYPE_VALUES;
 
   private McpDescriptions() {
   }
