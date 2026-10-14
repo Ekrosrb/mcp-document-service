@@ -1,0 +1,6 @@
+{
+  "message": "Memory type can't be specified for document [${documentId}] with kind [DOCUMENT]",
+  "metadata": {
+    "id": "${documentId}"
+  }
+}

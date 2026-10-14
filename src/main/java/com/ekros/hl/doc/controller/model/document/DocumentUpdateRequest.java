@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 @AllArgsConstructor
 public class DocumentUpdateRequest {
   private DocumentType type;
+  private MemoryType memoryType;
   @Size(max = 250)
   @NullOrNotBlank
   private String name;

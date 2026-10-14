@@ -44,3 +44,18 @@ Feature: MCP tool updateDocument
     When I call the MCP tool "updateDocument" with arguments "input/change.json"
     Then the MCP tool call fails
     And the MCP tool result is the text from "expected/responses/document_not_found.txt"
+
+  Scenario: The memory type of a memory is changed
+    Given the variable "targetId" is "${memoryId}"
+    When I call the MCP tool "updateDocument" with arguments "input/memory_type.json"
+    Then the MCP tool call succeeds
+    And the rows of table "document" where "id" is "${memoryId}" match "expected/database/memory_with_new_type.json"
+
+  Scenario: A memory type for a document is rejected and nothing is changed
+    When I call the MCP tool "createDocument" with arguments "input/new_document.json"
+    Then the MCP tool call succeeds
+    And I remember the MCP tool result field "id" as "targetId"
+    When I call the MCP tool "updateDocument" with arguments "input/memory_type.json"
+    Then the MCP tool call fails
+    And the MCP tool result is the text from "expected/responses/memory_type_for_document.txt"
+    And the rows of table "document" where "id" is "${targetId}" match "expected/database/created_document.json"

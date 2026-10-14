@@ -23,6 +23,9 @@ public class DocumentUpdateMcpRequest {
   @JsonPropertyDescription(McpDescriptions.TYPE)
   @JsonProperty(required = false)
   private DocumentType type;
+  @JsonPropertyDescription(McpDescriptions.UPDATE_MEMORY_TYPE)
+  @JsonProperty(required = false)
+  private MemoryType memoryType;
   @JsonPropertyDescription(McpDescriptions.NAME)
   @JsonProperty(required = false)
   @Size(max = 250)

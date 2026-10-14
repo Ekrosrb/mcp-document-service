@@ -1,6 +1,7 @@
 package com.ekros.hl.doc.service.impl;
 
 import com.ekros.hl.doc.controller.model.document.*;
+import com.ekros.hl.doc.exception.DocumentMemoryTypeChangeException;
 import com.ekros.hl.doc.exception.DocumentNotFoundException;
 import com.ekros.hl.doc.exception.DocumentRelationExistsException;
 import com.ekros.hl.doc.exception.DocumentWriteForbiddenException;
@@ -9,6 +10,7 @@ import com.ekros.hl.doc.repository.DocumentRelationRepository;
 import com.ekros.hl.doc.repository.DocumentRepository;
 import com.ekros.hl.doc.repository.ProjectRepository;
 import com.ekros.hl.doc.repository.model.DocumentData;
+import com.ekros.hl.doc.repository.model.DocumentKind;
 import com.ekros.hl.doc.repository.model.ProjectData;
 import com.ekros.hl.doc.repository.specification.DocumentSearchSpecifications;
 import com.ekros.hl.doc.service.DocumentService;
@@ -55,6 +57,10 @@ public class DocumentServiceImpl implements DocumentService {
         .orElseThrow(() -> new DocumentNotFoundException(id));
 
     validateAllowMcpWrite(documentData, isMcp);
+
+    if(request.getMemoryType() != null && documentData.getKind() != DocumentKind.MEMORY) {
+      throw new DocumentMemoryTypeChangeException(documentData.getId());
+    }
 
     documentMapper.updateDocument(documentData, request);
     documentData.setUpdatedAt(Timestamp.from(Instant.now()));

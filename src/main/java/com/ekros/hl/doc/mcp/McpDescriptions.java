@@ -58,6 +58,8 @@ public final class McpDescriptions {
       + "STATUS: where work stands, may be out of date.";
   public static final String MEMORY_TYPE = "How a reader should treat the memory. Default OBSERVATION. "
       + MEMORY_TYPE_VALUES;
+  public static final String UPDATE_MEMORY_TYPE = "New type of a memory. Only for memories, rejected for documents. "
+      + MEMORY_TYPE_VALUES;
 
   public static final String SEARCH_SCOPE = "Return only this scope: GLOBAL, PROJECT or AGENT.";
   public static final String SEARCH_AUTHOR = "Return only entries written by a HUMAN or by an AGENT.";

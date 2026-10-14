@@ -45,3 +45,14 @@ Feature: Update document
     Then the response status is 400
     And the response body matches "expected/responses/missing_custom_extension.json"
     And the rows of table "document" where "id" is "${documentId}" match "expected/database/unchanged_document.json"
+
+  Scenario: The memory type of a memory is changed
+    When I send a PUT request to "/api/v1/document/${memoryId}" with body "input/memory_type.json"
+    Then the response status is 200
+    And the rows of table "document" where "id" is "${memoryId}" match "expected/database/memory_with_new_type.json"
+
+  Scenario: A memory type for a document is rejected and nothing is changed
+    When I send a PUT request to "/api/v1/document/${documentId}" with body "input/memory_type.json"
+    Then the response status is 400
+    And the response body matches "expected/responses/memory_type_for_document.json"
+    And the rows of table "document" where "id" is "${documentId}" match "expected/database/unchanged_document.json"

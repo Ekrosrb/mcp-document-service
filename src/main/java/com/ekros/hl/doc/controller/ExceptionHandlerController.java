@@ -2,6 +2,7 @@ package com.ekros.hl.doc.controller;
 
 
 import com.ekros.hl.doc.controller.model.GeneralErrorResponse;
+import com.ekros.hl.doc.exception.DocumentMemoryTypeChangeException;
 import com.ekros.hl.doc.exception.DocumentNotFoundException;
 import com.ekros.hl.doc.exception.DocumentRelationExistsException;
 import com.ekros.hl.doc.exception.DocumentWriteForbiddenException;
@@ -53,6 +54,16 @@ public class ExceptionHandlerController {
   @ExceptionHandler(exception = DocumentWriteForbiddenException.class)
   public GeneralErrorResponse handleDocumentWriteForbiddenException(DocumentWriteForbiddenException ex) {
     log.warn("DocumentWriteForbiddenException occurred: {}", ex.getMessage());
+    return GeneralErrorResponse.builder()
+        .message(ex.getMessage())
+        .metadata(Map.of("id", ex.getId()))
+        .build();
+  }
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(exception = DocumentMemoryTypeChangeException.class)
+  public GeneralErrorResponse handleDocumentMemoryTypeChangeException(DocumentMemoryTypeChangeException ex) {
+    log.warn("DocumentMemoryTypeChangeException occurred: {}", ex.getMessage());
     return GeneralErrorResponse.builder()
         .message(ex.getMessage())
         .metadata(Map.of("id", ex.getId()))

@@ -1,0 +1,2 @@
+Error invoking method: updateDocument
+Memory type can't be specified for document [${targetId}] with kind [DOCUMENT]

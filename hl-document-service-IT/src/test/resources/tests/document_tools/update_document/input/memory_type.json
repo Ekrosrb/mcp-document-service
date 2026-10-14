@@ -1,0 +1,6 @@
+{
+  "id": "${targetId}",
+  "request": {
+    "memoryType": "DECISION"
+  }
+}
