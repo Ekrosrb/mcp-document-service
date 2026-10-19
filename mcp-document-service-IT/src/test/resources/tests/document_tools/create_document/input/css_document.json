@@ -1,0 +1,9 @@
+{
+  "request": {
+    "scope": "GLOBAL",
+    "type": "CSS",
+    "name": "report-styles",
+    "summary": "Styles of the report page",
+    "content": "body { margin: 0; }"
+  }
+}

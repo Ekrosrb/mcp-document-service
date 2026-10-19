@@ -1,0 +1,16 @@
+{
+  "id": "${createdId}",
+  "kind": "DOCUMENT",
+  "scope": "GLOBAL",
+  "type": "HTML",
+  "author": "AGENT",
+  "name": "report-page",
+  "authorName": "${agentName}",
+  "summary": "A rendered report page",
+  "content": "<p>Rendered.</p>",
+  "createdAt": "${json-unit.any-string}",
+  "updatedAt": "${json-unit.any-string}",
+  "relations": [],
+  "referencedBy": [],
+  "allowWrite": true
+}

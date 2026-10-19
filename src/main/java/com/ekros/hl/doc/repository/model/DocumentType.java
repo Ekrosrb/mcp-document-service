@@ -7,6 +7,8 @@ public enum DocumentType {
   XML(".xml"),
   MARKDOWN(".md"),
   TOON(".toon"),
+  HTML(".html"),
+  CSS(".css"),
   CUSTOM("");
 
   private final String extension;

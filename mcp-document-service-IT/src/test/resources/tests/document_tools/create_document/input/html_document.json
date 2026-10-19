@@ -1,0 +1,9 @@
+{
+  "request": {
+    "scope": "GLOBAL",
+    "type": "HTML",
+    "name": "report-page",
+    "summary": "A rendered report page",
+    "content": "<p>Rendered.</p>"
+  }
+}

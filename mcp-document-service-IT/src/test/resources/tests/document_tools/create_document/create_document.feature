@@ -17,6 +17,26 @@ Feature: MCP tool createDocument
     And the rows of table "document" where "author_name" is "${agentName}" match "expected/database/project_document.json"
     And the rows of table "project" where "project_key" is "${projectKey}" match "expected/database/new_project.json"
 
+  Scenario: An HTML document keeps its type and can be read back
+    When I call the MCP tool "createDocument" with arguments "input/html_document.json"
+    Then the MCP tool call succeeds
+    And the MCP tool result decoded from TOON matches "expected/responses/created_document.json"
+    And I remember the MCP tool result field "id" as "createdId"
+    And the rows of table "document" where "author_name" is "${agentName}" match "expected/database/html_document.json"
+    When I call the MCP tool "getDocument" with arguments "input/created_document.json"
+    Then the MCP tool call succeeds
+    And the MCP tool result decoded from TOON matches "expected/responses/stored_html_document.json"
+
+  Scenario: A CSS document keeps its type and can be read back
+    When I call the MCP tool "createDocument" with arguments "input/css_document.json"
+    Then the MCP tool call succeeds
+    And the MCP tool result decoded from TOON matches "expected/responses/created_document.json"
+    And I remember the MCP tool result field "id" as "createdId"
+    And the rows of table "document" where "author_name" is "${agentName}" match "expected/database/css_document.json"
+    When I call the MCP tool "getDocument" with arguments "input/created_document.json"
+    Then the MCP tool call succeeds
+    And the MCP tool result decoded from TOON matches "expected/responses/stored_css_document.json"
+
   Scenario: A project document without a project key is rejected
     When I call the MCP tool "createDocument" with arguments "input/project_document_without_project_key.json"
     Then the MCP tool call fails

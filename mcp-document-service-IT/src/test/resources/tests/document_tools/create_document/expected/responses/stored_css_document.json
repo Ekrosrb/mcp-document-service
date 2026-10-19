@@ -1,0 +1,16 @@
+{
+  "id": "${createdId}",
+  "kind": "DOCUMENT",
+  "scope": "GLOBAL",
+  "type": "CSS",
+  "author": "AGENT",
+  "name": "report-styles",
+  "authorName": "${agentName}",
+  "summary": "Styles of the report page",
+  "content": "body { margin: 0; }",
+  "createdAt": "${json-unit.any-string}",
+  "updatedAt": "${json-unit.any-string}",
+  "relations": [],
+  "referencedBy": [],
+  "allowWrite": true
+}
