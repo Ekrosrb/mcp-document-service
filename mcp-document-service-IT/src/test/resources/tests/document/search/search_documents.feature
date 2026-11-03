@@ -62,10 +62,22 @@ Feature: Search documents
     Then the response status is 200
     And the response body at "content" matches "expected/responses/no_documents.json"
 
-  Scenario: A search without any filter or query is rejected
-    When I send a POST request to "/api/v1/document/search" with body "input/without_filters.json"
-    Then the response status is 400
-    And the response body matches "expected/responses/missing_filters.json"
+  Scenario: A search without any filter or query returns all entries newest first
+    Given the table "document_content" contains the rows from "params/newest_document_contents.json"
+    And the table "document" contains the rows from "params/newest_documents.json"
+    When I send a POST request to "/api/v1/document/search?size=1" with body "input/without_filters.json"
+    Then the response status is 200
+    And the response body contains the fields from "expected/responses/newest_of_all.json" in order
+
+  Scenario: Documents are filtered by type
+    When I send a POST request to "/api/v1/document/search" with body "input/by_type.json"
+    Then the response status is 200
+    And the response body at "content" matches "expected/responses/project_document.json"
+
+  Scenario: A type that no document has returns an empty list
+    When I send a POST request to "/api/v1/document/search" with body "input/by_unused_type.json"
+    Then the response status is 200
+    And the response body at "content" matches "expected/responses/no_documents.json"
 
   Scenario: Memories are filtered by memory type
     When I send a POST request to "/api/v1/document/search" with body "input/by_memory_type.json"

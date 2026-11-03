@@ -15,5 +15,8 @@
   "${strongMatchId}": "long",
   "${weakMatchId}": "long",
   "${strongMatchContentId}": "long",
-  "${weakMatchContentId}": "long"
+  "${weakMatchContentId}": "long",
+  "${newestId}": "long",
+  "${newestContentId}": "long",
+  "${newestName}": "string"
 }

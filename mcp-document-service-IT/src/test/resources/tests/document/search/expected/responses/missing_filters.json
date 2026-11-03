@@ -1,6 +1,0 @@
-{
-  "message": "Request validation failed",
-  "metadata": {
-    "documentSearchRequest": "At least one property or query in search request must be specified"
-  }
-}

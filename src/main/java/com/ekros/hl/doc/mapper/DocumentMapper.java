@@ -56,10 +56,12 @@ public interface DocumentMapper {
   DocumentUpdateRequest mapToDocumentUpdateRequest(DocumentUpdateMcpRequest request);
 
   @Mapping(target = "kind", constant = "DOCUMENT")
+  @Mapping(target = "type", ignore = true)
   @Mapping(target = "memoryType", ignore = true)
   DocumentSearchRequest mapToDocumentSearchRequest(DocumentSearchMcpRequest request);
 
   @Mapping(target = "kind", constant = "MEMORY")
+  @Mapping(target = "type", ignore = true)
   DocumentSearchRequest mapToMemorySearchRequest(MemorySearchMcpRequest request);
 
   @Mapping(target = "id", source = "id.relatedDocumentId")

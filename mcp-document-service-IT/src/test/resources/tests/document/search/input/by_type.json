@@ -1,0 +1,6 @@
+{
+  "authorName": "${authorName}",
+  "type": "MARKDOWN",
+  "includeContent": true,
+  "includeSummary": true
+}

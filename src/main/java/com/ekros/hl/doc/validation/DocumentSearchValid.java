@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DocumentSearchValid {
 
-  String message() default "At least some one property or query must be specified"; // Default message
+  String message() default "Invalid search request"; // Default message
 
   Class<?>[] groups() default {}; // Required by the Bean Validation spec
 

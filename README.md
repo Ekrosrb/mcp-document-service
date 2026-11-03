@@ -85,6 +85,7 @@ Every tool and parameter carries a description the agent can read.
 ### How search works
 
 - Filters (scope, author, author name, project key, memory type) are combined with AND.
+  REST search also filters by kind and type, and without any filter or query returns all entries.
 - The query is English full-text search over name, summary and content. Name matches weigh most,
   then summary, then content.
 - It first looks for entries containing all the words. If there are none, it returns entries

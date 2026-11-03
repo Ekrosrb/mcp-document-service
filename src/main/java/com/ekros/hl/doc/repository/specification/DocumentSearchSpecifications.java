@@ -39,6 +39,10 @@ public class DocumentSearchSpecifications {
         predicates.add(criteriaBuilder.equal(root.get("scope"), searchRequest.getScope()));
       }
 
+      if (searchRequest.getType() != null) {
+        predicates.add(criteriaBuilder.equal(root.get("type"), searchRequest.getType()));
+      }
+
       if (searchRequest.getAuthor() != null) {
         predicates.add(criteriaBuilder.equal(root.get("author"), searchRequest.getAuthor()));
       }
