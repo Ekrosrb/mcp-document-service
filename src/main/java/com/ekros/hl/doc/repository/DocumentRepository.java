@@ -1,7 +1,10 @@
 package com.ekros.hl.doc.repository;
 
 import com.ekros.hl.doc.repository.model.DocumentData;
+import com.ekros.hl.doc.repository.model.DocumentKind;
+import com.ekros.hl.doc.repository.model.DocumentRelationType;
 import com.ekros.hl.doc.repository.projection.DocumentRankProjection;
+import com.ekros.hl.doc.repository.projection.DocumentTypeCountProjection;
 import com.ekros.hl.doc.repository.projection.ProjectDocumentsCountProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +28,19 @@ public interface DocumentRepository extends JpaRepository<DocumentData, Long>, J
       "WHERE d.projectKey IN :projectKeys AND d.deletedAt IS NULL " +
       "GROUP BY d.projectKey")
   List<ProjectDocumentsCountProjection> countBySpecificProjectKeys(@Param("projectKeys") Collection<String> projectKeys);
+
+  /**
+   * Counts live entries of the given kinds per type, leaving out entries superseded by a live entry.
+   */
+  @Query("SELECT d.type AS type, COUNT(d) AS count " +
+      "FROM DocumentData d " +
+      "WHERE d.kind IN :kinds AND d.deletedAt IS NULL " +
+      "AND NOT EXISTS (SELECT 1 FROM DocumentRelationData r " +
+      "WHERE r.id.relatedDocumentId = d.id AND r.type = :supersedes AND r.document.deletedAt IS NULL) " +
+      "GROUP BY d.type " +
+      "ORDER BY d.type")
+  List<DocumentTypeCountProjection> countByType(@Param("kinds") Collection<DocumentKind> kinds,
+                                                @Param("supersedes") DocumentRelationType supersedes);
 
   /**
    * Returns the full-text rank of the given documents for a websearch query, as used to order search results.

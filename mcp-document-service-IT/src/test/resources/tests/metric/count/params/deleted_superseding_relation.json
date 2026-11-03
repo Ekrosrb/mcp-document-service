@@ -1,0 +1,7 @@
+[
+  {
+    "document_id": "${deletedId}",
+    "related_document_id": "${markdownId}",
+    "type": "SUPERSEDES"
+  }
+]

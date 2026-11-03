@@ -1,0 +1,13 @@
+{
+  "${authorName}": "string",
+  "${markdownId}": "long",
+  "${otherMarkdownId}": "long",
+  "${textDocumentId}": "long",
+  "${memoryId}": "long",
+  "${deletedId}": "long",
+  "${markdownContentId}": "long",
+  "${otherMarkdownContentId}": "long",
+  "${textDocumentContentId}": "long",
+  "${memoryContentId}": "long",
+  "${deletedContentId}": "long"
+}

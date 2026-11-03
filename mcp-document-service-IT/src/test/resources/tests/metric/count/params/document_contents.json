@@ -1,0 +1,22 @@
+[
+  {
+    "id": "${markdownContentId}",
+    "content": "First guide."
+  },
+  {
+    "id": "${otherMarkdownContentId}",
+    "content": "Second guide."
+  },
+  {
+    "id": "${textDocumentContentId}",
+    "content": "Plain notes."
+  },
+  {
+    "id": "${memoryContentId}",
+    "content": "A fact."
+  },
+  {
+    "id": "${deletedContentId}",
+    "content": "{}"
+  }
+]

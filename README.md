@@ -128,6 +128,7 @@ The base path is `/api/v1`. Swagger UI is at `http://<host>:55535/swagger-ui/ind
 | `POST /document/relation`                                | Create a relation.                              |
 | `DELETE /document/relation/{documentId}/{relatedDocumentId}` | Remove a relation.                          |
 | `GET /project/info?page=0&size=100`                      | List projects with their document counts.       |
+| `GET /metric/count/type?kind=DOCUMENT`                   | Count entries per type; `kind` is optional. Deleted and replaced entries are not counted, types without entries are left out. |
 
 There is no authentication. Run the service only on a network you trust.
 
