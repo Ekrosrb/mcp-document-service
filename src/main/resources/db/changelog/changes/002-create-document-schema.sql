@@ -5,7 +5,7 @@
 CREATE TYPE document_kind AS ENUM ('DOCUMENT', 'MEMORY');
 CREATE TYPE document_scope AS ENUM ('GLOBAL', 'PROJECT', 'AGENT');
 CREATE TYPE author_type AS ENUM ('HUMAN', 'AGENT');
-CREATE TYPE document_type AS ENUM ('TEXT', 'JSON', 'HLD', 'XML', 'MARKDOWN', 'TOON', 'CUSTOM');
+CREATE TYPE document_type AS ENUM ('TEXT', 'JSON', 'XML', 'MARKDOWN', 'TOON', 'CUSTOM');
 CREATE TYPE document_relation_type AS ENUM ('DEPENDS_ON', 'SUPERSEDES', 'EXTENDS', 'PART_OF', 'DERIVED_FROM', 'RELATED_TO');
 
 CREATE TABLE project

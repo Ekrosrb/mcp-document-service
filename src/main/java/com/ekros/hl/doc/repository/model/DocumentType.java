@@ -3,7 +3,6 @@ package com.ekros.hl.doc.repository.model;
 public enum DocumentType {
   TEXT(".txt"),
   JSON(".json"),
-  HLD(".hld"),
   XML(".xml"),
   MARKDOWN(".md"),
   TOON(".toon"),

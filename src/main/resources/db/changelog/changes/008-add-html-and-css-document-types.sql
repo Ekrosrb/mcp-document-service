@@ -9,7 +9,7 @@ ALTER TYPE document_type ADD VALUE 'CSS' BEFORE 'CUSTOM';
 -- It fails while any row still holds HTML or CSS, which is the point.
 --rollback ALTER TABLE document ALTER COLUMN type DROP DEFAULT;
 --rollback ALTER TYPE document_type RENAME TO document_type_old;
---rollback CREATE TYPE document_type AS ENUM ('TEXT', 'JSON', 'HLD', 'XML', 'MARKDOWN', 'TOON', 'CUSTOM');
+--rollback CREATE TYPE document_type AS ENUM ('TEXT', 'JSON', 'XML', 'MARKDOWN', 'TOON', 'CUSTOM');
 --rollback ALTER TABLE document ALTER COLUMN type TYPE document_type USING type::text::document_type;
 --rollback ALTER TABLE document ALTER COLUMN type SET DEFAULT 'TEXT';
 --rollback DROP TYPE document_type_old;
