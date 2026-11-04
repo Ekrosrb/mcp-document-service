@@ -1,17 +1,17 @@
 [versions]
 java = "26"
-spring-boot = "4.1.1"
+spring-boot = "4.1.2"
 spring-ai = "2.0.0"
-jackson = "3.2.3"
-logback = "1.6.5"
+jackson = "3.2.4"
+logback = "1.6.6"
 slf4j = "2.0.20"
 lombok = "1.18.48"
 mapstruct = "1.6.3"
 lombok-mapstruct-binding = "0.2.0"
 jtoon = "3.0.0"
-springdoc = "3.1.1"
+springdoc = "3.2.0"
 cucumber = "8.0.4"
-json-unit = "6.3.0"
+json-unit = "6.4.0"
 
 [libraries]
 # BOMs
