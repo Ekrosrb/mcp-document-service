@@ -6,6 +6,9 @@ save what they learn and link related entries, so knowledge outlives a single co
 
 Data is kept in Postgres. Search is English full-text search, ranked by relevance.
 
+A web UI for this service lives in its own repository:
+[document-service-ui](https://github.com/Ekrosrb/document-service-ui).
+
 ## What it stores
 
 Every entry has a **kind**:
@@ -326,3 +329,24 @@ Run the integration tests (needs JDK 26 and Docker; uses ports 43555–43556):
 ```
 
 Dependency versions are kept in `gradle/libs.versions.toml`.
+
+## Built with
+
+| Project | Used for |
+|---------|----------|
+| [Spring Boot](https://github.com/spring-projects/spring-boot) | Application, REST API, data access |
+| [Spring AI](https://github.com/spring-projects/spring-ai) | MCP server |
+| [MCP Java SDK](https://github.com/modelcontextprotocol/java-sdk) | MCP protocol, used by Spring AI |
+| [Hibernate ORM](https://github.com/hibernate/hibernate-orm) | JPA |
+| [Liquibase](https://github.com/liquibase/liquibase) | Database schema |
+| [PostgreSQL](https://github.com/postgres/postgres) | Database |
+| [pgvector](https://github.com/pgvector/pgvector) | Postgres image (`pgvector/pgvector:pg18`) |
+| [Jackson](https://github.com/FasterXML/jackson) | JSON |
+| [TOON](https://github.com/toon-format/toon), [JToon](https://github.com/toon-format/toon-java) | MCP response format |
+| [springdoc-openapi](https://github.com/springdoc/springdoc-openapi) | Swagger UI |
+| [MapStruct](https://github.com/mapstruct/mapstruct) | Model mapping |
+| [Lombok](https://github.com/projectlombok/lombok) | Boilerplate code |
+| [Logback](https://github.com/qos-ch/logback), [SLF4J](https://github.com/qos-ch/slf4j) | Logging |
+| [Cucumber JVM](https://github.com/cucumber/cucumber-jvm), [JsonUnit](https://github.com/lukas-krecan/JsonUnit) | Integration tests |
+| [Gradle](https://github.com/gradle/gradle) | Build |
+| [Eclipse Temurin](https://github.com/adoptium/containers) | JDK and JRE images |
