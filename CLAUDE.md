@@ -76,7 +76,7 @@ Strong criteria enable independent iteration; weak criteria ("make it work") for
 
 Spring Boot service storing documents and agent memories in Postgres, exposed over REST and as an MCP server for AI agents.
 
-- **Stack:** Java 26, Spring Boot 4.1.1, Spring AI MCP Server 2.0.0 (WebMVC, streamable HTTP), Hibernate 7.4.5, Liquibase 5.0.3, PostgreSQL 18 (`pgvector/pgvector:pg18`), MapStruct 1.6.3, Lombok 1.18.48, Jackson 3.2.3, JToon 3.0.0, Gradle 9.8.1
+- **Stack:** Java 26, Spring Boot 4.1.2, Spring AI MCP Server 2.0.0 (WebMVC, streamable HTTP), Hibernate 7.4.13, Liquibase 5.0.4, PostgreSQL 18 (`pgvector/pgvector:pg18`), MapStruct 1.6.3, Lombok 1.18.48, Jackson 3.2.4, JToon 3.0.0, Gradle 9.8.2
 - **Type:** HTTP service + MCP server, deployed with Docker Compose
 - **Task scope:** `feature` — adding to existing codebase
 - Released as `1.0.0`. MCP tool names, parameters and defaults are a contract: additive changes only; renames, removals and default changes are breaking.
