@@ -84,7 +84,7 @@ Spring Boot service storing documents and agent memories in Postgres, exposed ov
 
 ### 7.1 Architecture
 
-- Package root `com.ekros.hl.doc`: `controller` (REST, `api/` interfaces, `ExceptionHandlerController`) → `service` → `repository` (Spring Data JPA, `specification/` for search).
+- Package root `io.github.ekrosrb.doc`: `controller` (REST, `api/` interfaces, `ExceptionHandlerController`) → `service` → `repository` (Spring Data JPA, `specification/` for search).
 - `mcp/tools`: `@McpTool` methods map MCP requests to REST models via `DocumentMapper`, call the same services, return TOON via `ToonConverter`.
 - `mcp/McpDescriptions`: every agent-facing tool and parameter text. Server instructions live in `application.yaml` (`spring.ai.mcp.server.instructions`).
 - Search: `DocumentSearchSpecifications` — filters, `websearch_to_tsquery('english')` on a trigger-maintained `search_vector` (GIN), `ts_rank` order, OR fallback when all-words matching finds nothing, superseded entries hidden by default, paged (default 10, MCP max 50).

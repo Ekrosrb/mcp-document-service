@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group = 'com.ekros.hl.doc'
+group = 'io.github.ekrosrb.doc'
 version = '1.0.0'
 
 java {

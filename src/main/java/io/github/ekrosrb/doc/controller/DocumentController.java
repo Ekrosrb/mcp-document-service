@@ -1,0 +1,98 @@
+package io.github.ekrosrb.doc.controller;
+
+import io.github.ekrosrb.doc.controller.api.DocumentApi;
+import io.github.ekrosrb.doc.controller.model.document.*;
+import io.github.ekrosrb.doc.service.DocumentService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
+
+@Slf4j
+@RestController
+@RequestMapping("/api/v1/document")
+@RequiredArgsConstructor
+public class DocumentController implements DocumentApi {
+
+  private final DocumentService documentService;
+
+  @Override
+  @PostMapping
+  public DocumentCreateResponse createDocument(@Valid @RequestBody DocumentCreateRequest request) {
+    return documentService.createDocument(request);
+  }
+
+  @Override
+  @ResponseStatus(OK)
+  @PutMapping("/{id}")
+  public void updateDocument(@Positive @PathVariable Long id, @Valid @RequestBody DocumentUpdateRequest request) {
+    documentService.updateDocument(id, request, false);
+  }
+
+  @Override
+  @ResponseStatus(OK)
+  @DeleteMapping("/{id}")
+  public void removeDocument(@Positive @PathVariable Long id) {
+    documentService.removeDocument(id, false);
+  }
+
+  @Override
+  @ResponseStatus(OK)
+  @DeleteMapping("/{id}/permanent")
+  public void removeDocumentPermanently(@Positive @PathVariable Long id) {
+    documentService.removeDocumentPermanently(id);
+  }
+
+  @Override
+  @ResponseStatus(OK)
+  @PostMapping("/{id}/restore")
+  public void restoreDocument(@Positive @PathVariable Long id) {
+    documentService.restoreDocument(id);
+  }
+
+  @Override
+  @GetMapping("/deleted")
+  public Page<DocumentResponse> getDeletedDocuments(@PageableDefault(size = DocumentSearchRequest.DEFAULT_PAGE_SIZE) Pageable pageable) {
+    return documentService.getDeletedDocuments(pageable);
+  }
+
+  @Override
+  @GetMapping("/deleted/{id}")
+  public DocumentResponse getDeletedDocument(@Positive @PathVariable Long id, @RequestParam(required = false, defaultValue = "false") boolean includeContent) {
+    return documentService.getDeletedDocument(id, includeContent);
+  }
+
+  @Override
+  @GetMapping("/{id}")
+  public DocumentResponse getDocument(@Positive @PathVariable Long id, @RequestParam(required = false, defaultValue = "false") boolean includeContent) {
+    return documentService.getDocument(id, includeContent);
+  }
+
+  @Override
+  @PostMapping("/search")
+  public Page<DocumentResponse> search(@Valid @RequestBody DocumentSearchRequest request,
+                                     @PageableDefault(size = DocumentSearchRequest.DEFAULT_PAGE_SIZE) Pageable pageable) {
+    return documentService.search(request, pageable);
+  }
+
+  @Override
+  @ResponseStatus(CREATED)
+  @PostMapping("/relation")
+  public void createDocumentRelation(@Valid @RequestBody DocumentRelationCreateRequest request) {
+    documentService.createDocumentRelation(request, false);
+  }
+
+  @Override
+  @ResponseStatus(OK)
+  @DeleteMapping("/relation/{documentId}/{relatedDocumentId}")
+  public void removeDocumentRelation(@Valid DocumentRelationRemoveRequest request) {
+    documentService.removeDocumentRelation(request, false);
+  }
+}
